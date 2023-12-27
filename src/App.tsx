@@ -1,11 +1,12 @@
 import { Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { AppProvider } from './providers/AppProvider'
 
 export default function App() {
   return (
-    <div>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </div>
+    <AppProvider>
+      <div className='bg-background text-foreground'>
+        <Outlet />
+      </div>
+    </AppProvider>
   )
 }
