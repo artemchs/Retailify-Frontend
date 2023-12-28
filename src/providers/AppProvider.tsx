@@ -1,13 +1,17 @@
 import React from 'react'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-
-import { ThemeProvider } from './theme'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ThemeProvider } from './theme-provider'
+import { QueryProvider } from './query-client-provider'
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider defaultTheme='system' storageKey='retailify-ui-theme'>
-      {children}
-      <TanStackRouterDevtools />
+      <QueryProvider>
+        {children}
+        <TanStackRouterDevtools />
+        <ReactQueryDevtools />
+      </QueryProvider>
     </ThemeProvider>
   )
 }
