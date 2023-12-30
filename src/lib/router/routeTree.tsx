@@ -1,5 +1,7 @@
 import App from '@/App'
 import AuthScreen from '@/features/auth/components/AuthScreen'
+import Layout from '@/layouts/Layout'
+import HomePage from '@/pages/Home'
 import { LogInPage } from '@/pages/auth/LogIn'
 import SignUpPage from '@/pages/auth/SignUp'
 import { isAuthenticated } from '@/utils/isAuthenticated'
@@ -38,6 +40,19 @@ const signUpRoute = new Route({
   path: '/sign-up',
 })
 
+const layout = new Route({
+  getParentRoute: () => rootRoute,
+  component: Layout,
+  id: 'layout',
+})
+
+const homeRoute = new Route({
+  getParentRoute: () => layout,
+  component: HomePage,
+  path: '/',
+})
+
 export const routeTree = rootRoute.addChildren([
+  layout.addChildren([homeRoute]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])
