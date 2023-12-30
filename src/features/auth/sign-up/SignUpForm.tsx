@@ -5,15 +5,14 @@ import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
-import { User } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
+import { Loader2, User } from 'lucide-react'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { signUpFormSchema } from './sign-up-form-schema'
 import AuthTitle from '../components/AuthTitle'
 import {
@@ -23,6 +22,10 @@ import {
   usernamePlaceholder,
 } from '../variables'
 import PasswordInput from '../components/PasswordInput'
+import Auth from '@/api/services/Auth'
+import { useState } from 'react'
+import { AlertDestructive } from '@/components/AlertDestructive'
+import { toast } from 'sonner'
 
 export default function SignUpForm() {
   const form = useForm<z.infer<typeof signUpFormSchema>>({
@@ -34,14 +37,31 @@ export default function SignUpForm() {
     },
   })
 
+  const navigate = useNavigate()
+  function onSuccess() {
+    navigate({ to: '/' })
+    toast('Новый аккаунт был успешно создан.', {
+      icon: <User className='h-4 w-4' />,
+    })
+  }
+
+  const [errorMessage, setErrorMessage] = useState('')
+  const { mutate, isPending } = Auth.useSignUp({
+    setErrorMessage,
+    onSuccess,
+  })
+
   function onSubmit(values: z.infer<typeof signUpFormSchema>) {
-    console.log(values)
+    mutate(values)
   }
 
   return (
     <div className='flex flex-col gap-6 items-center'>
       <AuthTitle title={signUpTitle} />
-      <div className='w-full'>
+      <div className='w-full flex flex-col gap-4'>
+        {errorMessage && errorMessage.length >= 1 && (
+          <AlertDestructive text={errorMessage} />
+        )}
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -82,16 +102,16 @@ export default function SignUpForm() {
                   <FormControl>
                     <PasswordInput field={field} />
                   </FormControl>
-                  <FormDescription>
-                    Придумайте пароль, который будет состоять как минимум из 8
-                    символов, включая цифры, буквы и специальные символы.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type='submit' className='mt-4'>
-              <User className='h-4 w-4 mr-2' />
+            <Button type='submit' className='mt-4' disabled={isPending}>
+              {isPending ? (
+                <Loader2 className='h-4 w-4 mr-2 animate-spin' />
+              ) : (
+                <User className='h-4 w-4 mr-2' />
+              )}
               {signUpTitle}
             </Button>
           </form>
