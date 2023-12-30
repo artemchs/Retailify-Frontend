@@ -4,10 +4,8 @@ import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { accessToken } from '@/utils/accessToken'
 
-type MutationProps = {
-  setErrorMessage?: React.Dispatch<React.SetStateAction<string>>
-  onSuccess(): void
-}
+type SetErrorMessage = React.Dispatch<React.SetStateAction<string>>
+type OnSuccess = () => void
 
 type SignUpBody = {
   fullName: string
@@ -21,7 +19,13 @@ type LogInBody = {
 }
 
 export default {
-  useSignUp: ({ setErrorMessage, onSuccess }: MutationProps) =>
+  useSignUp: ({
+    setErrorMessage,
+    onSuccess,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+  }) =>
     useMutation({
       mutationKey: ['sign-up'],
       mutationFn: async (data: SignUpBody) => {
@@ -35,7 +39,13 @@ export default {
         onErrorHandler({ error, setErrorMessage }),
     }),
 
-  useLogIn: ({ setErrorMessage, onSuccess }: MutationProps) =>
+  useLogIn: ({
+    setErrorMessage,
+    onSuccess,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+  }) =>
     useMutation({
       mutationKey: ['log-in'],
       mutationFn: async (data: LogInBody) => {
@@ -47,5 +57,17 @@ export default {
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useLogOut: ({ onSuccess }: { onSuccess: OnSuccess }) =>
+    useMutation({
+      mutationKey: ['log-out'],
+      mutationFn: async () => {
+        return await client.post('/auth/log-out')
+      },
+      onSuccess: () => {
+        accessToken.update('')
+        onSuccess()
+      },
     }),
 }
