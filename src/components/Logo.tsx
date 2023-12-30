@@ -1,7 +1,7 @@
 import { Store } from 'lucide-react'
 
 type Props = {
-  color: 'white' | 'primary' | 'secondary'
+  color: 'white' | 'primary' | 'secondary' | 'foreground'
 }
 
 export default function Logo({ color }: Props) {
