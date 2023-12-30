@@ -2,8 +2,9 @@ import { useMutation } from '@tanstack/react-query'
 import client from '../client'
 import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
+import { accessToken } from '@/utils/accessToken'
 
-type UseSignUpProps = {
+type MutationProps = {
   setErrorMessage?: React.Dispatch<React.SetStateAction<string>>
   onSuccess(): void
 }
@@ -14,14 +15,36 @@ type SignUpBody = {
   password: string
 }
 
+type LogInBody = {
+  username: string
+  password: string
+}
+
 export default {
-  useSignUp: ({ setErrorMessage, onSuccess }: UseSignUpProps) =>
+  useSignUp: ({ setErrorMessage, onSuccess }: MutationProps) =>
     useMutation({
       mutationKey: ['sign-up'],
       mutationFn: async (data: SignUpBody) => {
-        await client.post('/auth/sign-up', data)
+        return await client.post('/auth/sign-up', data)
       },
-      onSuccess: onSuccess,
+      onSuccess: ({ data }: { data: { accessToken: string } }) => {
+        accessToken.update(data.accessToken)
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useLogIn: ({ setErrorMessage, onSuccess }: MutationProps) =>
+    useMutation({
+      mutationKey: ['log-in'],
+      mutationFn: async (data: LogInBody) => {
+        return await client.post('/auth/log-in', data)
+      },
+      onSuccess: ({ data }: { data: { accessToken: string } }) => {
+        accessToken.update(data.accessToken)
+        onSuccess()
+      },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
     }),
