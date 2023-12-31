@@ -1,8 +1,8 @@
-import axiosClient from '@/lib/axios-client'
+import client from "@/api/client"
 
 export async function refreshTokens() {
   try {
-    const { data } = await axiosClient.post<{ accessToken: string }>(
+    const { data } = await client.post<{ accessToken: string }>(
       '/auth/refresh-token'
     )
     return data.accessToken

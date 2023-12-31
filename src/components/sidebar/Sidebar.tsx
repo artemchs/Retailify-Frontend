@@ -1,5 +1,6 @@
 import { Separator } from '@/components/ui/separator'
 import SelectOrganization from './SelectOrganization'
+import SidebarLinks from './SidebarLinks'
 
 export default function Sidebar() {
   return (
@@ -8,7 +9,9 @@ export default function Sidebar() {
         <SelectOrganization />
       </div>
       <Separator />
-      <div></div>
+      <div className='p-3'>
+        <SidebarLinks />
+      </div>
     </div>
   )
 }

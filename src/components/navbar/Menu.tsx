@@ -6,30 +6,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
-import { Cog, LogOut } from 'lucide-react'
-import { useState } from 'react'
+import { Button } from '../ui/button'
+import { LogOut, MoreHorizontal } from 'lucide-react'
 import LogOutAlertDialog from '@/features/auth/log-out/LogOutAlertDialog'
+import { useState } from 'react'
 
-export default function Settings() {
-  const [isLogOutAlertOpened, setIsLogOutAlertOpened] = useState(false)
+export default function Menu() {
+  const [isLogOutDialogOpened, setIsLogOutDialogOpened] = useState(false)
 
   return (
     <>
       <LogOutAlertDialog
-        isOpened={isLogOutAlertOpened}
-        setIsOpened={setIsLogOutAlertOpened}
+        isOpened={isLogOutDialogOpened}
+        setIsOpened={setIsLogOutDialogOpened}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant='ghost' size='icon'>
-            <Cog className='h-4 w-4' />
+          <Button size='icon' variant='ghost'>
+            <MoreHorizontal className='h-4 w-4' />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align='end'>
-          <DropdownMenuLabel>Настройки</DropdownMenuLabel>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Меню</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => setIsLogOutAlertOpened(true)}>
+          <DropdownMenuItem onClick={() => setIsLogOutDialogOpened(true)}>
             <LogOut className='h-4 w-4 mr-2' />
             Выйти из аккаунта
           </DropdownMenuItem>

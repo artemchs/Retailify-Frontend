@@ -1,4 +1,4 @@
-import axiosClient from '@/lib/axios-client'
+import client from '@/api/client'
 import { accessToken } from './accessToken'
 
 export async function isAuthenticated() {
@@ -7,7 +7,7 @@ export async function isAuthenticated() {
   if (at) return true
 
   try {
-    const { data } = await axiosClient.post<{ accessToken: string }>(
+    const { data } = await client.post<{ accessToken: string }>(
       '/auth/refresh-token'
     )
 
@@ -15,7 +15,7 @@ export async function isAuthenticated() {
     if (newAccessToken) {
       accessToken.update(newAccessToken)
       return true
-    }
+    } 
 
     return false
   } catch (e) {

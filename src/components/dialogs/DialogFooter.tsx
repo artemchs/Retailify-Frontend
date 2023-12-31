@@ -3,7 +3,6 @@ import React from 'react'
 
 type Props = {
   cancelAction: () => void
-  cancelText: string
   submitButtonChildren: React.ReactNode
   submitButtonVariant:
     | 'link'
@@ -19,7 +18,6 @@ type Props = {
 }
 
 export default function DialogFooter({
-  cancelText,
   cancelAction,
   submitButtonChildren,
   submitButtonVariant,
@@ -29,7 +27,7 @@ export default function DialogFooter({
   return (
     <div className='mt-2 flex flex-col-reverse gap-2 lg:flex-row lg:justify-end'>
       <Button variant='outline' onClick={cancelAction}>
-        {cancelText}
+        Закрыть
       </Button>
       <Button
         variant={submitButtonVariant}

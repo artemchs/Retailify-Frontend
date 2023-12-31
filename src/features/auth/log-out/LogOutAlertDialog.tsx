@@ -32,7 +32,6 @@ export default function LogOutAlertDialog({ isOpened, setIsOpened }: Props) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <DialogFooter
-          cancelText='Остаться так'
           cancelAction={() => setIsOpened(false)}
           submitButtonVariant='destructive'
           submitButtonChildren={
