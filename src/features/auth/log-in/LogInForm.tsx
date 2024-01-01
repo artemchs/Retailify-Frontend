@@ -15,7 +15,7 @@ import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredF
 import { Loader2, LogIn } from 'lucide-react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import AuthTitle from '../components/AuthTitle'
-import { logInTitle, signUpTitle, usernamePlaceholder } from '../variables'
+import { logInTitle, signUpTitle, emailPlaceholder } from '../variables'
 import PasswordInput from '../components/PasswordInput'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -26,8 +26,8 @@ export default function LogInForm() {
   const form = useForm<z.infer<typeof logInFormSchema>>({
     resolver: zodResolver(logInFormSchema),
     defaultValues: {
+      email: '',
       password: '',
-      username: '',
     },
   })
 
@@ -60,12 +60,16 @@ export default function LogInForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FormField
               control={form.control}
-              name='username'
+              name='email'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabelForRequiredFields text='Имя пользователя' />
+                  <FormLabelForRequiredFields text='Електронная почта' />
                   <FormControl>
-                    <Input placeholder={usernamePlaceholder} {...field} />
+                    <Input
+                      type='email'
+                      placeholder={emailPlaceholder}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

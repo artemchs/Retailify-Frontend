@@ -9,12 +9,12 @@ type OnSuccess = () => void
 
 type SignUpBody = {
   fullName: string
-  username: string
+  email: string
   password: string
 }
 
 type LogInBody = {
-  username: string
+  email: string
   password: string
 }
 

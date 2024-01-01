@@ -9,7 +9,7 @@ export default function AuthProvider({
   children: React.ReactNode
 }) {
   const [auth, setAuth] = useState<AuthContextType>({})
-  const at = accessToken.value()
+  const [at] = useState(accessToken.value())
 
   useEffect(() => {
     if (at) {

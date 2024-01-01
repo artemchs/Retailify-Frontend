@@ -19,7 +19,7 @@ import {
   fullNamePlaceholder,
   logInTitle,
   signUpTitle,
-  usernamePlaceholder,
+  emailPlaceholder,
 } from '../variables'
 import PasswordInput from '../components/PasswordInput'
 import Auth from '@/api/services/Auth'
@@ -33,7 +33,7 @@ export default function SignUpForm() {
     defaultValues: {
       fullName: '',
       password: '',
-      username: '',
+      email: '',
     },
   })
 
@@ -82,12 +82,16 @@ export default function SignUpForm() {
             />
             <FormField
               control={form.control}
-              name='username'
+              name='email'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabelForRequiredFields text='Имя пользователя' />
+                  <FormLabelForRequiredFields text='Електронная почта' />
                   <FormControl>
-                    <Input placeholder={usernamePlaceholder} {...field} />
+                    <Input
+                      type='email'
+                      placeholder={emailPlaceholder}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
