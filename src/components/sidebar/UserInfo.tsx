@@ -22,7 +22,7 @@ export default function UserInfo() {
         </AvatarFallback>
       </Avatar>
       <div className='flex flex-col'>
-        <span>{data?.fullName}</span>
+        <span className='line-clamp-1'>{data?.fullName}</span>
         <span className='text-xs text-muted-foreground'>Admin</span>
       </div>
     </div>
