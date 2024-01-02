@@ -3,9 +3,7 @@ import client from '../client'
 import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { accessToken } from '@/utils/accessToken'
-
-type SetErrorMessage = React.Dispatch<React.SetStateAction<string>>
-type OnSuccess = () => void
+import { OnSuccess, SetErrorMessage } from './types'
 
 type SignUpBody = {
   fullName: string

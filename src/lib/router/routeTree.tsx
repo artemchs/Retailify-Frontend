@@ -8,7 +8,6 @@ import { isAuthenticated } from '@/utils/isAuthenticated'
 import { RootRoute, Route, redirect } from '@tanstack/react-router'
 
 const rootRoute = new RootRoute({
-  component: App,
   beforeLoad: async ({ location }) => {
     const { href } = location
     if (href !== '/auth/log-in' && href !== '/auth/sign-up') {
@@ -20,6 +19,7 @@ const rootRoute = new RootRoute({
       }
     }
   },
+  component: App,
 })
 
 const authRoute = new Route({
