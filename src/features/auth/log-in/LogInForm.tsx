@@ -15,12 +15,13 @@ import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredF
 import { Loader2, LogIn } from 'lucide-react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import AuthTitle from '../components/AuthTitle'
-import { logInTitle, signUpTitle, emailPlaceholder } from '../variables'
+import { logInTitle, signUpTitle } from '../titles'
 import PasswordInput from '../components/PasswordInput'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import Auth from '@/api/services/Auth'
 import { AlertDestructive } from '@/components/AlertDestructive'
+import { emailPlaceholder } from '@/features/placeholders'
 
 export default function LogInForm() {
   const form = useForm<z.infer<typeof logInFormSchema>>({

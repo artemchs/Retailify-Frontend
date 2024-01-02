@@ -14,6 +14,7 @@ export default function UserInfo() {
     <div className='flex items-center space-x-4'>
       <Avatar className='h-full aspect-square'>
         <AvatarImage
+          className='object-cover'
           src={data?.profilePicture ? data.profilePicture : undefined}
         />
         <AvatarFallback>

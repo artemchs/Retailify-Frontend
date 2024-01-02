@@ -1,9 +1,9 @@
 import { Input } from '@/components/ui/input'
-import { passwordPlaceholder } from '../variables'
 import { ControllerRenderProps } from 'react-hook-form'
 import { useState } from 'react'
 import { Toggle } from '@/components/ui/toggle'
 import { Eye, EyeOff } from 'lucide-react'
+import { passwordPlaceholder } from '@/features/placeholders'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -15,17 +15,13 @@ import { Loader2, User } from 'lucide-react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { signUpFormSchema } from './sign-up-form-schema'
 import AuthTitle from '../components/AuthTitle'
-import {
-  fullNamePlaceholder,
-  logInTitle,
-  signUpTitle,
-  emailPlaceholder,
-} from '../variables'
+import { logInTitle, signUpTitle } from '../titles'
 import PasswordInput from '../components/PasswordInput'
 import Auth from '@/api/services/Auth'
 import { useState } from 'react'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import { toast } from 'sonner'
+import { emailPlaceholder, fullNamePlaceholder } from '@/features/placeholders'
 
 export default function SignUpForm() {
   const form = useForm<z.infer<typeof signUpFormSchema>>({
