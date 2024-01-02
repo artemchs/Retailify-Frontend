@@ -9,11 +9,13 @@ export default function AuthProvider({
   children: React.ReactNode
 }) {
   const [auth, setAuth] = useState<AuthContextType>({})
-  const [at] = useState(accessToken.value())
+  const [userAccessToken, setUserAccessToken] = useState(accessToken.value())
 
   useEffect(() => {
-    if (at) {
-      const { sub, username, fullName } = jwtDecode(at) as {
+    setUserAccessToken(userAccessToken)
+
+    if (userAccessToken) {
+      const { sub, username, fullName } = jwtDecode(userAccessToken) as {
         sub: string
         username: string
         fullName: string
@@ -26,7 +28,7 @@ export default function AuthProvider({
         },
       })
     }
-  }, [at])
+  }, [userAccessToken])
 
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
 }

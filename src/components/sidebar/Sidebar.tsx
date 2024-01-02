@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator'
 import SidebarLinks from './SidebarLinks'
-import UserInfo from '../navbar/UserInfo'
-import Menu from '../navbar/Menu'
+import UserInfo from './UserInfo'
+import Menu from './Menu'
 
 export default function Sidebar() {
   return (
