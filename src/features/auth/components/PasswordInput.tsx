@@ -7,7 +7,7 @@ import { passwordPlaceholder } from '@/features/placeholders'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field: ControllerRenderProps<any, 'password'>
+  field: ControllerRenderProps<any, any>
 }
 
 export default function PasswordInput({ field }: Props) {
