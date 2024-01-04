@@ -3,16 +3,18 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getNameShorthand } from '@/utils/getNameShorthand'
 import { Skeleton } from '../ui/skeleton'
 import { XOctagon } from 'lucide-react'
+import { useRouteContext } from '@tanstack/react-router'
 
 export default function UserInfo() {
   const { data, isLoading, isError } = Users.useGetMe()
+  const context = useRouteContext({ from: '/layout' })
 
   if (isLoading) return <Loading />
   if (isError) return <Error />
 
   return (
     <div className='flex items-center space-x-4'>
-      <Avatar className='h-full aspect-square'>
+      <Avatar className='h-full aspect-square shadow'>
         <AvatarImage
           className='object-cover'
           src={data?.profilePicture ? data.profilePicture : undefined}
@@ -23,7 +25,9 @@ export default function UserInfo() {
       </Avatar>
       <div className='flex flex-col'>
         <span className='line-clamp-1'>{data?.fullName}</span>
-        <span className='text-xs text-muted-foreground'>Admin</span>
+        <span className='text-xs text-primary'>
+          {context.user?.role === 'ADMIN' ? 'Админ' : 'Работник'}
+        </span>
       </div>
     </div>
   )
