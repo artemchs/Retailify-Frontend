@@ -1,4 +1,5 @@
 import Employees from '@/api/services/Employees'
+import CreateEmployeeDialog from '@/features/employees/components/create/CreateEmployeeDialog'
 import FilterEmployees from '@/features/employees/components/FilterEmployees'
 import { columns } from '@/features/employees/table/columns'
 import CrudLayout from '@/layouts/CrudLayout'
@@ -15,7 +16,7 @@ export default function EmployeesPage() {
     rowsPerPage,
     query,
     roles,
-    orderBy
+    orderBy,
   })
 
   return (
@@ -28,6 +29,7 @@ export default function EmployeesPage() {
       title='Сотрудники'
       topBarElements={
         <>
+          <CreateEmployeeDialog />
           <FilterEmployees />
         </>
       }
