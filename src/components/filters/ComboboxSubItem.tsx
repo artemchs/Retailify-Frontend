@@ -31,7 +31,7 @@ export default function ComboboxSubItem({
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>{title}</DropdownMenuSubTrigger>
-      <DropdownMenuSubContent className='p-0'>
+      <DropdownMenuSubContent className='p-0 w-36 lg:w-auto'>
         <Command>
           <CommandInput placeholder={title} autoFocus={true} className='h-9' />
           <CommandList>
@@ -54,7 +54,7 @@ export default function ComboboxSubItem({
                   {label}
                   <CheckIcon
                     className={cn(
-                      'ml-auto h-4 w-4',
+                      'ml-auto h-4 w-4 shrink-0',
                       values.includes(value) ? 'opacity-100' : 'opacity-0'
                     )}
                   />

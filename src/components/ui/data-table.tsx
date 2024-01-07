@@ -272,7 +272,7 @@ function ColumnsVisibilityDropdown<TData>({
           Столбцы
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end'>
+      <DropdownMenuContent>
         {table
           .getAllColumns()
           .filter((column) => column.getCanHide())

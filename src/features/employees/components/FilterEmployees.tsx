@@ -1,6 +1,5 @@
 import ComboboxSubItem from '@/components/filters/ComboboxSubItem'
 import DropdownFilter from '@/components/filters/DropdownFilter'
-import ResetFiltersButton from '@/components/filters/ResetFiltersButton'
 import { employeesRoute } from '@/lib/router/routeTree'
 import { FilterOptions } from '@/types/filterOptions'
 import roleNames from '@/utils/roleNames'
@@ -43,10 +42,7 @@ export default function FilterEmployees() {
 
   return (
     <div className='flex items-center gap-2'>
-      {roles && roles.length >= 1 && (
-        <ResetFiltersButton resetFilters={resetFilters} />
-      )}
-      <DropdownFilter numOfApplied={numOfApplied()}>
+      <DropdownFilter numOfApplied={numOfApplied()} resetFilters={resetFilters}>
         <ComboboxSubItem
           title='Роль'
           options={roleOptions}

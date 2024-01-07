@@ -11,16 +11,18 @@ import { Button } from '../ui/button'
 type Props = {
   children: React.ReactNode
   numOfApplied: number
+  resetFilters(): void
 }
 
 export default function DropdownFilter({
   children,
   numOfApplied,
+  resetFilters,
 }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='outline' className='flex items-center gap-2'>
+        <Button variant='outline' className='flex items-center gap-2 w-full'>
           <Filter className='h-4 w-4' />
           Фильтры
           {numOfApplied >= 1 && (
@@ -30,8 +32,16 @@ export default function DropdownFilter({
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Фильтры</DropdownMenuLabel>
+      <DropdownMenuContent align='start' className='w-40 lg:w-64'>
+        <DropdownMenuLabel className='flex items-center justify-between'>
+          <span>Фильтры</span>
+          <button
+            className='font-normal text-primary hover:underline'
+            onClick={() => resetFilters()}
+          >
+            Сбросить
+          </button>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {children}
       </DropdownMenuContent>
