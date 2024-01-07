@@ -6,7 +6,7 @@ import ThemeToggle from '@/features/appearance/components/ThemeToggle'
 
 export default function Sidebar() {
   return (
-    <div className='hidden lg:flex h-full w-96 flex-col border-r'>
+    <nav className='hidden lg:flex h-full w-96 flex-col border-r'>
       <div className='p-3 flex items-center justify-between'>
         <UserInfo />
         <div className='flex items-center gap-2'>
@@ -18,6 +18,6 @@ export default function Sidebar() {
       <div className='p-3'>
         <SidebarLinks />
       </div>
-    </div>
+    </nav>
   )
 }

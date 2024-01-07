@@ -24,6 +24,13 @@ function SidebarLink({
   children: React.ReactNode
   to: string
 }) {
+  const handleClose = () => {
+    const button = document.getElementById('sheet-close-button')
+    if (button) {
+      button.click()
+    }
+  }
+
   return (
     <Link
       to={to}
@@ -34,6 +41,7 @@ function SidebarLink({
         className: 'hover:bg-secondary',
       }}
       className='flex gap-2 items-center px-3 py-2 rounded-lg transition-colors'
+      onClick={handleClose}
     >
       {children}
     </Link>

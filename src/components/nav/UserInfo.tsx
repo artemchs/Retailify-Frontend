@@ -14,7 +14,7 @@ export default function UserInfo() {
   if (isError) return <Error />
 
   return (
-    <div className='flex items-center space-x-4'>
+    <div className='flex items-center space-x-2 lg:space-x-4'>
       <Avatar className='h-full aspect-square shadow'>
         <AvatarImage
           className='object-cover'
@@ -25,7 +25,9 @@ export default function UserInfo() {
         </AvatarFallback>
       </Avatar>
       <div className='flex flex-col'>
-        <span className='line-clamp-1'>{data?.fullName}</span>
+        <span className='line-clamp-1 text-sm lg:text-base'>
+          {data?.fullName}
+        </span>
         {context.user?.role && (
           <span className='text-xs text-primary'>
             {roleNames[context.user?.role]}
