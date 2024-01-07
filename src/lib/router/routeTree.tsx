@@ -1,5 +1,6 @@
 import App from '@/App'
 import AuthScreen from '@/features/auth/components/AuthScreen'
+import { employeesSearchParamsSchema } from '@/features/employees/types/searchParams'
 import Layout from '@/layouts/Layout'
 import EmployeesPage from '@/pages/Employees'
 import HomePage from '@/pages/Home'
@@ -70,10 +71,11 @@ const homeRoute = new Route({
   path: '/',
 })
 
-const employeesRoute = new Route({
+export const employeesRoute = new Route({
   getParentRoute: () => layout,
   component: EmployeesPage,
   path: '/employees',
+  validateSearch: (search) => employeesSearchParamsSchema.parse(search),
 })
 
 export const routeTree = rootRoute.addChildren([

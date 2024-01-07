@@ -4,6 +4,7 @@ import { getNameShorthand } from '@/utils/getNameShorthand'
 import { Skeleton } from '../ui/skeleton'
 import { XOctagon } from 'lucide-react'
 import { useRouteContext } from '@tanstack/react-router'
+import roleNames from '@/utils/roleNames'
 
 export default function UserInfo() {
   const { data, isLoading, isError } = Users.useGetMe()
@@ -25,9 +26,11 @@ export default function UserInfo() {
       </Avatar>
       <div className='flex flex-col'>
         <span className='line-clamp-1'>{data?.fullName}</span>
-        <span className='text-xs text-primary'>
-          {context.user?.role === 'ADMIN' ? 'Админ' : 'Работник'}
-        </span>
+        {context.user?.role && (
+          <span className='text-xs text-primary'>
+            {roleNames[context.user?.role]}
+          </span>
+        )}
       </div>
     </div>
   )

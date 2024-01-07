@@ -9,7 +9,6 @@ export default function Sidebar() {
     <div className='hidden lg:flex h-full w-96 flex-col border-r'>
       <div className='p-3 flex items-center justify-between'>
         <UserInfo />
-
         <div className='flex items-center gap-2'>
           <Menu />
           <ThemeToggle />

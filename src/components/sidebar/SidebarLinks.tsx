@@ -11,7 +11,7 @@ export default function SidebarLinks() {
       </SidebarLink>
       <SidebarLink to='/employees'>
         <Users className='h-4 w-4' />
-        Работники
+        Сотрудники
       </SidebarLink>
     </div>
   )

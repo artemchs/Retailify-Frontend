@@ -1,6 +1,6 @@
 export type AccessTokenData = {
   sub: string
-  role: 'ADMIN' | 'EMPLOYEE'
+  role: 'ADMIN' | 'CASHIER'
   iat: string
   exp: string
 }
