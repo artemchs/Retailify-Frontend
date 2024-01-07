@@ -16,6 +16,20 @@ interface RouteContext {
   user?: AccessTokenData
 }
 
+function beforeLoadRole(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: any,
+  requiredRole: 'ADMIN' | 'CASHIER' | 'ECOMMERCE_MANAGER'
+) {
+  const contextUser: AccessTokenData = context.user
+
+  if (contextUser.role !== requiredRole) {
+    throw redirect({
+      to: '/',
+    })
+  }
+}
+
 const rootRoute = rootRouteWithContext<RouteContext>()({
   beforeLoad: async ({ location, context }) => {
     const contextUser: AccessTokenData = context.user
@@ -76,6 +90,7 @@ export const employeesRoute = new Route({
   component: EmployeesPage,
   path: '/employees',
   validateSearch: (search) => employeesSearchParamsSchema.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
 export const routeTree = rootRoute.addChildren([
