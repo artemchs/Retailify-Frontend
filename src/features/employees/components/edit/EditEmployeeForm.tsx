@@ -1,11 +1,10 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createEmployeeFormSchema } from './create-employee-form-schema'
 import { toast } from 'sonner'
 import { User } from 'lucide-react'
 import { useState } from 'react'
-import Employees from '@/api/services/Employees'
+import Employees, { EmployeesFindOne } from '@/api/services/Employees'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import {
   Form,
@@ -17,32 +16,43 @@ import {
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
 import { Input } from '@/components/ui/input'
 import { emailPlaceholder, fullNamePlaceholder } from '@/features/placeholders'
-import PasswordInput from '@/features/auth/components/PasswordInput'
 import SaveButton from '@/components/forms/SaveButton'
 import SelectRole from '../SelectRole'
 import { queryClient } from '@/lib/query-client/tanstack-query-client'
+import { editEmployeeFormSchema } from './edit-employee-form-schema'
+import AsyncInput from '@/components/forms/AsyncInput'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
+  user?: EmployeesFindOne
+  isLoading: boolean
+  isError: boolean
 }
 
-export default function CreateEmployeeForm({ setIsOpened }: Props) {
-  const form = useForm<z.infer<typeof createEmployeeFormSchema>>({
-    resolver: zodResolver(createEmployeeFormSchema),
+export default function EditEmployeeForm({
+  setIsOpened,
+  user,
+  isError,
+  isLoading,
+}: Props) {
+  const form = useForm<z.infer<typeof editEmployeeFormSchema>>({
+    resolver: zodResolver(editEmployeeFormSchema),
     defaultValues: {
-      fullName: '',
-      password: '',
-      email: '',
-      role: 'CASHIER',
+      fullName: user?.fullName,
+      email: user?.email,
+      role: user?.role,
     },
   })
 
   function onSuccess() {
     queryClient.invalidateQueries({
+      queryKey: ['employee', { id: user?.id }],
+    })
+    queryClient.invalidateQueries({
       queryKey: ['employees'],
     })
     setIsOpened(false)
-    toast('Новый сотрудник был успешно добавлен.', {
+    toast('Сотрудник был успешно отредактироан.', {
       icon: <User className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
@@ -52,13 +62,15 @@ export default function CreateEmployeeForm({ setIsOpened }: Props) {
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = Employees.useCreate({
+  const { mutate, isPending } = Employees.useEdit({
     setErrorMessage,
     onSuccess,
   })
 
-  function onSubmit(values: z.infer<typeof createEmployeeFormSchema>) {
-    mutate(values)
+  function onSubmit(values: z.infer<typeof editEmployeeFormSchema>) {
+    if (user?.id) {
+      mutate({ ...values, id: user.id })
+    }
   }
 
   return (
@@ -75,7 +87,13 @@ export default function CreateEmployeeForm({ setIsOpened }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Полное имя' />
                 <FormControl>
-                  <Input placeholder={fullNamePlaceholder} {...field} />
+                  <AsyncInput
+                    input={
+                      <Input placeholder={fullNamePlaceholder} {...field} />
+                    }
+                    isError={isError}
+                    isLoading={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -88,10 +106,16 @@ export default function CreateEmployeeForm({ setIsOpened }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Електронная почта' />
                 <FormControl>
-                  <Input
-                    type='email'
-                    placeholder={emailPlaceholder}
-                    {...field}
+                  <AsyncInput
+                    input={
+                      <Input
+                        type='email'
+                        placeholder={emailPlaceholder}
+                        {...field}
+                      />
+                    }
+                    isError={isError}
+                    isLoading={isLoading}
                   />
                 </FormControl>
                 <FormMessage />
@@ -104,20 +128,11 @@ export default function CreateEmployeeForm({ setIsOpened }: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormLabelForRequiredFields text='Роль' />
-                <SelectRole field={field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabelForRequiredFields text='Пароль' />
-                <FormControl>
-                  <PasswordInput field={field} />
-                </FormControl>
+                <AsyncInput
+                  input={<SelectRole field={field} />}
+                  isError={isError}
+                  isLoading={isLoading}
+                />
                 <FormMessage />
               </FormItem>
             )}

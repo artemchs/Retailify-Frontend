@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import roleNames from '@/utils/roleNames'
 import { Checkbox } from '@/components/ui/checkbox'
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
+import EditEmployeeDialog from '../components/edit/EditEmployeeDialog'
 
 export const columns: ColumnDef<Employee>[] = [
   {
@@ -73,5 +74,19 @@ export const columns: ColumnDef<Employee>[] = [
 
       return <Badge variant='outline'>{roleNames[userRole]}</Badge>
     },
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const { id } = row.original
+
+      return (
+        <div className='flex items-center gap-2'>
+          <EditEmployeeDialog id={id} />
+        </div>
+      )
+    },
+    enableSorting: false,
+    enableHiding: false,
   },
 ]

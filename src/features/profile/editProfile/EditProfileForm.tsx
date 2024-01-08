@@ -99,7 +99,13 @@ export default function EditProfileForm({
               <FormItem>
                 <FormLabelForRequiredFields text='Полное имя' />
                 <FormControl>
-                  <Input placeholder={fullNamePlaceholder} {...field} />
+                  <AsyncInput
+                    input={
+                      <Input placeholder={fullNamePlaceholder} {...field} />
+                    }
+                    isError={isError}
+                    isLoading={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,7 +114,11 @@ export default function EditProfileForm({
         </form>
       </Form>
       <DialogFooter className='mt-4'>
-        <Button type='submit' disabled={isPending} onClick={form.handleSubmit(onSubmit)}>
+        <Button
+          type='submit'
+          disabled={isPending}
+          onClick={form.handleSubmit(onSubmit)}
+        >
           {isPending ? (
             <Loader2 className='h-4 w-4 mr-2 animate-spin' />
           ) : (
