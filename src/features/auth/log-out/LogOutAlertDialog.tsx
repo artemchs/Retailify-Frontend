@@ -1,5 +1,5 @@
 import Auth from '@/api/services/Auth'
-import DialogFooter from '@/components/dialogs/DialogFooter'
+import AlertDialogFooter from '@/components/dialogs/AlertDialogFooter'
 import {
   AlertDialog,
   AlertDialogContent,
@@ -31,7 +31,7 @@ export default function LogOutAlertDialog({ isOpened, setIsOpened }: Props) {
             Вы уверены что вы хотите выйти из своего аккаунта?
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <DialogFooter
+        <AlertDialogFooter
           cancelAction={() => setIsOpened(false)}
           submitButtonVariant='destructive'
           submitButtonChildren={

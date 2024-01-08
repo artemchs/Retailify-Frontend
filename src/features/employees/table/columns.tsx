@@ -7,6 +7,7 @@ import roleNames from '@/utils/roleNames'
 import { Checkbox } from '@/components/ui/checkbox'
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import EditEmployeeDialog from '../components/edit/EditEmployeeDialog'
+import DeleteEmployeeAlertDialog from '../components/delete/DeleteEmployeeAlertDialog'
 
 export const columns: ColumnDef<Employee>[] = [
   {
@@ -81,8 +82,9 @@ export const columns: ColumnDef<Employee>[] = [
       const { id } = row.original
 
       return (
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2 justify-end'>
           <EditEmployeeDialog id={id} />
+          <DeleteEmployeeAlertDialog id={id} />
         </div>
       )
     },

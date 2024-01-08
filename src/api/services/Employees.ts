@@ -98,4 +98,23 @@ export default {
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
     }),
+
+  useDelete: ({
+    setErrorMessage,
+    onSuccess,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+  }) =>
+    useMutation({
+      mutationKey: ['delete-employee'],
+      mutationFn: async ({ id }: { id: string }) => {
+        return await client.delete(`/employees/${id}`)
+      },
+      onSuccess: () => {
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
 }

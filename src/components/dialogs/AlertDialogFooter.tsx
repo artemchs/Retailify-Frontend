@@ -17,7 +17,7 @@ type Props = {
   isPending: boolean
 }
 
-export default function DialogFooter({
+export default function AlertDialogFooter({
   cancelAction,
   submitButtonChildren,
   submitButtonVariant,
