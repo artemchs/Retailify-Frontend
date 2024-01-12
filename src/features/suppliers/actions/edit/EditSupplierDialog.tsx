@@ -1,4 +1,4 @@
-import Employees from '@/api/services/Employees'
+import Suppliers from '@/api/services/Suppliers'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -9,11 +9,11 @@ import {
 } from '@/components/ui/dialog'
 import { Edit } from 'lucide-react'
 import { useState } from 'react'
-import EditEmployeeForm from './EditEmployeeForm'
+import EditSupplierForm from './EditSupplierForm'
 
-export default function EditEmployeeDialog({ id }: { id: string }) {
+export default function EditSupplierDialog({ id }: { id: string }) {
   const [isOpened, setIsOpened] = useState(false)
-  const { data, isLoading, isError } = Employees.useFindOne({ id })
+  const { data, isLoading, isError } = Suppliers.useFindOne({ id })
 
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
@@ -25,14 +25,14 @@ export default function EditEmployeeDialog({ id }: { id: string }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Редактировать сотрудника</DialogTitle>
+          <DialogTitle>Редактировать поставщика</DialogTitle>
         </DialogHeader>
-        <EditEmployeeForm
-          setIsOpened={setIsOpened}
-          user={data}
-          employeeId={id}
-          isLoading={isLoading}
+        <EditSupplierForm
+          supplier={data}
           isError={isError}
+          isLoading={isLoading}
+          setIsOpened={setIsOpened}
+          supplierId={id}
         />
       </DialogContent>
     </Dialog>

@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ControllerRenderProps } from 'react-hook-form'
+import { employeeRole } from '../placeholders'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,7 +19,7 @@ export default function SelectRole({ field }: Props) {
     <Select onValueChange={field.onChange} defaultValue={field.value}>
       <FormControl>
         <SelectTrigger>
-          <SelectValue placeholder='Выберите роль сотрудника...' />
+          <SelectValue placeholder={employeeRole} />
         </SelectTrigger>
       </FormControl>
       <SelectContent>

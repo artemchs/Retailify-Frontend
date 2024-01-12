@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
-import { emailPlaceholder, fullNamePlaceholder } from '@/features/placeholders'
 import { DialogFooter } from '@/components/ui/dialog'
 import { Loader2, Save } from 'lucide-react'
 import ProfilePictureInput from './ProfilePictureInput'
@@ -80,7 +79,7 @@ export default function EditProfileForm({
                     input={
                       <Input
                         type='email'
-                        placeholder={emailPlaceholder}
+                        placeholder='Ваш адрес електронной почты'
                         {...field}
                       />
                     }
@@ -100,9 +99,7 @@ export default function EditProfileForm({
                 <FormLabelForRequiredFields text='Полное имя' />
                 <FormControl>
                   <AsyncInput
-                    input={
-                      <Input placeholder={fullNamePlaceholder} {...field} />
-                    }
+                    input={<Input placeholder='Ваше полное имя' {...field} />}
                     isError={isError}
                     isLoading={isLoading}
                   />

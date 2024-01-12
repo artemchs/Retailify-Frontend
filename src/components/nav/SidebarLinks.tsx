@@ -1,5 +1,5 @@
 import { Link, useRouteContext } from '@tanstack/react-router'
-import { Home, Users } from 'lucide-react'
+import { Factory, Home, Users } from 'lucide-react'
 import React from 'react'
 
 export default function SidebarLinks() {
@@ -12,6 +12,10 @@ export default function SidebarLinks() {
       <SidebarLink to='/employees' cashier={false} ecommerceManager={false}>
         <Users className='h-4 w-4' />
         Сотрудники
+      </SidebarLink>
+      <SidebarLink to='/suppliers' cashier={true} ecommerceManager={true}>
+        <Factory className='h-4 w-4' />
+        Поставщики
       </SidebarLink>
     </div>
   )

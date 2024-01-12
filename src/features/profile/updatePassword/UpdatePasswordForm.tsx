@@ -41,7 +41,7 @@ export default function UpdatePasswordForm({ onSubmit, isPending }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Новый пароль' />
                 <FormControl>
-                  <PasswordInput field={field} />
+                  <PasswordInput placeholder='Ваш новый пароль' field={field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -54,7 +54,10 @@ export default function UpdatePasswordForm({ onSubmit, isPending }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Подтвердите новый пароль' />
                 <FormControl>
-                  <PasswordInput field={field} />
+                  <PasswordInput
+                    placeholder='Подтвердите ваш новый пароль'
+                    field={field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

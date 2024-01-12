@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { User } from 'lucide-react'
 import { useState } from 'react'
-import Employees, { EmployeesFindOne } from '@/api/services/Employees'
+import Employees from '@/api/services/Employees'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import {
   Form,
@@ -15,16 +15,17 @@ import {
 } from '@/components/ui/form'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
 import { Input } from '@/components/ui/input'
-import { emailPlaceholder, fullNamePlaceholder } from '@/features/placeholders'
 import SaveButton from '@/components/forms/SaveButton'
 import SelectRole from '../SelectRole'
-import { queryClient } from '@/lib/query-client/tanstack-query-client'
 import { editEmployeeFormSchema } from './edit-employee-form-schema'
 import AsyncInput from '@/components/forms/AsyncInput'
+import { employeeEmail, employeeFullName } from '../../placeholders'
+import { Employee } from '@/types/entities/Employee'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-  user?: EmployeesFindOne
+  user?: Employee
+  employeeId: string
   isLoading: boolean
   isError: boolean
 }
@@ -32,6 +33,7 @@ type Props = {
 export default function EditEmployeeForm({
   setIsOpened,
   user,
+  employeeId,
   isError,
   isLoading,
 }: Props) {
@@ -40,17 +42,11 @@ export default function EditEmployeeForm({
     defaultValues: {
       fullName: user?.fullName,
       email: user?.email,
-      role: user?.role,
+      role: user?.role as 'CASHIER' | 'ECOMMERCE_MANAGER' | undefined,
     },
   })
 
   function onSuccess() {
-    queryClient.invalidateQueries({
-      queryKey: ['employee', { id: user?.id }],
-    })
-    queryClient.invalidateQueries({
-      queryKey: ['employees'],
-    })
     setIsOpened(false)
     toast('Сотрудник был успешно отредактироан.', {
       icon: <User className='h-4 w-4' />,
@@ -65,12 +61,11 @@ export default function EditEmployeeForm({
   const { mutate, isPending } = Employees.useEdit({
     setErrorMessage,
     onSuccess,
+    id: employeeId,
   })
 
   function onSubmit(values: z.infer<typeof editEmployeeFormSchema>) {
-    if (user?.id) {
-      mutate({ ...values, id: user.id })
-    }
+    mutate({ body: values })
   }
 
   return (
@@ -88,9 +83,7 @@ export default function EditEmployeeForm({
                 <FormLabelForRequiredFields text='Полное имя' />
                 <FormControl>
                   <AsyncInput
-                    input={
-                      <Input placeholder={fullNamePlaceholder} {...field} />
-                    }
+                    input={<Input placeholder={employeeFullName} {...field} />}
                     isError={isError}
                     isLoading={isLoading}
                   />
@@ -110,7 +103,7 @@ export default function EditEmployeeForm({
                     input={
                       <Input
                         type='email'
-                        placeholder={emailPlaceholder}
+                        placeholder={employeeEmail}
                         {...field}
                       />
                     }

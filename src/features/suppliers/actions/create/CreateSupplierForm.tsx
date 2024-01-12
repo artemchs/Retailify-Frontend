@@ -1,11 +1,9 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createEmployeeFormSchema } from './create-employee-form-schema'
 import { toast } from 'sonner'
-import { User } from 'lucide-react'
+import { Factory } from 'lucide-react'
 import { useState } from 'react'
-import Employees from '@/api/services/Employees'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import {
   Form,
@@ -16,34 +14,38 @@ import {
 } from '@/components/ui/form'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
 import { Input } from '@/components/ui/input'
-import PasswordInput from '@/features/auth/components/PasswordInput'
 import SaveButton from '@/components/forms/SaveButton'
-import SelectRole from '../SelectRole'
+import { createSupplierFormSchema } from './create-supplier-form-schema'
+import Suppliers from '@/api/services/Suppliers'
 import {
-  employeeEmail,
-  employeeFullName,
-  employeePassword,
+  supplierAddress,
+  supplierContactPerson,
+  supplierEmail,
+  supplierName,
+  supplierPhone,
 } from '../../placeholders'
+import PhoneNumberInput from '@/components/forms/PhoneNumberInput'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function CreateEmployeeForm({ setIsOpened }: Props) {
-  const form = useForm<z.infer<typeof createEmployeeFormSchema>>({
-    resolver: zodResolver(createEmployeeFormSchema),
+export default function CreateSupplierForm({ setIsOpened }: Props) {
+  const form = useForm<z.infer<typeof createSupplierFormSchema>>({
+    resolver: zodResolver(createSupplierFormSchema),
     defaultValues: {
-      fullName: '',
-      password: '',
+      name: '',
+      address: '',
+      contactPerson: '',
       email: '',
-      role: 'CASHIER',
+      phone: '',
     },
   })
 
   function onSuccess() {
     setIsOpened(false)
-    toast('Новый сотрудник был успешно добавлен.', {
-      icon: <User className='h-4 w-4' />,
+    toast('Новый поставщик был успешно добавлен.', {
+      icon: <Factory className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
         onClick: toast.dismiss,
@@ -52,12 +54,12 @@ export default function CreateEmployeeForm({ setIsOpened }: Props) {
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = Employees.useCreate({
+  const { mutate, isPending } = Suppliers.useCreate({
     setErrorMessage,
     onSuccess,
   })
 
-  function onSubmit(values: z.infer<typeof createEmployeeFormSchema>) {
+  function onSubmit(values: z.infer<typeof createSupplierFormSchema>) {
     mutate({ body: values })
   }
 
@@ -70,12 +72,38 @@ export default function CreateEmployeeForm({ setIsOpened }: Props) {
         <form className='flex flex-col gap-4'>
           <FormField
             control={form.control}
-            name='fullName'
+            name='name'
             render={({ field }) => (
               <FormItem>
-                <FormLabelForRequiredFields text='Полное имя' />
+                <FormLabelForRequiredFields text='Название' />
                 <FormControl>
-                  <Input placeholder={employeeFullName} {...field} />
+                  <Input placeholder={supplierName} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='address'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Адрес' />
+                <FormControl>
+                  <Input placeholder={supplierAddress} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='contactPerson'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Контактное лицо' />
+                <FormControl>
+                  <Input placeholder={supplierContactPerson} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -88,7 +116,7 @@ export default function CreateEmployeeForm({ setIsOpened }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Електронная почта' />
                 <FormControl>
-                  <Input type='email' placeholder={employeeEmail} {...field} />
+                  <Input type='email' placeholder={supplierEmail} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,23 +124,16 @@ export default function CreateEmployeeForm({ setIsOpened }: Props) {
           />
           <FormField
             control={form.control}
-            name='role'
+            name='phone'
             render={({ field }) => (
               <FormItem>
-                <FormLabelForRequiredFields text='Роль' />
-                <SelectRole field={field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabelForRequiredFields text='Пароль' />
+                <FormLabelForRequiredFields text='Номер телефона' />
                 <FormControl>
-                  <PasswordInput placeholder={employeePassword} field={field} />
+                  <PhoneNumberInput
+                    form={form}
+                    field={field}
+                    placeholder={supplierPhone}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

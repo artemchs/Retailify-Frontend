@@ -1,4 +1,4 @@
-import Employees from '@/api/services/Employees'
+import Suppliers from '@/api/services/Suppliers'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import AlertDialogFooter from '@/components/dialogs/AlertDialogFooter'
 import {
@@ -14,12 +14,12 @@ import { Loader2, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export default function DeleteEmployeeAlertDialog({ id }: { id: string }) {
+export default function DeleteSupplierAlertDialog({ id }: { id: string }) {
   const [isOpened, setIsOpened] = useState(false)
 
   function onSuccess() {
     setIsOpened(false)
-    toast('Сотрудник был успешно удален.', {
+    toast('Поставщик был успешно удален.', {
       icon: <Trash2 className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
@@ -29,7 +29,7 @@ export default function DeleteEmployeeAlertDialog({ id }: { id: string }) {
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = Employees.useDelete({
+  const { mutate, isPending } = Suppliers.useDelete({
     setErrorMessage,
     onSuccess,
     id,
@@ -45,11 +45,12 @@ export default function DeleteEmployeeAlertDialog({ id }: { id: string }) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Удалить сотрудника</AlertDialogTitle>
+          <AlertDialogTitle>Удалить поставщика</AlertDialogTitle>
           <AlertDialogDescription>
-            Подтверждая это действие, мы удалим информацию о сотруднике из базы
-            данных. Пожалуйста, обратите внимание, что после подтверждения этого
-            действия восстановление данных сотрудника будет невозможно.
+            Подтверждая это действие, информация о поставщике будет удалена, но
+            вы сможете восстановить удаленного поставщика на странице "Корзина".
+            Пожалуйста, учтите, что восстановление данных будет возможно только
+            до окончательного удаления из корзины.
           </AlertDialogDescription>
         </AlertDialogHeader>
         {errorMessage && errorMessage.length >= 1 && (
@@ -65,7 +66,7 @@ export default function DeleteEmployeeAlertDialog({ id }: { id: string }) {
               ) : (
                 <Trash2 className='h-4 w-4 mr-2' />
               )}
-              Удалить сотрудника
+              Удалить поставщика
             </>
           }
           isPending={isPending}

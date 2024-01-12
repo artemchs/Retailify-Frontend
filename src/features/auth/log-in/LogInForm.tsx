@@ -21,7 +21,7 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import Auth from '@/api/services/Auth'
 import { AlertDestructive } from '@/components/AlertDestructive'
-import { emailPlaceholder } from '@/features/placeholders'
+import { authEmailPlaceholder, authPasswordPlaceholder } from '../placeholders'
 
 export default function LogInForm() {
   const form = useForm<z.infer<typeof logInFormSchema>>({
@@ -68,7 +68,7 @@ export default function LogInForm() {
                   <FormControl>
                     <Input
                       type='email'
-                      placeholder={emailPlaceholder}
+                      placeholder={authEmailPlaceholder}
                       {...field}
                     />
                   </FormControl>
@@ -83,7 +83,10 @@ export default function LogInForm() {
                 <FormItem>
                   <FormLabelForRequiredFields text='Пароль' />
                   <FormControl>
-                    <PasswordInput field={field} />
+                    <PasswordInput
+                      placeholder={authPasswordPlaceholder}
+                      field={field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

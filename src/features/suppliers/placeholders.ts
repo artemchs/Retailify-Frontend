@@ -1,0 +1,5 @@
+export const supplierName = 'Название организации поставщика'
+export const supplierContactPerson = 'Имя контакного лица'
+export const supplierEmail = 'Адрес електронной почты контакного лица '
+export const supplierPhone = 'Номер телефона контактного лица'
+export const supplierAddress = 'Адрес организации поставщика'

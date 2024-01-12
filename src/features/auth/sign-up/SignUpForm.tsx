@@ -21,7 +21,7 @@ import Auth from '@/api/services/Auth'
 import { useState } from 'react'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import { toast } from 'sonner'
-import { emailPlaceholder, fullNamePlaceholder } from '@/features/placeholders'
+import { authEmailPlaceholder, authFullNamePlaceholder } from '../placeholders'
 
 export default function SignUpForm() {
   const form = useForm<z.infer<typeof signUpFormSchema>>({
@@ -70,7 +70,7 @@ export default function SignUpForm() {
                 <FormItem>
                   <FormLabelForRequiredFields text='Полное имя' />
                   <FormControl>
-                    <Input placeholder={fullNamePlaceholder} {...field} />
+                    <Input placeholder={authFullNamePlaceholder} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,7 +85,7 @@ export default function SignUpForm() {
                   <FormControl>
                     <Input
                       type='email'
-                      placeholder={emailPlaceholder}
+                      placeholder={authEmailPlaceholder}
                       {...field}
                     />
                   </FormControl>

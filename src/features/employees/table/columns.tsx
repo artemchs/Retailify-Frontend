@@ -1,34 +1,20 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { Employee } from '../types/employee'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getNameShorthand } from '@/utils/getNameShorthand'
 import { Badge } from '@/components/ui/badge'
 import roleNames from '@/utils/roleNames'
-import { Checkbox } from '@/components/ui/checkbox'
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import EditEmployeeDialog from '../components/edit/EditEmployeeDialog'
 import DeleteEmployeeAlertDialog from '../components/delete/DeleteEmployeeAlertDialog'
+import { Employee } from '@/types/entities/Employee'
+import SelectHeader from '@/components/data-tables/SelectHeader'
+import SelectCell from '@/components/data-tables/SelectCell'
 
 export const columns: ColumnDef<Employee>[] = [
   {
     id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Выбрать все строки'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Выбрать строку'
-      />
-    ),
+    header: ({ table }) => <SelectHeader table={table} />,
+    cell: ({ row }) => <SelectCell row={row} />,
     enableSorting: false,
     enableHiding: false,
   },

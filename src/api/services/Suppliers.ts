@@ -1,50 +1,32 @@
+import { FindAllInfo } from '@/types/FindAllInfo'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import client from '../client'
-import { EmployeesSearchParams } from '@/features/employees/types/searchParams'
+import { Supplier } from '@/types/entities/Supplier'
+import { SuppliersSearchParams } from '@/features/suppliers/types/searchParams'
 import { OnSuccess, SetErrorMessage } from './types'
+import { CreateSupplierFormType } from '@/features/suppliers/actions/create/create-supplier-form-schema'
 import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
-import { CreateEmployeeFormType } from '@/features/employees/components/create/create-employee-form-schema'
-import { FindAllInfo } from '@/types/FindAllInfo'
-import { Employee } from '@/types/entities/Employee'
-import { EditEmployeeFormType } from '@/features/employees/components/edit/edit-employee-form-schema'
+import { EditSupplierFormType } from '@/features/suppliers/actions/edit/edit-supplier-form-schema'
 import { queryClient } from '@/lib/query-client/tanstack-query-client'
 
-export type EmployeesFindAll = {
-  items: Employee[]
+export type SuppliersFindAll = {
+  items: Supplier[]
   info: FindAllInfo
 }
 
 export default {
-  useFindAll: ({
-    page,
-    rowsPerPage,
-    query,
-    roles,
-    orderBy,
-  }: EmployeesSearchParams) =>
+  useFindAll: (searchParams: SuppliersSearchParams) =>
     useQuery({
-      queryKey: ['employees', { page, rowsPerPage, query, roles, orderBy }],
+      queryKey: ['suppliers', { ...searchParams }],
       queryFn: async () => {
-        const { data } = await client.get('/employees', {
+        const { data } = await client.get('/suppliers', {
           params: {
-            page,
-            rowsPerPage,
-            query,
-            roles,
-            orderBy,
+            ...searchParams,
           },
         })
-        return data as EmployeesFindAll
-      },
-    }),
 
-  useFindOne: ({ id }: { id: string }) =>
-    useQuery({
-      queryKey: ['employee', { id }],
-      queryFn: async () => {
-        const { data } = await client.get(`/employees/${id}`)
-        return data as Employee
+        return data as SuppliersFindAll
       },
     }),
 
@@ -56,18 +38,27 @@ export default {
     onSuccess: OnSuccess
   }) =>
     useMutation({
-      mutationKey: ['create-employee'],
-      mutationFn: async ({ body }: { body: CreateEmployeeFormType }) => {
-        return await client.post('/employees', body)
+      mutationKey: ['create-supplier'],
+      mutationFn: async ({ body }: { body: CreateSupplierFormType }) => {
+        return await client.post('/suppliers', body)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['employees'],
+          queryKey: ['suppliers'],
         })
         onSuccess()
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useFindOne: ({ id }: { id: string }) =>
+    useQuery({
+      queryKey: ['supplier', { id }],
+      queryFn: async () => {
+        const { data } = await client.get(`/suppliers/${id}`)
+        return data as Supplier
+      },
     }),
 
   useEdit: ({
@@ -80,16 +71,16 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['edit-employee'],
-      mutationFn: async ({ body }: { body: EditEmployeeFormType }) => {
-        return await client.put(`/employees/${id}`, body)
+      mutationKey: ['edit-supplier'],
+      mutationFn: async ({ body }: { body: EditSupplierFormType }) => {
+        return await client.put(`/suppliers/${id}`, body)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['employees'],
+          queryKey: ['suppliers'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['employee', { id }],
+          queryKey: ['supplier', { id }],
         })
         onSuccess()
       },
@@ -107,16 +98,16 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['delete-employee'],
+      mutationKey: ['delete-supplier'],
       mutationFn: async () => {
-        return await client.delete(`/employees/${id}`)
+        return await client.delete(`/suppliers/${id}`)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['employees'],
+          queryKey: ['suppliers'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['employee', { id }],
+          queryKey: ['supplier', { id }],
         })
         onSuccess()
       },
