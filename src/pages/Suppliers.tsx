@@ -1,5 +1,6 @@
 import Suppliers from '@/api/services/Suppliers'
 import CreateSupplierDialog from '@/features/suppliers/components/actions/create/CreateSupplierDialog'
+import FilterSuppliers from '@/features/suppliers/components/table/FilterSuppliers'
 import { columns } from '@/features/suppliers/components/table/columns'
 import CrudLayout from '@/layouts/CrudLayout'
 import { suppliersRoute } from '@/lib/router/routeTree'
@@ -23,6 +24,7 @@ export default function SuppliersPage() {
       topBarElements={
         <>
           <CreateSupplierDialog />
+          <FilterSuppliers />
         </>
       }
     />

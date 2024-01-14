@@ -1,4 +1,4 @@
-import ComboboxSubItem from '@/components/filters/ComboboxSubItemForArrayValues'
+import ComboboxSubItemForArrayValues from '@/components/filters/ComboboxSubItemForArrayValues'
 import DropdownFilter from '@/components/filters/DropdownFilter'
 import { employeesRoute } from '@/lib/router/routeTree'
 import { FilterOptions } from '@/types/FilterOptions'
@@ -43,7 +43,7 @@ export default function FilterEmployees() {
   return (
     <div className='flex items-center gap-2'>
       <DropdownFilter numOfApplied={numOfApplied()} resetFilters={resetFilters}>
-        <ComboboxSubItem
+        <ComboboxSubItemForArrayValues
           title='Роль'
           options={roleOptions}
           values={roles ?? []}
