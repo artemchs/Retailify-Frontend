@@ -103,6 +103,10 @@ export const suppliersRoute = new Route({
 })
 
 export const routeTree = rootRoute.addChildren([
-  layout.addChildren([homeRoute, employeesRoute, suppliersRoute]),
+  layout.addChildren([
+    homeRoute,
+    employeesRoute,
+    suppliersRoute,
+  ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

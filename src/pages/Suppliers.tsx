@@ -1,6 +1,6 @@
 import Suppliers from '@/api/services/Suppliers'
-import CreateSupplierDialog from '@/features/suppliers/actions/create/CreateSupplierDialog'
-import { columns } from '@/features/suppliers/table/columns'
+import CreateSupplierDialog from '@/features/suppliers/components/actions/create/CreateSupplierDialog'
+import { columns } from '@/features/suppliers/components/table/columns'
 import CrudLayout from '@/layouts/CrudLayout'
 import { suppliersRoute } from '@/lib/router/routeTree'
 import { useSearch } from '@tanstack/react-router'

@@ -13,6 +13,7 @@ export const suppliersSearchParamsSchema = z.object({
       address: z.enum(['asc', 'desc']).optional(),
     })
     .optional(),
+  isArchived: z.number().optional(),
 })
 
 export type SuppliersSearchParams = z.infer<typeof suppliersSearchParamsSchema>

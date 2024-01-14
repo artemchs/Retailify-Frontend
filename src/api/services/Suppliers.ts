@@ -4,11 +4,11 @@ import client from '../client'
 import { Supplier } from '@/types/entities/Supplier'
 import { SuppliersSearchParams } from '@/features/suppliers/types/searchParams'
 import { OnSuccess, SetErrorMessage } from './types'
-import { CreateSupplierFormType } from '@/features/suppliers/actions/create/create-supplier-form-schema'
 import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
-import { EditSupplierFormType } from '@/features/suppliers/actions/edit/edit-supplier-form-schema'
 import { queryClient } from '@/lib/query-client/tanstack-query-client'
+import { CreateSupplierFormType } from '@/features/suppliers/components/actions/create/create-supplier-form-schema'
+import { EditSupplierFormType } from '@/features/suppliers/components/actions/edit/edit-supplier-form-schema'
 
 export type SuppliersFindAll = {
   items: Supplier[]
@@ -88,7 +88,7 @@ export default {
         onErrorHandler({ error, setErrorMessage }),
     }),
 
-  useDelete: ({
+  useArchive: ({
     setErrorMessage,
     onSuccess,
     id,
@@ -98,9 +98,36 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['delete-supplier'],
+      mutationKey: ['archive-supplier'],
       mutationFn: async () => {
         return await client.delete(`/suppliers/${id}`)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['suppliers'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['supplier', { id }],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useRestore: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+  }) =>
+    useMutation({
+      mutationKey: ['restore-supplier'],
+      mutationFn: async () => {
+        return await client.put(`/suppliers/restore/${id}`)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({

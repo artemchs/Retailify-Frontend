@@ -3,8 +3,7 @@ import SelectHeader from '@/components/data-tables/SelectHeader'
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import { Supplier } from '@/types/entities/Supplier'
 import { ColumnDef } from '@tanstack/react-table'
-import EditSupplierDialog from '../actions/edit/EditSupplierDialog'
-import DeleteSupplierAlertDialog from '../actions/delete/DeleteSupplierAlertDialog'
+import SupplierActions from './SupplierActions'
 
 export const columns: ColumnDef<Supplier>[] = [
   {
@@ -72,14 +71,9 @@ export const columns: ColumnDef<Supplier>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      const { id } = row.original
+      const { id, isArchived } = row.original
 
-      return (
-        <div className='flex items-center gap-2 justify-end'>
-          <EditSupplierDialog id={id} />
-          <DeleteSupplierAlertDialog id={id} />
-        </div>
-      )
+      return <SupplierActions id={id} isArchived={isArchived} />
     },
     enableSorting: false,
     enableHiding: false,

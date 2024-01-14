@@ -1,7 +1,7 @@
-import ComboboxSubItem from '@/components/filters/ComboboxSubItem'
+import ComboboxSubItem from '@/components/filters/ComboboxSubItemForArrayValues'
 import DropdownFilter from '@/components/filters/DropdownFilter'
 import { employeesRoute } from '@/lib/router/routeTree'
-import { FilterOptions } from '@/types/filterOptions'
+import { FilterOptions } from '@/types/FilterOptions'
 import roleNames from '@/utils/roleNames'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 

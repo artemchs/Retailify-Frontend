@@ -15,9 +15,7 @@ export default function Sidebar() {
         </div>
       </div>
       <Separator />
-      <div className='p-3'>
-        <SidebarLinks />
-      </div>
+      <SidebarLinks />
     </nav>
   )
 }

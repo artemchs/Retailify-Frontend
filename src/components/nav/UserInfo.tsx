@@ -15,7 +15,7 @@ export default function UserInfo() {
 
   return (
     <div className='flex items-center space-x-2 lg:space-x-4'>
-      <Avatar className='h-full aspect-square shadow'>
+      <Avatar className='h-full aspect-square border shadow'>
         <AvatarImage
           className='object-cover'
           src={data?.profilePicture ? data.profilePicture : undefined}
@@ -41,7 +41,7 @@ export default function UserInfo() {
 function Loading() {
   return (
     <div className='flex items-center space-x-4'>
-      <Skeleton className='h-12 w-12 rounded-full' />
+      <Skeleton className='h-10 w-10 rounded-full' />
       <div className='space-y-2'>
         <Skeleton className='h-4 w-36' />
         <Skeleton className='h-3 w-20' />

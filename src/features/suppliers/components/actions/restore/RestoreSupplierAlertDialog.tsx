@@ -10,17 +10,17 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { Loader2, Trash2 } from 'lucide-react'
+import { ArchiveRestore, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export default function DeleteSupplierAlertDialog({ id }: { id: string }) {
+export default function RestoreSupplierAlertDialog({ id }: { id: string }) {
   const [isOpened, setIsOpened] = useState(false)
 
   function onSuccess() {
     setIsOpened(false)
-    toast('Поставщик был успешно удален.', {
-      icon: <Trash2 className='h-4 w-4' />,
+    toast('Поставщик был успешно восстановлен.', {
+      icon: <ArchiveRestore className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
         onClick: toast.dismiss,
@@ -29,7 +29,7 @@ export default function DeleteSupplierAlertDialog({ id }: { id: string }) {
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = Suppliers.useDelete({
+  const { mutate, isPending } = Suppliers.useRestore({
     setErrorMessage,
     onSuccess,
     id,
@@ -38,19 +38,17 @@ export default function DeleteSupplierAlertDialog({ id }: { id: string }) {
   return (
     <AlertDialog open={isOpened} onOpenChange={setIsOpened}>
       <AlertDialogTrigger asChild>
-        <Button size='sm' variant='destructive'>
-          <Trash2 className='h-4 w-4 mr-2' />
-          Удалить
+        <Button size='sm' variant='secondary'>
+          <ArchiveRestore className='h-4 w-4 mr-2' />
+          Восстановить
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Удалить поставщика</AlertDialogTitle>
+          <AlertDialogTitle>Восстановить поставщика</AlertDialogTitle>
           <AlertDialogDescription>
-            Подтверждая это действие, информация о поставщике будет удалена, но
-            вы сможете восстановить удаленного поставщика на странице "Корзина".
-            Пожалуйста, учтите, что восстановление данных будет возможно только
-            до окончательного удаления из корзины.
+            Подтверждая это действие, информация о поставщике будет
+            восстановлена.
           </AlertDialogDescription>
         </AlertDialogHeader>
         {errorMessage && errorMessage.length >= 1 && (
@@ -58,15 +56,15 @@ export default function DeleteSupplierAlertDialog({ id }: { id: string }) {
         )}
         <AlertDialogFooter
           cancelAction={() => setIsOpened(false)}
-          submitButtonVariant='destructive'
+          submitButtonVariant='secondary'
           submitButtonChildren={
             <>
               {isPending ? (
                 <Loader2 className='h-4 w-4 mr-2 animate-spin' />
               ) : (
-                <Trash2 className='h-4 w-4 mr-2' />
+                <ArchiveRestore className='h-4 w-4 mr-2' />
               )}
-              Удалить поставщика
+              Восстановить поставщика
             </>
           }
           isPending={isPending}

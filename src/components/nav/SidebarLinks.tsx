@@ -4,30 +4,43 @@ import React from 'react'
 
 export default function SidebarLinks() {
   return (
-    <div className='flex flex-col gap-2'>
-      <SidebarLink to='/' cashier={true} ecommerceManager={true}>
-        <Home className='h-4 w-4' />
-        Главная
-      </SidebarLink>
-      <SidebarLink to='/employees' cashier={false} ecommerceManager={false}>
-        <Users className='h-4 w-4' />
-        Сотрудники
-      </SidebarLink>
-      <SidebarLink to='/suppliers' cashier={true} ecommerceManager={true}>
-        <Factory className='h-4 w-4' />
-        Поставщики
-      </SidebarLink>
+    <div>
+      <Section>
+        <SidebarLink
+          Icon={Home}
+          to='/'
+          cashier={true}
+          ecommerceManager={true}
+          text='Главная'
+        />
+        <SidebarLink
+          Icon={Users}
+          to='/employees'
+          cashier={false}
+          ecommerceManager={false}
+          text='Сотрудники'
+        />
+        <SidebarLink
+          Icon={Factory}
+          to='/suppliers'
+          cashier={true}
+          ecommerceManager={true}
+          text='Поставщики'
+        />
+      </Section>
     </div>
   )
 }
 
 function SidebarLink({
-  children,
+  text,
+  Icon,
   to,
   cashier,
   ecommerceManager,
 }: {
-  children: React.ReactNode
+  text: string
+  Icon: React.ComponentType<{ className?: string }>
   to: string
   cashier: boolean
   ecommerceManager: boolean
@@ -65,10 +78,15 @@ function SidebarLink({
         className='flex gap-2 items-center px-3 py-2 rounded-lg transition-colors'
         onClick={handleClose}
       >
-        {children}
+        <Icon className='h-4 w-4' />
+        <span>{text}</span>
       </Link>
     )
   } else {
     return null
   }
+}
+
+function Section({ children }: { children: React.ReactNode }) {
+  return <div className='p-3 flex flex-col gap-3'>{children}</div>
 }

@@ -13,7 +13,7 @@ import {
   DropdownMenuSubTrigger,
 } from '../ui/dropdown-menu'
 import { cn } from '@/lib/utils'
-import { FilterOptions } from '@/types/filterOptions'
+import { FilterOptions } from '@/types/FilterOptions'
 
 type Props = {
   title: string
@@ -22,7 +22,7 @@ type Props = {
   setValues(values: string[]): void
 }
 
-export default function ComboboxSubItem({
+export default function ComboboxSubItemForArrayValues({
   title,
   options,
   values,

@@ -15,36 +15,48 @@ import {
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
 import { Input } from '@/components/ui/input'
 import SaveButton from '@/components/forms/SaveButton'
-import { createSupplierFormSchema } from './create-supplier-form-schema'
-import Suppliers from '@/api/services/Suppliers'
+import AsyncInput from '@/components/forms/AsyncInput'
 import {
   supplierAddress,
   supplierContactPerson,
   supplierEmail,
   supplierName,
   supplierPhone,
-} from '../../placeholders'
+} from '../../../placeholders'
+import { Supplier } from '@/types/entities/Supplier'
+import { editSupplierFormSchema } from './edit-supplier-form-schema'
+import Suppliers from '@/api/services/Suppliers'
 import PhoneNumberInput from '@/components/forms/PhoneNumberInput'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
+  supplier?: Supplier
+  supplierId: string
+  isLoading: boolean
+  isError: boolean
 }
 
-export default function CreateSupplierForm({ setIsOpened }: Props) {
-  const form = useForm<z.infer<typeof createSupplierFormSchema>>({
-    resolver: zodResolver(createSupplierFormSchema),
+export default function EditSupplierForm({
+  setIsOpened,
+  supplier,
+  isError,
+  isLoading,
+  supplierId,
+}: Props) {
+  const form = useForm<z.infer<typeof editSupplierFormSchema>>({
+    resolver: zodResolver(editSupplierFormSchema),
     defaultValues: {
-      name: '',
-      address: '',
-      contactPerson: '',
-      email: '',
-      phone: '',
+      name: supplier?.name,
+      contactPerson: supplier?.contactPerson,
+      email: supplier?.email,
+      phone: supplier?.phone,
+      address: supplier?.address,
     },
   })
 
   function onSuccess() {
     setIsOpened(false)
-    toast('Новый поставщик был успешно добавлен.', {
+    toast('Поставщик был успешно отредактироан.', {
       icon: <Factory className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
@@ -54,12 +66,13 @@ export default function CreateSupplierForm({ setIsOpened }: Props) {
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = Suppliers.useCreate({
+  const { mutate, isPending } = Suppliers.useEdit({
     setErrorMessage,
     onSuccess,
+    id: supplierId,
   })
 
-  function onSubmit(values: z.infer<typeof createSupplierFormSchema>) {
+  function onSubmit(values: z.infer<typeof editSupplierFormSchema>) {
     mutate({ body: values })
   }
 
@@ -77,7 +90,11 @@ export default function CreateSupplierForm({ setIsOpened }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Название' />
                 <FormControl>
-                  <Input placeholder={supplierName} {...field} />
+                  <AsyncInput
+                    input={<Input placeholder={supplierName} {...field} />}
+                    isError={isError}
+                    isLoading={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -90,7 +107,11 @@ export default function CreateSupplierForm({ setIsOpened }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Адрес' />
                 <FormControl>
-                  <Input placeholder={supplierAddress} {...field} />
+                  <AsyncInput
+                    input={<Input placeholder={supplierAddress} {...field} />}
+                    isError={isError}
+                    isLoading={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,7 +124,13 @@ export default function CreateSupplierForm({ setIsOpened }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Контактное лицо' />
                 <FormControl>
-                  <Input placeholder={supplierContactPerson} {...field} />
+                  <AsyncInput
+                    input={
+                      <Input placeholder={supplierContactPerson} {...field} />
+                    }
+                    isError={isError}
+                    isLoading={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,7 +143,17 @@ export default function CreateSupplierForm({ setIsOpened }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Електронная почта' />
                 <FormControl>
-                  <Input type='email' placeholder={supplierEmail} {...field} />
+                  <AsyncInput
+                    input={
+                      <Input
+                        type='email'
+                        placeholder={supplierEmail}
+                        {...field}
+                      />
+                    }
+                    isError={isError}
+                    isLoading={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -129,10 +166,16 @@ export default function CreateSupplierForm({ setIsOpened }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Номер телефона' />
                 <FormControl>
-                  <PhoneNumberInput
-                    form={form}
-                    field={field}
-                    placeholder={supplierPhone}
+                  <AsyncInput
+                    input={
+                      <PhoneNumberInput
+                        form={form}
+                        field={field}
+                        placeholder={supplierPhone}
+                      />
+                    }
+                    isError={isError}
+                    isLoading={isLoading}
                   />
                 </FormControl>
                 <FormMessage />
