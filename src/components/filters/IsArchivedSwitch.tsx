@@ -14,7 +14,7 @@ export default function IsArchivedSwitch({ setIsArchived, isArchived }: Props) {
         onCheckedChange={(value) => setIsArchived(value === true ? 1 : 0)}
         checked={isArchived}
       />
-      <Label htmlFor='is-archived'>Архивированные</Label>
+      <Label htmlFor='is-archived'>Архив</Label>
     </div>
   )
 }

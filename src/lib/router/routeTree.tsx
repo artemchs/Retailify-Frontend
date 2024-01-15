@@ -2,10 +2,12 @@ import App from '@/App'
 import AuthScreen from '@/features/auth/components/AuthScreen'
 import { employeesSearchParamsSchema } from '@/features/employees/types/searchParams'
 import { suppliersSearchParamsSchema } from '@/features/suppliers/types/searchParams'
+import { warehousesSearchParamsSchema } from '@/features/warehouses/types/searchParams'
 import Layout from '@/layouts/Layout'
 import EmployeesPage from '@/pages/Employees'
 import HomePage from '@/pages/Home'
 import SuppliersPage from '@/pages/Suppliers'
+import WarehousesPage from '@/pages/Warehouses'
 import { LogInPage } from '@/pages/auth/LogIn'
 import SignUpPage from '@/pages/auth/SignUp'
 import { AccessTokenData } from '@/types/AccessTokenData'
@@ -102,11 +104,20 @@ export const suppliersRoute = new Route({
   validateSearch: (search) => suppliersSearchParamsSchema.parse(search),
 })
 
+export const warehousesRoute = new Route({
+  getParentRoute: () => layout,
+  component: WarehousesPage,
+  path: '/warehouses',
+  validateSearch: (search) => warehousesSearchParamsSchema.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
 export const routeTree = rootRoute.addChildren([
   layout.addChildren([
     homeRoute,
     employeesRoute,
     suppliersRoute,
+    warehousesRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])
