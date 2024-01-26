@@ -1,5 +1,5 @@
 import { Link, useRouteContext } from '@tanstack/react-router'
-import { Factory, Home, Users, Warehouse } from 'lucide-react'
+import { Factory, Home, PackagePlus, Users, Warehouse } from 'lucide-react'
 import React from 'react'
 
 export default function SidebarLinks() {
@@ -33,6 +33,13 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Склады'
+        />
+        <SidebarLink
+          Icon={PackagePlus}
+          to='/goods-receipts'
+          cashier={false}
+          ecommerceManager={false}
+          text='Приход товара'
         />
       </Section>
     </div>
