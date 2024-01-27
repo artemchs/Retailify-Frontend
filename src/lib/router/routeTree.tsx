@@ -1,10 +1,12 @@
 import App from '@/App'
 import AuthScreen from '@/features/auth/components/AuthScreen'
+import { collectionsSearchParamsSchema } from '@/features/collections/types/searchParams'
 import { employeesSearchParamsSchema } from '@/features/employees/types/searchParams'
 import { goodsReceiptsSearchParamsSchema } from '@/features/goods-receipts/types/searchParams'
 import { suppliersSearchParamsSchema } from '@/features/suppliers/types/searchParams'
 import { warehousesSearchParamsSchema } from '@/features/warehouses/types/searchParams'
 import Layout from '@/layouts/Layout'
+import CollectionsPage from '@/pages/Collections'
 import EmployeesPage from '@/pages/Employees'
 import GoodsReceiptsPage from '@/pages/GoodsReceipts'
 import HomePage from '@/pages/Home'
@@ -122,6 +124,14 @@ export const goodsReceiptsRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
+export const collectionsRoute = new Route({
+  getParentRoute: () => layout,
+  component: CollectionsPage,
+  path: '/collections',
+  validateSearch: (search) => collectionsSearchParamsSchema.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
 export const routeTree = rootRoute.addChildren([
   layout.addChildren([
     homeRoute,
@@ -129,6 +139,7 @@ export const routeTree = rootRoute.addChildren([
     suppliersRoute,
     warehousesRoute,
     goodsReceiptsRoute,
+    collectionsRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])
