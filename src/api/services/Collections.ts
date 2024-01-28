@@ -80,6 +80,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['collection', { id }],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristics'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>

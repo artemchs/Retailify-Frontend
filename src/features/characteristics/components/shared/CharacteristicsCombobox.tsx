@@ -1,7 +1,7 @@
 import Characteristics, {
   CharacteristicsFindAll,
 } from '@/api/services/Characteristics'
-import CrudCombobox from '@/components/forms/CrudCombobox'
+import CrudComboboxMultipleSelect from '@/components/forms/CrudComboboxMultipleSelect'
 import { Characteristic } from '@/types/entities/Characteristic'
 import { useState } from 'react'
 import CreateCharacteristicDialog from '../actions/create/CreateCharacteristicDialog'
@@ -40,7 +40,7 @@ export default function CharacteristicsCombobox({ field, form }: Props) {
   }
 
   return (
-    <CrudCombobox<Characteristic, CharacteristicsFindAll>
+    <CrudComboboxMultipleSelect<Characteristic, CharacteristicsFindAll>
       placeholder='Выберите характеристики'
       data={data}
       fetchNextPage={fetchNextPage}

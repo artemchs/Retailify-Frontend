@@ -23,15 +23,16 @@ import CharacteristicsCombobox from '@/features/characteristics/components/share
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
+  parentId?: string
 }
 
-export default function CreateCollectionForm({ setIsOpened }: Props) {
+export default function CreateCollectionForm({ setIsOpened, parentId }: Props) {
   const form = useForm<z.infer<typeof createCollectionFormSchema>>({
     resolver: zodResolver(createCollectionFormSchema),
     defaultValues: {
       name: '',
       characteristics: [],
-      parentId: '',
+      parentId,
     },
   })
 
@@ -85,17 +86,6 @@ export default function CreateCollectionForm({ setIsOpened }: Props) {
               <FormItem>
                 <Label>Характеристики</Label>
                 <CharacteristicsCombobox field={field} form={form} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='parentId'
-            render={({ field }) => (
-              <FormItem>
-                <Label>Родительская коллекция</Label>
-                <FormControl></FormControl>
                 <FormMessage />
               </FormItem>
             )}

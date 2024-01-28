@@ -40,6 +40,18 @@ export default {
         onErrorHandler({ error, setErrorMessage }),
     }),
 
+  useFindAllForCollection: (params: { collectionId: string }) =>
+    useQuery({
+      queryKey: ['characteristics', params],
+      queryFn: async () => {
+        const { data } = await client.get('/characteristics/for-collection', {
+          params,
+        })
+
+        return data as Characteristic[]
+      },
+    }),
+
   useFindAll: (params: { query?: string }) =>
     useInfiniteQuery({
       queryKey: ['characteristics', params],

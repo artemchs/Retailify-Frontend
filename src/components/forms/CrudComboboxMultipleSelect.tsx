@@ -48,7 +48,7 @@ type Props<Entity, EntityFindAll> = {
   onSuccess?: (id: string) => void
 }
 
-export default function CrudCombobox<Entity, EntityFindAll>({
+export default function CrudComboboxMultipleSelect<Entity, EntityFindAll>({
   setQuery,
   data,
   fetchNextPage,
@@ -65,7 +65,7 @@ export default function CrudCombobox<Entity, EntityFindAll>({
   EditDialog,
   selectedValues,
   setSelectedValues,
-  onSuccess
+  onSuccess,
 }: Props<Entity, EntityFindAll>) {
   const [searchInputValue, setSearchInputValue] = useState('')
   const [isOpened, setIsOpened] = useState(false)
@@ -186,10 +186,7 @@ export default function CrudCombobox<Entity, EntityFindAll>({
                                   onClick={(e) => e.stopPropagation()}
                                 >
                                   {EditDialog && (
-                                    <EditDialog
-                                      id={id}
-                                      onSuccess={onSuccess}
-                                    />
+                                    <EditDialog id={id} onSuccess={onSuccess} />
                                   )}
                                   {DeleteAlertDialog && (
                                     <DeleteAlertDialog
@@ -236,7 +233,7 @@ function Loading() {
 function Error() {
   return (
     <div className='w-full h-full flex items-center justify-center text-sm text-destructive'>
-      Произошла ошибка при загрузке
+      Произошла ошибка при загрузке.
     </div>
   )
 }
@@ -244,7 +241,7 @@ function Error() {
 function NoResults() {
   return (
     <div className='w-full h-full flex items-center justify-center gap-1 text-sm text-muted-foreground'>
-      Нет результатов
+      Нет результатов.
     </div>
   )
 }

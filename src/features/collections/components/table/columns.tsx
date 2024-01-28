@@ -1,17 +1,9 @@
-import SelectCell from '@/components/data-tables/SelectCell'
-import SelectHeader from '@/components/data-tables/SelectHeader'
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import { Collection } from '@/types/entities/Collection'
 import { ColumnDef } from '@tanstack/react-table'
+import CollectionActions from './CollectionActions'
 
 export const columns: ColumnDef<Collection>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => <SelectHeader table={table} />,
-    cell: ({ row }) => <SelectCell row={row} />,
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     id: 'Название',
     accessorKey: 'name',
@@ -22,6 +14,11 @@ export const columns: ColumnDef<Collection>[] = [
         routeId='/layout/collections'
       />
     ),
+    cell: ({ row }) => {
+      const { name } = row.original
+
+      return <span className='font-medium'>{name}</span>
+    },
   },
   {
     id: 'Количетсво моделей',
@@ -48,7 +45,7 @@ export const columns: ColumnDef<Collection>[] = [
     cell: ({ row }) => {
       const { id, isArchived } = row.original
 
-      return <></>
+      return <CollectionActions id={id} isArchived={isArchived} />
     },
     enableSorting: false,
     enableHiding: false,

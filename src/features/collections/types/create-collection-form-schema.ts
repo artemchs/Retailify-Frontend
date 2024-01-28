@@ -10,7 +10,8 @@ export const createCollectionFormSchema = z.object({
         id: z.string().min(1, 'Укажите характеристику.'),
       })
     )
-    .optional(),
+    .optional()
+    .nullable(),
 })
 
 export type CreateCollectionFormSchema = z.infer<
