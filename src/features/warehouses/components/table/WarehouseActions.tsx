@@ -18,11 +18,9 @@ export default function WarehouseActions({
     )
   }
 
-  if (isArchived) {
-    return (
-      <div className='flex items-center gap-2 justify-end'>
-        <RestoreWarehouseAlertDialog id={id} />
-      </div>
-    )
-  }
+  return (
+    <div className='flex items-center gap-2 justify-end'>
+      <RestoreWarehouseAlertDialog id={id} />
+    </div>
+  )
 }

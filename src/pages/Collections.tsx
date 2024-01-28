@@ -1,5 +1,6 @@
 import Collections from '@/api/services/Collections'
 import CreateCollectionDialog from '@/features/collections/components/actions/create/CreateCollectionDialog'
+import FilterCollections from '@/features/collections/components/table/FilterCollections'
 import { columns } from '@/features/collections/components/table/columns'
 import CrudLayout from '@/layouts/CrudLayout'
 import { collectionsRoute } from '@/lib/router/routeTree'
@@ -23,6 +24,7 @@ export default function CollectionsPage() {
       topBarElements={
         <>
           <CreateCollectionDialog />
+          <FilterCollections />
         </>
       }
     />
