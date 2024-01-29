@@ -2,6 +2,7 @@ export type Collection = {
   _count: {
     characteristics: number
     products: number
+    children: number
   }
 } & {
   id: string
@@ -11,4 +12,5 @@ export type Collection = {
   parentId: string | null
   numOfProducts: number
   isArchived: boolean
+  children: Collection[]
 }

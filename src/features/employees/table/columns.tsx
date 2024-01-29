@@ -7,17 +7,8 @@ import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import EditEmployeeDialog from '../components/edit/EditEmployeeDialog'
 import DeleteEmployeeAlertDialog from '../components/delete/DeleteEmployeeAlertDialog'
 import { Employee } from '@/types/entities/Employee'
-import SelectHeader from '@/components/data-tables/SelectHeader'
-import SelectCell from '@/components/data-tables/SelectCell'
 
 export const columns: ColumnDef<Employee>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => <SelectHeader table={table} />,
-    cell: ({ row }) => <SelectCell row={row} />,
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     id: 'Пользователь',
     accessorKey: 'fullName',

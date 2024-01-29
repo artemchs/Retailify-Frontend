@@ -21,6 +21,7 @@ export default function CollectionsPage() {
       isError={isError}
       routeId='/layout/collections'
       title='Коллекции товара'
+      childrenField='children'
       topBarElements={
         <>
           <CreateCollectionDialog />

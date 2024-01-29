@@ -3,6 +3,7 @@ import {
   FetchNextPageOptions,
   InfiniteData,
   InfiniteQueryObserverResult,
+  UseQueryResult,
 } from '@tanstack/react-query'
 import { debounce } from 'lodash'
 import { Fragment, useCallback, useMemo, useState } from 'react'
@@ -28,8 +29,9 @@ type Props<Entity, EntityFindAll> = {
   idField: keyof Entity
   nameField: keyof Entity
   itemsField: keyof EntityFindAll
-  selectedValue?: Entity
-  setSelectedValue: (newValue?: Entity) => void
+  selectedValue?: string
+  setSelectedValue: (id?: string) => void
+  selectedEntity?: UseQueryResult<Entity, Error>
 }
 
 export default function ComboboxSelectSingle<Entity, EntityFindAll>({
@@ -46,6 +48,7 @@ export default function ComboboxSelectSingle<Entity, EntityFindAll>({
   itemsField,
   selectedValue,
   setSelectedValue,
+  selectedEntity,
 }: Props<Entity, EntityFindAll>) {
   const [searchInputValue, setSearchInputValue] = useState('')
   const [isOpened, setIsOpened] = useState(false)
@@ -81,7 +84,14 @@ export default function ComboboxSelectSingle<Entity, EntityFindAll>({
           className='w-full justify-between'
         >
           {selectedValue ? (
-            <span>{String(selectedValue[nameField])}</span>
+            <span>
+              {selectedEntity?.isLoading
+                ? 'Загрузка...'
+                : selectedEntity?.isError
+                ? 'Произошла ошибка.'
+                : selectedEntity?.data &&
+                  String(selectedEntity.data[nameField])}
+            </span>
           ) : (
             <span className='text-muted-foreground font-normal'>
               {placeholder}
@@ -124,13 +134,9 @@ export default function ComboboxSelectSingle<Entity, EntityFindAll>({
                               key={id}
                               value={id}
                               className='flex items-center justify-between gap-2 cursor-pointer'
-                              onSelect={() => {
-                                if (isSelected) {
-                                  setSelectedValue(item)
-                                } else {
-                                  setSelectedValue()
-                                }
-                              }}
+                              onSelect={() =>
+                                setSelectedValue(isSelected ? undefined : id)
+                              }
                             >
                               <div className='flex items-center gap-2'>
                                 <Checkbox checked={isSelected} />

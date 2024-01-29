@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input'
 import { collectionName } from '../../shared/placeholders'
 import { Label } from '@/components/ui/label'
 import CharacteristicsCombobox from '@/features/characteristics/components/shared/CharacteristicsCombobox'
+import SelectCollectionParent from '../../shared/SelectCollectionParent'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -86,6 +87,17 @@ export default function CreateCollectionForm({ setIsOpened, parentId }: Props) {
               <FormItem>
                 <Label>Характеристики</Label>
                 <CharacteristicsCombobox field={field} form={form} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='parentId'
+            render={({ field }) => (
+              <FormItem>
+                <Label>Родительская характеристика</Label>
+                <SelectCollectionParent field={field} form={form} />
                 <FormMessage />
               </FormItem>
             )}

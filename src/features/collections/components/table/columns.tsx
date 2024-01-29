@@ -2,11 +2,11 @@ import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import { Collection } from '@/types/entities/Collection'
 import { ColumnDef } from '@tanstack/react-table'
 import CollectionActions from './CollectionActions'
+import RowNameCell from './RowNameCell'
 
 export const columns: ColumnDef<Collection>[] = [
   {
     id: 'Название',
-    accessorKey: 'name',
     header: () => (
       <SortableDataTableHeader
         label='Название'
@@ -14,30 +14,29 @@ export const columns: ColumnDef<Collection>[] = [
         routeId='/layout/collections'
       />
     ),
-    cell: ({ row }) => {
-      const { name } = row.original
-
-      return <span className='font-medium'>{name}</span>
-    },
+    cell: ({ row }) => <RowNameCell row={row} />,
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: 'Количетсво моделей',
-    accessorKey: '_count',
     header: () => 'Количетсво моделей',
     cell: ({ row }) => {
-      const productsNumber = row.original._count.products
-
-      return <span>{productsNumber}</span>
+      return <span>{row.original._count?.products ?? 0}</span>
     },
   },
   {
     id: 'Количетсво характеристик',
-    accessorKey: '_count',
     header: () => 'Количетсво характеристик',
     cell: ({ row }) => {
-      const productsNumber = row.original._count.characteristics
-
-      return <span>{productsNumber}</span>
+      return <span>{row.original._count?.characteristics ?? 0}</span>
+    },
+  },
+  {
+    id: 'Количетсво субколлекций',
+    header: () => 'Количетсво субколлекций',
+    cell: ({ row }) => {
+      return <span>{row.original._count?.children ?? 0}</span>
     },
   },
   {

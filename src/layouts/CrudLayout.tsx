@@ -1,4 +1,3 @@
-
 import { DataTable } from '@/components/ui/data-table'
 import { routeTree } from '@/lib/router/routeTree'
 import { RouteIds } from '@tanstack/react-router'
@@ -21,6 +20,7 @@ interface CrudLayoutProps<TData, TValue> {
   routeId: RouteIds<typeof routeTree>
   topBarElements: React.ReactNode
   title: string
+  childrenField?: keyof TData
 }
 
 export default function CrudLayout<TData, TValue>({
@@ -31,6 +31,7 @@ export default function CrudLayout<TData, TValue>({
   routeId,
   title,
   topBarElements,
+  childrenField,
 }: CrudLayoutProps<TData, TValue>) {
   return (
     <>
@@ -45,6 +46,7 @@ export default function CrudLayout<TData, TValue>({
         isLoading={isLoading}
         isError={isError}
         routeId={routeId}
+        childrenField={childrenField}
       />
     </>
   )

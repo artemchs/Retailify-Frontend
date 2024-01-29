@@ -1,18 +1,9 @@
-import SelectCell from '@/components/data-tables/SelectCell'
-import SelectHeader from '@/components/data-tables/SelectHeader'
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import { Supplier } from '@/types/entities/Supplier'
 import { ColumnDef } from '@tanstack/react-table'
 import SupplierActions from './SupplierActions'
 
 export const columns: ColumnDef<Supplier>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => <SelectHeader table={table} />,
-    cell: ({ row }) => <SelectCell row={row} />,
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     id: 'Название',
     accessorKey: 'name',

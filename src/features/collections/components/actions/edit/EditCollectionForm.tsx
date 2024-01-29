@@ -24,6 +24,7 @@ import AsyncInput from '@/components/forms/AsyncInput'
 import { useState } from 'react'
 import { UseQueryResult } from '@tanstack/react-query'
 import { Characteristic } from '@/types/entities/Characteristic'
+import SelectCollectionParent from '../../shared/SelectCollectionParent'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -109,6 +110,21 @@ export default function EditCollectionForm({
                   input={<CharacteristicsCombobox field={field} form={form} />}
                   isError={characteristics.isError}
                   isLoading={characteristics.isLoading}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='parentId'
+            render={({ field }) => (
+              <FormItem>
+                <Label>Родительская характеристика</Label>
+                <AsyncInput
+                  input={<SelectCollectionParent field={field} form={form} />}
+                  isError={isError}
+                  isLoading={isLoading}
                 />
                 <FormMessage />
               </FormItem>

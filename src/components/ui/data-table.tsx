@@ -1,9 +1,11 @@
 import {
   ColumnDef,
+  ExpandedState,
   Table as TableType,
   VisibilityState,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
 
@@ -15,7 +17,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Loader2, SlidersHorizontal, X } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronRight,
+  Loader2,
+  SlidersHorizontal,
+  X,
+} from 'lucide-react'
 import { Label } from './label'
 import {
   Select,
@@ -28,7 +36,7 @@ import { RouteIds, useNavigate, useSearch } from '@tanstack/react-router'
 import PaginationControls from './pagination-controls'
 import { routeTree } from '@/lib/router/routeTree'
 import SearchBar from './search-bar'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button } from './button'
 import {
   DropdownMenu,
@@ -36,6 +44,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from './dropdown-menu'
+import { Toggle } from './toggle'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -45,6 +54,7 @@ interface DataTableProps<TData, TValue> {
   routeId: RouteIds<typeof routeTree>
   totalPages: number
   topBarElements: React.ReactNode
+  childrenField?: keyof TData
 }
 
 export function DataTable<TData, TValue>({
@@ -55,9 +65,11 @@ export function DataTable<TData, TValue>({
   routeId,
   totalPages,
   topBarElements,
+  childrenField,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [expanded, setExpanded] = useState<ExpandedState>({})
 
   const getRowId = (originalRow: unknown) => {
     return (originalRow as { id: string }).id
@@ -74,9 +86,15 @@ export function DataTable<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     manualSorting: true,
     manualFiltering: true,
+    getSubRows: childrenField
+      ? (row) => row[childrenField] as TData[] | undefined
+      : undefined,
+    getExpandedRowModel: getExpandedRowModel(),
+    onExpandedChange: setExpanded,
     state: {
       rowSelection,
       columnVisibility,
+      expanded,
     },
   })
 
@@ -294,4 +312,24 @@ function ColumnsVisibilityDropdown<TData>({
 
 function LoadingBottomControls() {
   return <></>
+}
+
+export function ExpandToggle({
+  disabled,
+  isExpanded,
+  toggle,
+}: {
+  disabled: boolean
+  isExpanded: boolean
+  toggle: () => void
+}) {
+  return (
+    <Toggle size='sm' onClick={toggle} disabled={disabled}>
+      {isExpanded ? (
+        <ChevronDown className='h-4 w-4' />
+      ) : (
+        <ChevronRight className='h-4 w-4' />
+      )}
+    </Toggle>
+  )
 }

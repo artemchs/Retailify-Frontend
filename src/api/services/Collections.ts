@@ -1,7 +1,7 @@
 import { FindAllInfo } from '@/types/FindAllInfo'
 import { Collection } from '@/types/entities/Collection'
 import { OnSuccess, SetErrorMessage } from './types'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import client from '../client'
 import { queryClient } from '@/lib/query-client/tanstack-query-client'
 import { AxiosError } from 'axios'
@@ -9,6 +9,7 @@ import onErrorHandler from './utils/onErrorHandler'
 import { CreateCollectionFormSchema } from '@/features/collections/types/create-collection-form-schema'
 import { CollectionsSearchParams } from '@/features/collections/types/searchParams'
 import { EditCollectionFormSchema } from '@/features/collections/types/edit-collection-form-schema'
+import { CollectionFindAllInfiniteListParams } from '@/features/collections/types/infiniteListParams'
 
 export type CollectionsFindAll = {
   items: Collection[]
@@ -32,6 +33,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['collections'],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['collections-infinite-list'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
@@ -48,6 +52,23 @@ export default {
 
         return data as CollectionsFindAll
       },
+    }),
+
+  useFindAllInfiniteList: (searchParams: CollectionFindAllInfiniteListParams) =>
+    useInfiniteQuery({
+      queryKey: ['collections-infinite-list', searchParams],
+      queryFn: async () => {
+        const { data } = await client.get('/collections', {
+          params: searchParams,
+        })
+
+        return data as {
+          items: Collection[]
+          nextCursor?: string
+        }
+      },
+      initialPageParam: '',
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
     }),
 
   useFindOne: ({ id }: { id: string }) =>
@@ -83,6 +104,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['characteristics'],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['collections-infinite-list'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
@@ -110,6 +134,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['collection', { id }],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['collections-infinite-list'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
@@ -136,6 +163,9 @@ export default {
         })
         queryClient.invalidateQueries({
           queryKey: ['collection', { id }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['collections-infinite-list'],
         })
         onSuccess()
       },
