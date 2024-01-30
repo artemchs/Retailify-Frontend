@@ -3,12 +3,13 @@ import {
   FetchNextPageOptions,
   InfiniteData,
   InfiniteQueryObserverResult,
+  UseQueryResult,
 } from '@tanstack/react-query'
 import { debounce } from 'lodash'
-import { Fragment, useCallback, useMemo, useState } from 'react'
+import { Fragment, ReactNode, useCallback, useMemo, useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
-import { ChevronsUpDown, Loader2, X } from 'lucide-react'
+import { ChevronsUpDown, Loader2 } from 'lucide-react'
 import { Command, CommandGroup, CommandInput, CommandItem } from '../ui/command'
 import { Checkbox } from '../ui/checkbox'
 
@@ -28,27 +29,15 @@ type Props<Entity, EntityFindAll> = {
   idField: keyof Entity
   nameField: keyof Entity
   itemsField: keyof EntityFindAll
-  EditDialog?: ({
-    id,
-    onSuccess,
-  }: {
-    id: string
-    onSuccess?: (id: string) => void
-  }) => JSX.Element
-  DeleteAlertDialog?: ({
-    id,
-    onSuccess,
-  }: {
-    id: string
-    onSuccess?: (id: string) => void
-  }) => JSX.Element
-  CreateDialog?: () => JSX.Element
-  selectedValues: Entity[]
-  setSelectedValues: (newValues: Entity[]) => void
-  onSuccess?: (id: string) => void
+  selectedValue?: string
+  setSelectedValue: (id?: string) => void
+  selectedEntity?: UseQueryResult<Entity, Error>
+  CreateDialog?: () => ReactNode
+  EditDialog?: ({ id }: { id: string }) => ReactNode
+  DeleteAlertDialog?: ({ id }: { id: string }) => ReactNode
 }
 
-export default function CrudComboboxMultipleSelect<Entity, EntityFindAll>({
+export default function CrudComboboxSingle<Entity, EntityFindAll>({
   setQuery,
   data,
   fetchNextPage,
@@ -60,12 +49,12 @@ export default function CrudComboboxMultipleSelect<Entity, EntityFindAll>({
   idField,
   nameField,
   itemsField,
+  selectedValue,
+  setSelectedValue,
+  selectedEntity,
   CreateDialog,
   DeleteAlertDialog,
   EditDialog,
-  selectedValues,
-  setSelectedValues,
-  onSuccess,
 }: Props<Entity, EntityFindAll>) {
   const [searchInputValue, setSearchInputValue] = useState('')
   const [isOpened, setIsOpened] = useState(false)
@@ -100,26 +89,15 @@ export default function CrudComboboxMultipleSelect<Entity, EntityFindAll>({
           aria-expanded={isOpened}
           className='w-full justify-between'
         >
-          {selectedValues && selectedValues.length >= 1 ? (
-            <div className='flex items-center gap-2'>
-              <Button
-                size='icon'
-                className='h-6 w-6'
-                variant='outline'
-                onClick={(e) => {
-                  e.stopPropagation()
-
-                  setSelectedValues([])
-                }}
-              >
-                <X className='h-4 w-4' />
-              </Button>
-              <span className='truncate max-w-64'>
-                {selectedValues.length <= 3
-                  ? selectedValues.map((obj) => obj[nameField]).join(', ')
-                  : `Выбрано: ${selectedValues.length}`}
-              </span>
-            </div>
+          {selectedValue ? (
+            <span>
+              {selectedEntity?.isLoading
+                ? 'Загрузка...'
+                : selectedEntity?.isError
+                ? 'Произошла ошибка.'
+                : selectedEntity?.data &&
+                  String(selectedEntity.data[nameField])}
+            </span>
           ) : (
             <span className='text-muted-foreground font-normal'>
               {placeholder}
@@ -155,26 +133,16 @@ export default function CrudComboboxMultipleSelect<Entity, EntityFindAll>({
                         {items.map((item) => {
                           const id = String(item[idField])
                           const name = String(item[nameField])
-                          const isSelected = selectedValues.some(
-                            (obj) => obj[idField] === item[idField]
-                          )
+                          const isSelected = selectedValue === id
 
                           return (
                             <CommandItem
                               key={id}
                               value={id}
                               className='flex items-center justify-between gap-2 cursor-pointer'
-                              onSelect={() => {
-                                if (isSelected) {
-                                  setSelectedValues(
-                                    selectedValues.filter(
-                                      (obj) => obj[idField] !== id
-                                    )
-                                  )
-                                } else {
-                                  setSelectedValues([...selectedValues, item])
-                                }
-                              }}
+                              onSelect={() =>
+                                setSelectedValue(isSelected ? undefined : id)
+                              }
                             >
                               <div className='flex items-center gap-2'>
                                 <Checkbox checked={isSelected} />
@@ -185,14 +153,9 @@ export default function CrudComboboxMultipleSelect<Entity, EntityFindAll>({
                                   className='flex items-center gap-2'
                                   onClick={(e) => e.stopPropagation()}
                                 >
-                                  {EditDialog && (
-                                    <EditDialog id={id} onSuccess={onSuccess} />
-                                  )}
+                                  {EditDialog && <EditDialog id={id} />}
                                   {DeleteAlertDialog && (
-                                    <DeleteAlertDialog
-                                      id={id}
-                                      onSuccess={onSuccess}
-                                    />
+                                    <DeleteAlertDialog id={id} />
                                   )}
                                 </div>
                               )}

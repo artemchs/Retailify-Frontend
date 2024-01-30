@@ -1,4 +1,3 @@
-import Characteristics from '@/api/services/Characteristics'
 import SaveButton from '@/components/forms/SaveButton'
 import { createCharacteristicFormSchema } from '@/features/characteristics/types/create-characteristic-form-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,50 +16,45 @@ import { AlertDestructive } from '@/components/AlertDestructive'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
 import { Input } from '@/components/ui/input'
 import { characteristicName } from '@/features/characteristics/placeholders'
-import { Characteristic } from '@/types/entities/Characteristic'
 import AsyncInput from '@/components/forms/AsyncInput'
-import { editCharacteristicFormSchema } from '@/features/characteristics/types/edit-characteristic-form-schema'
+import { Brand } from '@/types/entities/Brand'
+import { editBrandFormSchema } from '@/features/brands/types/edit-brand-form-schema'
+import Brands from '@/api/services/Brands'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-  characteristic?: Characteristic
+  brand?: Brand
   id: string
   isLoading: boolean
   isError: boolean
-  onSuccess?: (id: string) => void
 }
 
-export default function EditCharacteristicForm({
+export default function EditBrandForm({
   setIsOpened,
   id,
   isError,
   isLoading,
-  characteristic,
-  onSuccess,
+  brand,
 }: Props) {
-  const form = useForm<z.infer<typeof editCharacteristicFormSchema>>({
-    resolver: zodResolver(editCharacteristicFormSchema),
+  const form = useForm<z.infer<typeof editBrandFormSchema>>({
+    resolver: zodResolver(editBrandFormSchema),
     defaultValues: {
-      name: characteristic?.name,
+      name: brand?.name,
     },
   })
 
   function defaultOnSuccess() {
     setIsOpened(false)
-    toast('Характеристика была успешно отредактирована.', {
+    toast('Бренд был успешно отредактирован.', {
       cancel: {
         label: 'Ок',
         onClick: toast.dismiss,
       },
     })
-
-    if (onSuccess) {
-      onSuccess(id)
-    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = Characteristics.useEdit({
+  const { mutate, isPending } = Brands.useEdit({
     setErrorMessage,
     onSuccess: defaultOnSuccess,
     id,

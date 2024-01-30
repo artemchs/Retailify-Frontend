@@ -1,17 +1,20 @@
-import Collections from '@/api/services/Collections'
+import Brands from '@/api/services/Brands'
 import CrudComboboxSingle from '@/components/forms/CrudComboboxSingle'
-import { Collection } from '@/types/entities/Collection'
+import { Brand } from '@/types/entities/Brand'
 import { useState } from 'react'
 import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
+import CreateBrandDialog from '../actions/create/CreateBrandDialog'
+import EditBrandDialog from '../actions/edit/EditBrandDialog'
+import RemoveBrandAlertDialog from '../actions/remove/RemoveBrandAlertDialog'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field: ControllerRenderProps<any, 'parentId'>
+  field: ControllerRenderProps<any, 'brandId'>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any, any, undefined>
 }
 
-export default function SelectCollectionParent({ field, form }: Props) {
+export default function BrandsCombobox({ field, form }: Props) {
   const [query, setQuery] = useState('')
   const {
     data,
@@ -20,20 +23,17 @@ export default function SelectCollectionParent({ field, form }: Props) {
     isFetching,
     isFetchingNextPage,
     status,
-  } = Collections.useFindAllInfiniteList({ query })
+  } = Brands.useFindAll({ query })
 
   const selectedValue = field.value as string
   function setSelectedValue(id?: string) {
-    form.setValue('parentId', id)
+    form.setValue('brandId', id)
   }
 
-  const selectedCollection = Collections.useFindOne({ id: selectedValue })
+  const selectedBrand = Brands.useFindOne({ id: selectedValue })
 
   return (
-    <CrudComboboxSingle<
-      Collection,
-      { items: Collection[]; nextCursor?: string }
-    >
+    <CrudComboboxSingle<Brand, { items: Brand[]; nextCursor?: string }>
       data={data}
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
@@ -46,8 +46,11 @@ export default function SelectCollectionParent({ field, form }: Props) {
       nameField='name'
       idField='id'
       setQuery={setQuery}
-      placeholder='Выберите родительскую коллекцию'
-      selectedEntity={selectedCollection}
+      placeholder='Выберите брренд'
+      selectedEntity={selectedBrand}
+      CreateDialog={CreateBrandDialog}
+      EditDialog={EditBrandDialog}
+      DeleteAlertDialog={RemoveBrandAlertDialog}
     />
   )
 }

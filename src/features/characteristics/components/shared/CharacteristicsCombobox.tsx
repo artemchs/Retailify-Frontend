@@ -1,13 +1,13 @@
 import Characteristics, {
   CharacteristicsFindAll,
 } from '@/api/services/Characteristics'
-import CrudComboboxMultipleSelect from '@/components/forms/CrudComboboxMultipleSelect'
 import { Characteristic } from '@/types/entities/Characteristic'
 import { useState } from 'react'
 import CreateCharacteristicDialog from '../actions/create/CreateCharacteristicDialog'
 import DeleteCharacteristicAlertDialog from '../actions/delete/DeleteCharacteristicAlert'
 import EditCharacteristicDialog from '../actions/edit/EditCharacteristicDialog'
 import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
+import CrudComboboxMultiple from '@/components/forms/CrudComboboxMultiple'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,7 +40,7 @@ export default function CharacteristicsCombobox({ field, form }: Props) {
   }
 
   return (
-    <CrudComboboxMultipleSelect<Characteristic, CharacteristicsFindAll>
+    <CrudComboboxMultiple<Characteristic, CharacteristicsFindAll>
       placeholder='Выберите характеристики'
       data={data}
       fetchNextPage={fetchNextPage}

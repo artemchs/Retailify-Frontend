@@ -19,6 +19,7 @@ export default function CollectionActions({ id, isArchived }: Props) {
 
   return (
     <div className='flex items-center gap-2 justify-end'>
+      <EditCollectionDialog id={id} />
       <RestoreCollectionAlertDialog id={id} />
     </div>
   )
