@@ -1,5 +1,5 @@
 import { FindAllInfo } from '@/types/FindAllInfo'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import client from '../client'
 import { Supplier } from '@/types/entities/Supplier'
 import { SuppliersSearchParams } from '@/features/suppliers/types/searchParams'
@@ -15,6 +15,11 @@ export type SuppliersFindAll = {
   info: FindAllInfo
 }
 
+export type SuppliersFindAllInfiniteList = {
+  items: Supplier[]
+  nextCursor?: string
+}
+
 export default {
   useFindAll: (searchParams: SuppliersSearchParams) =>
     useQuery({
@@ -28,6 +33,20 @@ export default {
 
         return data as SuppliersFindAll
       },
+    }),
+
+  useFindAllInfiniteList: (params: { query?: string }) =>
+    useInfiniteQuery({
+      queryKey: ['suppliers-infinite-list', params],
+      queryFn: async ({ pageParam }) => {
+        const { data } = await client.get('/suppliers', {
+          params: { ...params, cursor: pageParam },
+        })
+
+        return data as SuppliersFindAllInfiniteList
+      },
+      initialPageParam: '',
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
     }),
 
   useCreate: ({

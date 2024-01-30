@@ -1,7 +1,7 @@
 import { FindAllInfo } from '@/types/FindAllInfo'
 import { Warehouse } from '@/types/entities/Warehouse'
 import { OnSuccess, SetErrorMessage } from './types'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import client from '../client'
 import { queryClient } from '@/lib/query-client/tanstack-query-client'
 import onErrorHandler from './utils/onErrorHandler'
@@ -13,6 +13,11 @@ import { EditWarehouseFormSchema } from '@/features/warehouses/components/action
 export type WarehousesFindAll = {
   items: Warehouse[]
   info: FindAllInfo
+}
+
+export type WarehousesFindAllInfiniteList = {
+  items: Warehouse[]
+  nextCursor?: string
 }
 
 export default {
@@ -50,6 +55,20 @@ export default {
 
         return data as WarehousesFindAll
       },
+    }),
+
+  useFindAllInfiniteList: (params: { query?: string }) =>
+    useInfiniteQuery({
+      queryKey: ['warehouses-infinite-list', params],
+      queryFn: async ({ pageParam }) => {
+        const { data } = await client.get('/warehouses', {
+          params: { ...params, cursor: pageParam },
+        })
+
+        return data as WarehousesFindAllInfiniteList
+      },
+      initialPageParam: '',
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
     }),
 
   useFindOne: ({ id }: { id: string }) =>
