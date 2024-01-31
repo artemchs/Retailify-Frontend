@@ -1,4 +1,7 @@
-import { Characteristic } from '@/types/entities/Characteristic'
+import {
+  Characteristic,
+  CharacteristicValue,
+} from '@/types/entities/Characteristic'
 import { OnSuccess, SetErrorMessage } from './types'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { CreateCharacteristicFormSchema } from '@/features/characteristics/types/create-characteristic-form-schema'
@@ -7,9 +10,15 @@ import { queryClient } from '@/lib/query-client/tanstack-query-client'
 import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { EditCharacteristicFormSchema } from '@/features/characteristics/types/edit-characteristic-form-schema'
+import { CreateCharacteristicValueFormSchema } from '@/features/characteristics/values/types/create-characteristic-value-form-schema'
 
 export type CharacteristicsFindAll = {
   items: Characteristic[]
+  nextCursor?: string
+}
+
+export type CharacteristicValuesFindAll = {
+  items: CharacteristicValue[]
   nextCursor?: string
 }
 
@@ -122,6 +131,152 @@ export default {
         })
         queryClient.invalidateQueries({
           queryKey: ['characteristic', { id }],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useCreateValue: ({
+    setErrorMessage,
+    onSuccess,
+    characteristicId,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    characteristicId: string
+  }) =>
+    useMutation({
+      mutationKey: ['create-characteristic-value'],
+      mutationFn: async ({
+        body,
+      }: {
+        body: CreateCharacteristicValueFormSchema
+      }) => {
+        return await client.post(
+          `/characteristics/${characteristicId}/values`,
+          body
+        )
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['characteristic-values'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristics'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristic', { id: characteristicId }],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useFindAllValues: (characteristicId: string, params: { query?: string }) =>
+    useInfiniteQuery({
+      queryKey: ['characteristic-values', { params, characteristicId }],
+      queryFn: async ({ pageParam }) => {
+        const { data } = await client.get(
+          `/characteristics/${characteristicId}/values`,
+          {
+            params: { ...params, cursor: pageParam },
+          }
+        )
+
+        return data as CharacteristicValuesFindAll
+      },
+      initialPageParam: '',
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    }),
+
+  useFindOneValue: ({
+    id,
+    characteristicId,
+  }: {
+    id: string
+    characteristicId: string
+  }) =>
+    useQuery({
+      queryKey: ['characteristic-value', { id, characteristicId }],
+      queryFn: async () => {
+        const { data } = await client.get(
+          `/characteristics/${characteristicId}/values/${id}`
+        )
+        return data as Characteristic
+      },
+    }),
+
+  useEditValue: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+    characteristicId,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+    characteristicId: string
+  }) =>
+    useMutation({
+      mutationKey: ['edit-characteristic-value'],
+      mutationFn: async ({ body }: { body: EditCharacteristicFormSchema }) => {
+        return await client.put(
+          `/characteristics/${characteristicId}/values/${id}`,
+          body
+        )
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['characteristic-values'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristic-value', { characteristicId, id }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristics'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristic', { id: characteristicId }],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useRemoveValue: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+    characteristicId,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+    characteristicId: string
+  }) =>
+    useMutation({
+      mutationKey: ['remove-characteristic-value'],
+      mutationFn: async () => {
+        return await client.delete(
+          `/characteristics/${characteristicId}/values/${id}`
+        )
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['characteristic-values'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristic-value', { characteristicId, id }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristics'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristic', { id: characteristicId }],
         })
         onSuccess()
       },
