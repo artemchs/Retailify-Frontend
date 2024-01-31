@@ -65,6 +65,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['suppliers'],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['suppliers-infinite-list'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
@@ -99,6 +102,9 @@ export default {
           queryKey: ['suppliers'],
         })
         queryClient.invalidateQueries({
+          queryKey: ['suppliers-infinite-list'],
+        })
+        queryClient.invalidateQueries({
           queryKey: ['supplier', { id }],
         })
         onSuccess()
@@ -126,6 +132,9 @@ export default {
           queryKey: ['suppliers'],
         })
         queryClient.invalidateQueries({
+          queryKey: ['suppliers-infinite-list'],
+        })
+        queryClient.invalidateQueries({
           queryKey: ['supplier', { id }],
         })
         onSuccess()
@@ -151,6 +160,9 @@ export default {
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: ['suppliers'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['suppliers-infinite-list'],
         })
         queryClient.invalidateQueries({
           queryKey: ['supplier', { id }],

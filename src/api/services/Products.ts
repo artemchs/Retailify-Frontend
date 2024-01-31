@@ -1,22 +1,22 @@
 import { FindAllInfo } from '@/types/FindAllInfo'
-import { Warehouse } from '@/types/entities/Warehouse'
+import { Product } from '@/types/entities/Product'
 import { OnSuccess, SetErrorMessage } from './types'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
+import { CreateProductFormSchema } from '@/features/products/types/create-product-form-schema'
 import client from '../client'
 import { queryClient } from '@/lib/query-client/tanstack-query-client'
-import onErrorHandler from './utils/onErrorHandler'
 import { AxiosError } from 'axios'
-import { CreateWarehouseFormSchema } from '@/features/warehouses/components/actions/create/create-warehouse-form-schema'
-import { WarehousesSearchParams } from '@/features/warehouses/types/searchParams'
-import { EditWarehouseFormSchema } from '@/features/warehouses/components/actions/edit/edit-warehouse-form-schema'
+import onErrorHandler from './utils/onErrorHandler'
+import { ProductsSearchParams } from '@/features/products/types/searchParams'
+import { EditProductFormSchema } from '@/features/products/types/edit-product-form-schema'
 
-export type WarehousesFindAll = {
-  items: Warehouse[]
+export type ProductsFindAll = {
+  items: Product[]
   info: FindAllInfo
 }
 
-export type WarehousesFindAllInfiniteList = {
-  items: Warehouse[]
+export type ProductsFindAllInfiniteList = {
+  items: Product[]
   nextCursor?: string
 }
 
@@ -29,16 +29,13 @@ export default {
     onSuccess: OnSuccess
   }) =>
     useMutation({
-      mutationKey: ['create-warehouse'],
-      mutationFn: async ({ body }: { body: CreateWarehouseFormSchema }) => {
-        return await client.post('/warehouses', body)
+      mutationKey: ['create-product'],
+      mutationFn: async ({ body }: { body: CreateProductFormSchema }) => {
+        return await client.post('/products', body)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['warehouses'],
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['warehouses-infinite-list'],
+          queryKey: ['products'],
         })
         onSuccess()
       },
@@ -46,29 +43,27 @@ export default {
         onErrorHandler({ error, setErrorMessage }),
     }),
 
-  useFindAll: (searchParams: WarehousesSearchParams) =>
+  useFindAll: (searchParams: ProductsSearchParams) =>
     useQuery({
-      queryKey: ['warehouses', { ...searchParams }],
+      queryKey: ['products', searchParams],
       queryFn: async () => {
-        const { data } = await client.get('/warehouses', {
-          params: {
-            ...searchParams,
-          },
+        const { data } = await client.get('/products', {
+          params: searchParams,
         })
 
-        return data as WarehousesFindAll
+        return data as ProductsFindAll
       },
     }),
 
   useFindAllInfiniteList: (params: { query?: string }) =>
     useInfiniteQuery({
-      queryKey: ['warehouses-infinite-list', params],
+      queryKey: ['products-infinite-list', params],
       queryFn: async ({ pageParam }) => {
-        const { data } = await client.get('/warehouses', {
+        const { data } = await client.get('/products', {
           params: { ...params, cursor: pageParam },
         })
 
-        return data as WarehousesFindAllInfiniteList
+        return data as ProductsFindAllInfiniteList
       },
       initialPageParam: '',
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -76,10 +71,10 @@ export default {
 
   useFindOne: ({ id }: { id: string }) =>
     useQuery({
-      queryKey: ['warehouse', { id }],
+      queryKey: ['product', { id }],
       queryFn: async () => {
-        const { data } = await client.get(`/warehouses/${id}`)
-        return data as Warehouse
+        const { data } = await client.get(`/products/${id}`)
+        return data as Product
       },
     }),
 
@@ -93,19 +88,16 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['edit-warehouse'],
-      mutationFn: async ({ body }: { body: EditWarehouseFormSchema }) => {
-        return await client.put(`/warehouses/${id}`, body)
+      mutationKey: ['edit-product'],
+      mutationFn: async ({ body }: { body: EditProductFormSchema }) => {
+        return await client.put(`/products/${id}`, body)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['warehouses'],
+          queryKey: ['products'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['warehouses-infinite-list'],
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['warehouse', { id }],
+          queryKey: ['product', { id }],
         })
         onSuccess()
       },
@@ -123,19 +115,16 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['archive-warehouse'],
+      mutationKey: ['archive-product'],
       mutationFn: async () => {
-        return await client.delete(`/warehouses/${id}`)
+        return await client.delete(`/products/${id}`)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['warehouses'],
+          queryKey: ['products'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['warehouses-infinite-list'],
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['warehouse', { id }],
+          queryKey: ['product', { id }],
         })
         onSuccess()
       },
@@ -153,19 +142,16 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['restore-warehouse'],
+      mutationKey: ['restore-product'],
       mutationFn: async () => {
-        return await client.put(`/warehouses/restore/${id}`)
+        return await client.put(`/products/restore/${id}`)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['warehouses'],
+          queryKey: ['products'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['warehouses-infinite-list'],
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['warehouse', { id }],
+          queryKey: ['product', { id }],
         })
         onSuccess()
       },
