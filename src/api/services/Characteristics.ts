@@ -11,6 +11,7 @@ import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { EditCharacteristicFormSchema } from '@/features/characteristics/types/edit-characteristic-form-schema'
 import { CreateCharacteristicValueFormSchema } from '@/features/characteristics/values/types/create-characteristic-value-form-schema'
+import { EditCharacteristicValueFormSchema } from '@/features/characteristics/values/types/edit-characteristic-value-form-schema'
 
 export type CharacteristicsFindAll = {
   items: Characteristic[]
@@ -205,7 +206,7 @@ export default {
         const { data } = await client.get(
           `/characteristics/${characteristicId}/values/${id}`
         )
-        return data as Characteristic
+        return data as CharacteristicValue
       },
     }),
 
@@ -222,7 +223,11 @@ export default {
   }) =>
     useMutation({
       mutationKey: ['edit-characteristic-value'],
-      mutationFn: async ({ body }: { body: EditCharacteristicFormSchema }) => {
+      mutationFn: async ({
+        body,
+      }: {
+        body: EditCharacteristicValueFormSchema
+      }) => {
         return await client.put(
           `/characteristics/${characteristicId}/values/${id}`,
           body
