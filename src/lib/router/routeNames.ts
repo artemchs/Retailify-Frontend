@@ -5,4 +5,5 @@ export default {
   '/warehouses': 'Склады',
   '/goods-receipts': 'Приход товара',
   '/collections': 'Коллекции',
+  '/products': 'Модели товара',
 }

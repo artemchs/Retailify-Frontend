@@ -28,10 +28,10 @@ export const createProductFormSchema = z.object({
       })
     )
     .optional(),
-  packagingLength: z.string().min(1, requiredField),
-  packagingWidth: z.string().min(1, requiredField),
-  packagingHeight: z.string().min(1, requiredField),
-  packagingWeight: z.string().min(1, requiredField),
+  packagingLength: z.number().min(1, requiredField),
+  packagingWidth: z.number().min(1, requiredField),
+  packagingHeight: z.number().min(1, requiredField),
+  packagingWeight: z.number().min(1, requiredField),
 })
 
 export type CreateProductFormSchema = z.infer<typeof createProductFormSchema>

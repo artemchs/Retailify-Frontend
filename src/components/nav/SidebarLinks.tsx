@@ -4,6 +4,7 @@ import {
   Home,
   LibraryBig,
   PackagePlus,
+  Tags,
   Users,
   Warehouse,
 } from 'lucide-react'
@@ -54,6 +55,13 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Коллекции товара'
+        />
+        <SidebarLink
+          Icon={Tags}
+          to='/products'
+          cashier={false}
+          ecommerceManager={false}
+          text='Модели товара'
         />
       </Section>
     </div>
