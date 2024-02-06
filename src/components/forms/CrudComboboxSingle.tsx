@@ -34,7 +34,15 @@ type Props<Entity, EntityFindAll> = {
   selectedEntity?: UseQueryResult<Entity, Error>
   CreateDialog?: () => ReactNode
   EditDialog?: ({ id }: { id: string }) => ReactNode
-  DeleteAlertDialog?: ({ id }: { id: string }) => ReactNode
+  DeleteAlertDialog?: ({
+    id,
+    selectedValue,
+    setSelectedValue,
+  }: {
+    id: string
+    selectedValue?: string
+    setSelectedValue?: (id?: string) => void
+  }) => ReactNode
 }
 
 export default function CrudComboboxSingle<Entity, EntityFindAll>({
@@ -155,7 +163,11 @@ export default function CrudComboboxSingle<Entity, EntityFindAll>({
                                 >
                                   {EditDialog && <EditDialog id={id} />}
                                   {DeleteAlertDialog && (
-                                    <DeleteAlertDialog id={id} />
+                                    <DeleteAlertDialog
+                                      id={id}
+                                      setSelectedValue={setSelectedValue}
+                                      selectedValue={selectedValue}
+                                    />
                                   )}
                                 </div>
                               )}

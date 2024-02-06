@@ -50,11 +50,14 @@ export default {
         onErrorHandler({ error, setErrorMessage }),
     }),
 
-  useFindAllForCollection: (params: { collectionId: string }) =>
+  useFindAllForCategory: (params: {
+    categoryId?: string
+    categoryGroupId?: string
+  }) =>
     useQuery({
       queryKey: ['characteristics', params],
       queryFn: async () => {
-        const { data } = await client.get('/characteristics/for-collection', {
+        const { data } = await client.get('/characteristics/for-category', {
           params,
         })
 

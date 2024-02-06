@@ -2,9 +2,12 @@ import { requiredField } from '@/utils/zodErrorMessages'
 import { z } from 'zod'
 
 export const createProductFormSchema = z.object({
-  collectionId: z.string().min(1, requiredField),
+  categoryId: z.string().min(1, requiredField),
+  brandId: z.string().min(1, requiredField),
   title: z.string().min(1, requiredField),
   description: z.string().min(1, requiredField),
+  gender: z.enum(['MALE', 'FEMALE', 'UNISEX']),
+  season: z.enum(['WINTER', 'SPRING_FALL', 'SUMMER', 'ALL_SEASON']),
   colors: z
     .array(
       z.object({

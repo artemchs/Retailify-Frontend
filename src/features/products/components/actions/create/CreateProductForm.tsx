@@ -16,19 +16,23 @@ import SaveButton from '@/components/forms/SaveButton'
 import { createProductFormSchema } from '@/features/products/types/create-product-form-schema'
 import Products from '@/api/services/Products'
 import { Label } from '@/components/ui/label'
-import UploadMediaInput from '../../media/UploadMediaInput'
+import UploadMediaInput from '../../shared/media/UploadMediaInput'
+import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
+import { Input } from '@/components/ui/input'
+import { productTitle } from '../../shared/placeholders'
+import TextEditor from '../../shared/text-editor/TextEditor'
+import SelectSeason from '../../shared/SelectSeason'
+import SelectGender from '../../shared/SelectGender'
+import BrandsCombobox from '@/features/brands/components/shared/BrandsCombobox'
+import CategoriesCombobox from '@/features/categories/components/shared/CategoriesCombobox'
 
-type Props = {
-  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export default function CreateProductForm({ setIsOpened }: Props) {
+export default function CreateProductForm() {
   const form = useForm<z.infer<typeof createProductFormSchema>>({
     resolver: zodResolver(createProductFormSchema),
     defaultValues: {
       title: '',
       characteristics: [],
-      collectionId: '',
+      categoryId: '',
       colors: [],
       description: '',
       media: [
@@ -45,11 +49,12 @@ export default function CreateProductForm({ setIsOpened }: Props) {
       packagingLength: 0,
       packagingWeight: 0,
       packagingWidth: 0,
+      gender: 'UNISEX',
+      season: 'ALL_SEASON',
     },
   })
 
   function onSuccess() {
-    setIsOpened(false)
     toast('Новая модель товара была успешно добавлена.', {
       icon: <Tags className='h-4 w-4' />,
       cancel: {
@@ -89,6 +94,85 @@ export default function CreateProductForm({ setIsOpened }: Props) {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name='title'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Название' />
+                <FormControl>
+                  <Input placeholder={productTitle} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className='flex flex-col lg:flex-row gap-4'>
+            <FormField
+              control={form.control}
+              name='season'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabelForRequiredFields text='Сезон' />
+                  <SelectSeason field={field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='gender'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabelForRequiredFields text='Пол' />
+                  <SelectGender field={field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className='flex flex-col lg:flex-row gap-4'>
+            <FormField
+              control={form.control}
+              name='brandId'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabelForRequiredFields text='Бренд' />
+                  <FormControl>
+                    <BrandsCombobox field={field} form={form} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='categoryId'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabelForRequiredFields text='Категория' />
+                  <FormControl>
+                    <CategoriesCombobox field={field} form={form} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name='description'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Описание' />
+                <FormControl>
+                  <TextEditor field={field} form={form} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <SaveButton isPending={isPending} form={form} onSubmit={onSubmit} />
         </form>
       </Form>

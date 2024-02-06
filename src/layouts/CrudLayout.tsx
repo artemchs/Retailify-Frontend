@@ -1,4 +1,5 @@
 import { DataTable } from '@/components/ui/data-table'
+import PageTitle from '@/components/ui/page-title'
 import { routeTree } from '@/lib/router/routeTree'
 import { RouteIds } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
@@ -35,9 +36,7 @@ export default function CrudLayout<TData, TValue>({
 }: CrudLayoutProps<TData, TValue>) {
   return (
     <>
-      <h1 className='scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl'>
-        {title}
-      </h1>
+      <PageTitle title={title} />
       <DataTable
         topBarElements={topBarElements}
         columns={columns}

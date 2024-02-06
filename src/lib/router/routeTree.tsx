@@ -1,21 +1,24 @@
 import App from '@/App'
 import AuthScreen from '@/features/auth/components/AuthScreen'
-import { collectionsSearchParamsSchema } from '@/features/collections/types/searchParams'
+import { findAllCategorySchema } from '@/features/categories/types/findAll-category-schema'
+import { findAllCategoryGroupsSchema } from '@/features/category-groups/types/findAll-category-groups-schema'
 import { employeesSearchParamsSchema } from '@/features/employees/types/searchParams'
 import { goodsReceiptsSearchParamsSchema } from '@/features/goods-receipts/types/searchParams'
 import { productsSearchParamsSchema } from '@/features/products/types/searchParams'
 import { suppliersSearchParamsSchema } from '@/features/suppliers/types/searchParams'
 import { warehousesSearchParamsSchema } from '@/features/warehouses/types/searchParams'
 import Layout from '@/layouts/Layout'
-import CollectionsPage from '@/pages/Collections'
 import EmployeesPage from '@/pages/Employees'
 import GoodsReceiptsPage from '@/pages/GoodsReceipts'
 import HomePage from '@/pages/Home'
-import ProductsPage from '@/pages/Products'
 import SuppliersPage from '@/pages/Suppliers'
 import WarehousesPage from '@/pages/Warehouses'
 import { LogInPage } from '@/pages/auth/LogIn'
 import SignUpPage from '@/pages/auth/SignUp'
+import CategoriesPage from '@/pages/categories/Categories'
+import CategoryGroupsPage from '@/pages/categories/CategoryGroups'
+import CreateProductPage from '@/pages/products/CreateProduct'
+import ProductsPage from '@/pages/products/Products'
 import { AccessTokenData } from '@/types/AccessTokenData'
 import { accessToken } from '@/utils/accessToken'
 import { isAuthenticated } from '@/utils/isAuthenticated'
@@ -126,11 +129,19 @@ export const goodsReceiptsRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
-export const collectionsRoute = new Route({
+export const categoryGroupsRoute = new Route({
   getParentRoute: () => layout,
-  component: CollectionsPage,
-  path: '/collections',
-  validateSearch: (search) => collectionsSearchParamsSchema.parse(search),
+  component: CategoryGroupsPage,
+  path: '/category-groups',
+  validateSearch: (search) => findAllCategoryGroupsSchema.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
+export const categoriesRoute = new Route({
+  getParentRoute: () => layout,
+  component: CategoriesPage,
+  path: '/categories',
+  validateSearch: (search) => findAllCategorySchema.parse(search),
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
@@ -142,6 +153,13 @@ export const productsRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
+export const createProductRoute = new Route({
+  getParentRoute: () => layout,
+  component: CreateProductPage,
+  path: '/products/create',
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
 export const routeTree = rootRoute.addChildren([
   layout.addChildren([
     homeRoute,
@@ -149,8 +167,10 @@ export const routeTree = rootRoute.addChildren([
     suppliersRoute,
     warehousesRoute,
     goodsReceiptsRoute,
-    collectionsRoute,
     productsRoute,
+    createProductRoute,
+    categoryGroupsRoute,
+    categoriesRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

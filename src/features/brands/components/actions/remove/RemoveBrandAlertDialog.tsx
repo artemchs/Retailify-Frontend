@@ -13,7 +13,15 @@ import { Loader2, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export default function RemoveBrandAlertDialog({ id }: { id: string }) {
+export default function RemoveBrandAlertDialog({
+  id,
+  setSelectedValue,
+  selectedValue,
+}: {
+  id: string
+  selectedValue?: string
+  setSelectedValue?: (id?: string) => void
+}) {
   const [isOpened, setIsOpened] = useState(false)
 
   function defaultOnSuccess() {
@@ -24,6 +32,9 @@ export default function RemoveBrandAlertDialog({ id }: { id: string }) {
         onClick: toast.dismiss,
       },
     })
+    if (selectedValue === id && setSelectedValue) {
+      setSelectedValue()
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')

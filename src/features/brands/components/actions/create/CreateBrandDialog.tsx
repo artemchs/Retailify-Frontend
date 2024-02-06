@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
+import CreateBrandForm from './CreateBrandForm'
 
 export default function CreateBrandDialog() {
   const [isOpened, setIsOpened] = useState(false)
@@ -24,6 +25,7 @@ export default function CreateBrandDialog() {
         <DialogHeader>
           <DialogTitle>Добавить бренд</DialogTitle>
         </DialogHeader>
+        <CreateBrandForm setIsOpened={setIsOpened} />
       </DialogContent>
     </Dialog>
   )

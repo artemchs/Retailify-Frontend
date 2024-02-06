@@ -9,7 +9,7 @@ export default function Layout() {
   return (
     <div className='h-screen w-screen flex'>
       <Sidebar />
-      <div className='w-full h-full overflow-y-auto overflow-x-hidden flex flex-col relative'>
+      <div className='w-full h-screen overflow-y-auto overflow-x-hidden flex flex-col relative'>
         <Navbar />
         <div className='p-6 space-y-6'>
           {location.pathname !== '/' && <Breadcrumbs />}

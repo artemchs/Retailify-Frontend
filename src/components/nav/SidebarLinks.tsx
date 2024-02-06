@@ -51,10 +51,17 @@ export default function SidebarLinks() {
         />
         <SidebarLink
           Icon={LibraryBig}
-          to='/collections'
+          to='/categories'
           cashier={false}
           ecommerceManager={false}
-          text='Коллекции товара'
+          text='Категории товара'
+        />
+        <SidebarLink
+          Icon={LibraryBig}
+          to='/category-groups'
+          cashier={false}
+          ecommerceManager={false}
+          text='Группы категорий товара'
         />
         <SidebarLink
           Icon={Tags}
