@@ -18,13 +18,13 @@ import Products from '@/api/services/Products'
 import { Label } from '@/components/ui/label'
 import UploadMediaInput from '../../shared/media/UploadMediaInput'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
-import { Input } from '@/components/ui/input'
-import { productTitle } from '../../shared/placeholders'
 import TextEditor from '../../shared/text-editor/TextEditor'
 import SelectSeason from '../../shared/SelectSeason'
 import SelectGender from '../../shared/SelectGender'
 import BrandsCombobox from '@/features/brands/components/shared/BrandsCombobox'
 import CategoriesCombobox from '@/features/categories/components/shared/CategoriesCombobox'
+import TitleInput from '../../shared/TitleInput'
+import ColorsCombobox from '@/features/colors/components/shared/ColorsCombobox'
 
 export default function CreateProductForm() {
   const form = useForm<z.infer<typeof createProductFormSchema>>({
@@ -101,7 +101,11 @@ export default function CreateProductForm() {
               <FormItem>
                 <FormLabelForRequiredFields text='Название' />
                 <FormControl>
-                  <Input placeholder={productTitle} {...field} />
+                  <TitleInput
+                    field={field}
+                    form={form}
+                    control={form.control}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -161,10 +165,23 @@ export default function CreateProductForm() {
           </div>
           <FormField
             control={form.control}
+            name='colors'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Цвета' />
+                <FormControl>
+                  <ColorsCombobox field={field} form={form} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name='description'
             render={({ field }) => (
               <FormItem>
-                <FormLabelForRequiredFields text='Описание' />
+                <Label>Описание:</Label>
                 <FormControl>
                   <TextEditor field={field} form={form} />
                 </FormControl>

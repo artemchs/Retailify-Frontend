@@ -40,6 +40,9 @@ export default {
           queryKey: ['categories'],
         })
         queryClient.invalidateQueries({
+          queryKey: ['characteristics-for-category'],
+        })
+        queryClient.invalidateQueries({
           queryKey: ['categories-infinite-list'],
         })
         onSuccess()
@@ -81,6 +84,8 @@ export default {
     useQuery({
       queryKey: ['category', { id }],
       queryFn: async () => {
+        if (!id) return null
+
         const { data } = await client.get(`/categories/${id}`)
         return data as Category
       },
@@ -112,6 +117,9 @@ export default {
         })
         queryClient.invalidateQueries({
           queryKey: ['category', { id }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['characteristics-for-category'],
         })
         queryClient.invalidateQueries({
           queryKey: ['categories-infinite-list'],

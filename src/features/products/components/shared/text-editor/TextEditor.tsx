@@ -36,6 +36,7 @@ export default function TextEditor({ field, form }: Props) {
             class: 'list-disc pl-4',
           },
         },
+        heading: false,
       }),
       // @ts-expect-error I FUCKING HATE THIS OBNOXIOUS TIPTAP LIBRARY AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, I could've build so much stuff, but nope, I've spent a full day to set up a fucking text editor ;)
       Heading.configure({

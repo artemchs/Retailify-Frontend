@@ -41,6 +41,7 @@ export default function EditColorForm({
     resolver: zodResolver(editColorFormSchema),
     defaultValues: {
       name: color?.name,
+      color: color?.color,
     },
   })
 

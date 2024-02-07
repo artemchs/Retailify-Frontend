@@ -27,7 +27,7 @@ export default function CreateColorForm({ setIsOpened }: Props) {
     resolver: zodResolver(createColorFormSchema),
     defaultValues: {
       name: '',
-      color: '',
+      color: '#000000',
     },
   })
 

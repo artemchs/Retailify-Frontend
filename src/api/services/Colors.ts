@@ -54,6 +54,8 @@ export default {
     useQuery({
       queryKey: ['color', { id }],
       queryFn: async () => {
+        if (!id) return null
+
         const { data } = await client.get(`/colors/${id}`)
         return data as Color
       },

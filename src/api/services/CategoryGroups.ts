@@ -40,7 +40,10 @@ export default {
           queryKey: ['categories'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['categories-infinite-list']
+          queryKey: ['characteristics-for-category'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['categories-infinite-list'],
         })
         onSuccess()
       },
@@ -110,13 +113,16 @@ export default {
           queryKey: ['category-group', { id }],
         })
         queryClient.invalidateQueries({
+          queryKey: ['characteristics-for-category'],
+        })
+        queryClient.invalidateQueries({
           queryKey: ['categories'],
         })
         queryClient.invalidateQueries({
           queryKey: ['category'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['categories-infinite-list']
+          queryKey: ['categories-infinite-list'],
         })
         queryClient.invalidateQueries({
           queryKey: ['category-groups-infinite-list'],
@@ -155,7 +161,7 @@ export default {
           queryKey: ['category'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['categories-infinite-list']
+          queryKey: ['categories-infinite-list'],
         })
         queryClient.invalidateQueries({
           queryKey: ['category-groups-infinite-list'],
@@ -194,7 +200,7 @@ export default {
           queryKey: ['category'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['categories-infinite-list']
+          queryKey: ['categories-infinite-list'],
         })
         queryClient.invalidateQueries({
           queryKey: ['category-groups-infinite-list'],

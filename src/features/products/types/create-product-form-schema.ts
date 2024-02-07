@@ -5,13 +5,14 @@ export const createProductFormSchema = z.object({
   categoryId: z.string().min(1, requiredField),
   brandId: z.string().min(1, requiredField),
   title: z.string().min(1, requiredField),
-  description: z.string().min(1, requiredField),
+  description: z.string().optional(),
   gender: z.enum(['MALE', 'FEMALE', 'UNISEX']),
   season: z.enum(['WINTER', 'SPRING_FALL', 'SUMMER', 'ALL_SEASON']),
   colors: z
     .array(
       z.object({
-        colorId: z.string().min(1, 'Color id is required'),
+        id: z.string().min(1, 'Color id is required'),
+        name: z.string(),
         index: z.number().min(0),
       })
     )

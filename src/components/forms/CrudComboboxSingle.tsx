@@ -31,7 +31,7 @@ type Props<Entity, EntityFindAll> = {
   itemsField: keyof EntityFindAll
   selectedValue?: string
   setSelectedValue: (id?: string) => void
-  selectedEntity?: UseQueryResult<Entity, Error>
+  selectedEntity?: UseQueryResult<Entity | null, Error>
   CreateDialog?: () => ReactNode
   EditDialog?: ({ id }: { id: string }) => ReactNode
   DeleteAlertDialog?: ({

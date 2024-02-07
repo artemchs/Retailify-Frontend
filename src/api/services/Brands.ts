@@ -54,6 +54,8 @@ export default {
     useQuery({
       queryKey: ['brand', { id }],
       queryFn: async () => {
+        if (!id) return null
+
         const { data } = await client.get(`/brands/${id}`)
         return data as Brand
       },

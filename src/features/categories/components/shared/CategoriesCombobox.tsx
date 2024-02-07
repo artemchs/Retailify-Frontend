@@ -42,7 +42,7 @@ export default function CategoriesCombobox({ field, form }: Props) {
       nameField='name'
       idField='id'
       setQuery={setQuery}
-      placeholder='Выберите группу категорий'
+      placeholder='Выберите категорию'
       selectedEntity={selectedCategoryGroup}
     />
   )

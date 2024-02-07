@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
 import CrudComboboxMultiple from '@/components/forms/CrudComboboxMultiple'
 import Colors, { ColorsFindAll } from '@/api/services/Colors'
-import { Color } from '@/types/entities/Color'
 import CreateColorDialog from '../actions/create/CreateColorDialog'
 import DeleteColorAlertDialog from '../actions/remove/RemoveColorAlertDialog'
 import EditColorDialog from '../actions/edit/EditColorDialog'
@@ -12,6 +11,12 @@ type Props = {
   field: ControllerRenderProps<any, 'colors'>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any, any, undefined>
+}
+
+type Color = {
+  id: string
+  index: number
+  name: string
 }
 
 export default function ColorsCombobox({ field, form }: Props) {
@@ -27,7 +32,10 @@ export default function ColorsCombobox({ field, form }: Props) {
 
   const selectedValues = field.value as Color[]
   const setSelectedValues = (newValues: Color[]) => {
-    form.setValue('colors', newValues)
+    form.setValue(
+      'colors',
+      newValues.map((v, i) => ({ ...v, index: i }))
+    )
   }
 
   function onSuccess(id: string) {

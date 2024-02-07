@@ -55,7 +55,7 @@ export default {
     categoryGroupId?: string
   }) =>
     useQuery({
-      queryKey: ['characteristics', params],
+      queryKey: ['characteristics-for-category', params],
       queryFn: async () => {
         const { data } = await client.get('/characteristics/for-category', {
           params,

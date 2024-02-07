@@ -46,6 +46,7 @@ type Props<Entity, EntityFindAll> = {
   selectedValues: Entity[]
   setSelectedValues: (newValues: Entity[]) => void
   onSuccess?: (id: string) => void
+  
 }
 
 export default function CrudComboboxMultiple<Entity, EntityFindAll>({
