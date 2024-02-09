@@ -25,13 +25,14 @@ import BrandsCombobox from '@/features/brands/components/shared/BrandsCombobox'
 import CategoriesCombobox from '@/features/categories/components/shared/CategoriesCombobox'
 import TitleInput from '../../shared/TitleInput'
 import ColorsCombobox from '@/features/colors/components/shared/ColorsCombobox'
+import CharacteristicsInput from '../../shared/characteristics/CharacteristicsInput'
 
 export default function CreateProductForm() {
   const form = useForm<z.infer<typeof createProductFormSchema>>({
     resolver: zodResolver(createProductFormSchema),
     defaultValues: {
       title: '',
-      characteristics: [],
+      characteristicValues: [],
       categoryId: '',
       colors: [],
       description: '',
@@ -189,7 +190,23 @@ export default function CreateProductForm() {
               </FormItem>
             )}
           />
-
+          <FormField
+            control={form.control}
+            name='characteristicValues'
+            render={({ field }) => (
+              <FormItem>
+                <Label>Характеристики:</Label>
+                <FormControl>
+                  <CharacteristicsInput
+                    control={form.control}
+                    field={field}
+                    form={form}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <SaveButton isPending={isPending} form={form} onSubmit={onSubmit} />
         </form>
       </Form>

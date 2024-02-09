@@ -79,10 +79,12 @@ export default {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }),
 
-  useFindOne: ({ id }: { id: string }) =>
+  useFindOne: ({ id }: { id?: string }) =>
     useQuery({
       queryKey: ['characteristic', { id }],
       queryFn: async () => {
+        if (!id) return null
+
         const { data } = await client.get(`/characteristics/${id}`)
         return data as Characteristic
       },
@@ -200,12 +202,14 @@ export default {
     id,
     characteristicId,
   }: {
-    id: string
+    id?: string
     characteristicId: string
   }) =>
     useQuery({
       queryKey: ['characteristic-value', { id, characteristicId }],
       queryFn: async () => {
+        if (!id) return null
+
         const { data } = await client.get(
           `/characteristics/${characteristicId}/values/${id}`
         )

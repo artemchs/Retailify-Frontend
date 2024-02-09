@@ -11,24 +11,25 @@ export const createProductFormSchema = z.object({
   colors: z
     .array(
       z.object({
-        id: z.string().min(1, 'Color id is required'),
+        id: z.string(),
         name: z.string(),
-        index: z.number().min(0),
+        index: z.number(),
       })
     )
     .optional(),
   media: z
     .array(
       z.object({
-        id: z.string().min(1, 'Media id is required'),
-        index: z.number().min(0),
+        id: z.string(),
+        index: z.number(),
       })
     )
     .optional(),
-  characteristics: z
+    characteristicValues: z
     .array(
       z.object({
-        id: z.string().min(1, 'Укажите характеристику.'),
+        characteristicId: z.string(),
+        id: z.string(),
       })
     )
     .optional(),

@@ -46,7 +46,6 @@ type Props<Entity, EntityFindAll> = {
   selectedValues: Entity[]
   setSelectedValues: (newValues: Entity[]) => void
   onSuccess?: (id: string) => void
-  
 }
 
 export default function CrudComboboxMultiple<Entity, EntityFindAll>({
@@ -222,7 +221,7 @@ export default function CrudComboboxMultiple<Entity, EntityFindAll>({
   )
 }
 
-function Loading() {
+export function Loading() {
   return (
     <div className='w-full h-full flex items-center justify-center gap-1 text-sm text-muted-foreground'>
       <Loader2 className='h-3.5 w-3.5 animate-spin' />
@@ -231,7 +230,7 @@ function Loading() {
   )
 }
 
-function Error() {
+export function Error() {
   return (
     <div className='w-full h-full flex items-center justify-center text-sm text-destructive'>
       Произошла ошибка при загрузке.
@@ -239,7 +238,7 @@ function Error() {
   )
 }
 
-function NoResults() {
+export function NoResults() {
   return (
     <div className='w-full h-full flex items-center justify-center gap-1 text-sm text-muted-foreground'>
       Нет результатов.
