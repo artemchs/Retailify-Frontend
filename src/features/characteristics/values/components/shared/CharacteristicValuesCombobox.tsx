@@ -31,7 +31,7 @@ export default function CharacteristicValueCombobox({
   } = Characteristics.useFindAllValues(characteristicId, { query })
 
   const selectedValues = field.value as {
-    id: string
+    id?: string
     characteristicId: string
   }[]
   const selectedValueId = selectedValues.find(
@@ -46,6 +46,17 @@ export default function CharacteristicValueCombobox({
         ) ?? selectedValues.length
       newArray[index] = {
         id,
+        characteristicId,
+      }
+      form.setValue('characteristicValues', newArray)
+    } else {
+      const newArray = selectedValues
+      const index =
+        newArray.findIndex(
+          (obj) => obj.characteristicId === characteristicId
+        ) ?? selectedValues.length
+      newArray[index] = {
+        id: undefined,
         characteristicId,
       }
       form.setValue('characteristicValues', newArray)
@@ -88,6 +99,8 @@ export default function CharacteristicValueCombobox({
       DeleteAlertDialog={(props) => (
         <DeleteCharacteristicValueAlertDialog
           {...props}
+          selectedValue={selectedValueId}
+          setSelectedValue={setSelectedValue}
           characteristicId={characteristicId}
         />
       )}

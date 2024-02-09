@@ -16,9 +16,13 @@ import { toast } from 'sonner'
 export default function DeleteCharacteristicValueAlertDialog({
   id,
   characteristicId,
+  selectedValue,
+  setSelectedValue,
 }: {
   id: string
   characteristicId: string
+  selectedValue?: string
+  setSelectedValue?: (id?: string) => void
 }) {
   const [isOpened, setIsOpened] = useState(false)
 
@@ -30,6 +34,9 @@ export default function DeleteCharacteristicValueAlertDialog({
         onClick: toast.dismiss,
       },
     })
+    if (selectedValue === id && setSelectedValue) {
+      setSelectedValue()
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')
