@@ -1,3 +1,4 @@
+import ArchiveProductAlertDialog from '../actions/archive/ArchiveProductAlertDialog'
 import EditProductLink from '../actions/edit/EditProductLink'
 
 export default function ProductActions({
@@ -11,6 +12,7 @@ export default function ProductActions({
     return (
       <div className='flex items-center gap-2 justify-end'>
         <EditProductLink id={id} />
+        <ArchiveProductAlertDialog id={id} />
       </div>
     )
   }
