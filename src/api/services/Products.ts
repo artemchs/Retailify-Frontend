@@ -1,5 +1,5 @@
 import { FindAllInfo } from '@/types/FindAllInfo'
-import { Product } from '@/types/entities/Product'
+import { Product, ProductFindAll } from '@/types/entities/Product'
 import { OnSuccess, SetErrorMessage } from './types'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { CreateProductFormSchema } from '@/features/products/types/create-product-form-schema'
@@ -11,7 +11,7 @@ import { ProductsSearchParams } from '@/features/products/types/searchParams'
 import { EditProductFormSchema } from '@/features/products/types/edit-product-form-schema'
 
 export type ProductsFindAll = {
-  items: Product[]
+  items: ProductFindAll[]
   info: FindAllInfo
 }
 

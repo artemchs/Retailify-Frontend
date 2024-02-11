@@ -18,6 +18,7 @@ import SignUpPage from '@/pages/auth/SignUp'
 import CategoriesPage from '@/pages/categories/Categories'
 import CategoryGroupsPage from '@/pages/categories/CategoryGroups'
 import CreateProductPage from '@/pages/products/CreateProduct'
+import EditProductPage from '@/pages/products/EditProduct'
 import ProductsPage from '@/pages/products/Products'
 import { AccessTokenData } from '@/types/AccessTokenData'
 import { accessToken } from '@/utils/accessToken'
@@ -160,6 +161,13 @@ export const createProductRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
+export const editProductRoute = new Route({
+  getParentRoute: () => layout,
+  component: EditProductPage,
+  path: '/products/$productId/edit',
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
 export const routeTree = rootRoute.addChildren([
   layout.addChildren([
     homeRoute,
@@ -171,6 +179,7 @@ export const routeTree = rootRoute.addChildren([
     createProductRoute,
     categoryGroupsRoute,
     categoriesRoute,
+    editProductRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

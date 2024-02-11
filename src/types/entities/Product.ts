@@ -1,11 +1,16 @@
+export type ProductSeason = 'WINTER' | 'SPRING_FALL' | 'SUMMER' | 'ALL_SEASON'
+export type ProductGender = 'MALE' | 'FEMALE' | 'UNISEX'
+
 export type Product = {
   id: string
   createdAt: Date
   updatedAt: Date
   title: string
-  description: string
-  collectionId: string | null
+  description: string | null
+  categoryId: string | null
   brandId: string | null
+  gender: ProductGender
+  season: ProductSeason
   totalReceivedQuantity: number
   totalWarehouseQuantity: number
   packagingLength: number
@@ -13,4 +18,74 @@ export type Product = {
   packagingHeight: number
   packagingWeight: number
   isArchived: boolean
+  brand: {
+    id: string
+    name: string
+  } | null
+  category: {
+    id: string
+    name: string
+  } | null
+  colors:
+    | {
+        colorId: string
+        index: number
+        color: {
+          name: string
+          color: string
+        } | null
+      }[]
+    | null
+  media:
+    | {
+        id: string
+        index: number
+      }[]
+    | null
+  characteristicValues:
+    | {
+        id: string
+        characteristicId: string | null
+      }[]
+    | null
+}
+
+export type ProductFindAll = {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+  title: string
+  gender: ProductGender
+  season: ProductSeason
+  totalReceivedQuantity: number
+  totalWarehouseQuantity: number
+  packagingLength: number
+  packagingWidth: number
+  packagingHeight: number
+  packagingWeight: number
+  isArchived: boolean
+  brand: {
+    id: string
+    name: string
+  } | null
+  category: {
+    id: string
+    name: string
+  } | null
+  colors:
+    | {
+        colorId: string
+        index: number
+        color: {
+          name: string
+          color: string
+        }
+      }[]
+    | null
+  media:
+    | {
+        id: string
+        index: number
+      }[]
+    | null
 }

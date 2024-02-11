@@ -1,10 +1,20 @@
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
-import { Product } from '@/types/entities/Product'
+import { ProductFindAll } from '@/types/entities/Product'
 import { ColumnDef } from '@tanstack/react-table'
-import RenderCollection from './RenderCollection'
-import RenderBrand from './RenderBrand'
+import { DisplayUploadedFile } from '../shared/media/DisplayUploadedFile'
+import ProductActions from './ProductActions'
 
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<ProductFindAll>[] = [
+  {
+    id: 'Медиа',
+    cell: ({ row }) =>
+      row.original.media?.[0] && (
+        <DisplayUploadedFile
+          id={row.original.media?.[0].id}
+          className='h-20 w-20 shadow-sm'
+        />
+      ),
+  },
   {
     id: 'Название',
     header: () => (
@@ -19,53 +29,103 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    id: 'Коллекция',
-    cell: ({ row }) => {
-      const { collectionId } = row.original
-
-      if (collectionId) {
-        return <RenderCollection id={collectionId} />
-      }
-    },
+    id: 'Категория',
+    header: 'Категория',
+    accessorFn: ({ category }) => category?.name,
   },
   {
     id: 'Бренд',
+    header: 'Бренд',
+    accessorFn: ({ brand }) => brand?.name,
+  },
+  {
+    id: 'Пол',
+    accessorFn: ({ gender }) =>
+      gender === 'MALE'
+        ? 'Мужской'
+        : gender === 'FEMALE'
+        ? 'Женский'
+        : 'Унисекс',
+  },
+  {
+    id: 'Сезон',
+    accessorFn: ({ season }) =>
+      season === 'ALL_SEASON'
+        ? 'Всесезон'
+        : season === 'SPRING_FALL'
+        ? 'Весна-лето'
+        : season === 'SUMMER'
+        ? 'Лето'
+        : 'Зима',
+  },
+  {
+    id: 'Цвета',
+    header: 'Цвета',
     cell: ({ row }) => {
-      const { brandId } = row.original
+      const colorsArray = row.original.colors?.map(({ color, colorId }) => ({
+        color: color.color,
+        colorId,
+      }))
 
-      if (brandId) {
-        return <RenderBrand id={brandId} />
+      if (colorsArray) {
+        return (
+          <div className='flex items-center gap-1'>
+            {colorsArray.map(({ color, colorId }) => (
+              <div
+                key={colorId}
+                className='h-4 w-4 rounded-full border border-input'
+                style={{
+                  backgroundColor: color,
+                }}
+              />
+            ))}
+          </div>
+        )
       }
     },
   },
   {
     id: 'Полученное количество',
     header: () => (
-      <SortableDataTableHeader
-        label='Полученное количество'
-        orderByProperty='totalReceivedQuantity'
-        routeId='/layout/products'
-      />
+      <div className='flex justify-end'>
+        <SortableDataTableHeader
+          label='Полученное количество'
+          orderByProperty='totalReceivedQuantity'
+          routeId='/layout/products'
+        />
+      </div>
     ),
     cell: ({ row }) => {
       const { totalReceivedQuantity } = row.original
 
-      return <span>{totalReceivedQuantity}</span>
+      return <p className='text-end'>{totalReceivedQuantity}</p>
     },
   },
   {
     id: 'Количество на складах',
     header: () => (
-      <SortableDataTableHeader
-        label='Количество на складах'
-        orderByProperty='totalWarehouseQuantity'
-        routeId='/layout/products'
-      />
+      <div className='flex justify-end'>
+        <SortableDataTableHeader
+          label='Количество на складах'
+          orderByProperty='totalWarehouseQuantity'
+          routeId='/layout/products'
+        />
+      </div>
     ),
     cell: ({ row }) => {
       const { totalWarehouseQuantity } = row.original
 
-      return <span>{totalWarehouseQuantity}</span>
+      return <p className='text-end'>{totalWarehouseQuantity}</p>
     },
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const { id, isArchived } = row.original
+
+      return <ProductActions id={id} isArchived={isArchived} />
+    },
+    enableSorting: false,
+    enableHiding: false,
   },
 ]

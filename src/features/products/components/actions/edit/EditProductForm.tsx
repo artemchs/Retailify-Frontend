@@ -1,9 +1,11 @@
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import Products from '@/api/services/Products'
+import { editProductFormSchema } from '@/features/products/types/edit-product-form-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
 import { Tags } from 'lucide-react'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import {
   Form,
@@ -12,43 +14,59 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
-import SaveButton from '@/components/forms/SaveButton'
-import { createProductFormSchema } from '@/features/products/types/create-product-form-schema'
-import Products from '@/api/services/Products'
 import { Label } from '@/components/ui/label'
-import UploadMediaInput from '../../shared/media/UploadMediaInput'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
-import TextEditor from '../../shared/text-editor/TextEditor'
+import TitleInput from '../../shared/TitleInput'
 import SelectSeason from '../../shared/SelectSeason'
 import SelectGender from '../../shared/SelectGender'
 import BrandsCombobox from '@/features/brands/components/shared/BrandsCombobox'
 import CategoriesCombobox from '@/features/categories/components/shared/CategoriesCombobox'
-import TitleInput from '../../shared/TitleInput'
 import ColorsCombobox from '@/features/colors/components/shared/ColorsCombobox'
-import CharacteristicsInput from '../../shared/characteristics/CharacteristicsInput'
 import { Input } from '@/components/ui/input'
+import SaveButton from '@/components/forms/SaveButton'
+import CharacteristicsInput from '../../shared/characteristics/CharacteristicsInput'
+import TextEditor from '../../shared/text-editor/TextEditor'
+import UploadMediaInput from '../../shared/media/UploadMediaInput'
+import { Product } from '@/types/entities/Product'
 
-export default function CreateProductForm() {
-  const form = useForm<z.infer<typeof createProductFormSchema>>({
-    resolver: zodResolver(createProductFormSchema),
+type Props = {
+  productId: string
+  product?: Product
+}
+
+export default function EditProductForm({ productId, product }: Props) {
+  const form = useForm<z.infer<typeof editProductFormSchema>>({
+    resolver: zodResolver(editProductFormSchema),
     defaultValues: {
-      title: '',
-      characteristicValues: [],
-      categoryId: '',
-      colors: [],
-      description: '',
-      media: [],
-      packagingHeight: 0,
-      packagingLength: 0,
-      packagingWeight: 0,
-      packagingWidth: 0,
-      gender: 'UNISEX',
-      season: 'ALL_SEASON',
+      title: product?.title,
+      characteristicValues: product?.characteristicValues
+        ? product?.characteristicValues.map(({ characteristicId, id }) => ({
+            characteristicId: characteristicId ?? undefined,
+            id: id ?? undefined,
+          }))
+        : [],
+      categoryId: product?.categoryId ?? '',
+      colors: product?.colors
+        ? product.colors.map(({ colorId, index, color }) => ({
+            id: colorId,
+            index,
+            name: color?.name,
+          }))
+        : [],
+      description: product?.description ? product.description : '',
+      media: product?.media ?? [],
+      packagingHeight: product?.packagingHeight,
+      packagingLength: product?.packagingLength,
+      packagingWeight: product?.packagingWeight,
+      packagingWidth: product?.packagingWidth,
+      gender: product?.gender,
+      season: product?.season,
+      brandId: product?.brandId ?? '',
     },
   })
 
   function onSuccess() {
-    toast('Новая модель товара была успешно добавлена.', {
+    toast('Модель товара была успешно отредактирована.', {
       icon: <Tags className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
@@ -58,12 +76,13 @@ export default function CreateProductForm() {
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = Products.useCreate({
+  const { mutate, isPending } = Products.useEdit({
     setErrorMessage,
     onSuccess,
+    id: productId,
   })
 
-  function onSubmit(values: z.infer<typeof createProductFormSchema>) {
+  function onSubmit(values: z.infer<typeof editProductFormSchema>) {
     mutate({
       body: values,
     })

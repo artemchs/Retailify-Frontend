@@ -5,7 +5,7 @@ export const createProductFormSchema = z.object({
   categoryId: z.string().min(1, requiredField),
   brandId: z.string().min(1, requiredField),
   title: z.string().min(1, requiredField),
-  description: z.string().optional(),
+  description: z.string().min(1, requiredField),
   gender: z.enum(['MALE', 'FEMALE', 'UNISEX']),
   season: z.enum(['WINTER', 'SPRING_FALL', 'SUMMER', 'ALL_SEASON']),
   colors: z
@@ -16,7 +16,7 @@ export const createProductFormSchema = z.object({
         index: z.number(),
       })
     )
-    .optional(),
+    .min(1, requiredField),
   media: z
     .array(
       z.object({
@@ -25,7 +25,7 @@ export const createProductFormSchema = z.object({
       })
     )
     .optional(),
-    characteristicValues: z
+  characteristicValues: z
     .array(
       z.object({
         characteristicId: z.string(),
@@ -33,10 +33,30 @@ export const createProductFormSchema = z.object({
       })
     )
     .optional(),
-  packagingLength: z.number().min(1, requiredField),
-  packagingWidth: z.number().min(1, requiredField),
-  packagingHeight: z.number().min(1, requiredField),
-  packagingWeight: z.number().min(1, requiredField),
+  packagingLength: z.coerce
+    .number({
+      required_error: requiredField,
+      invalid_type_error: 'Значение должно быть числом',
+    })
+    .min(0, requiredField),
+  packagingWidth: z.coerce
+    .number({
+      required_error: requiredField,
+      invalid_type_error: 'Значение должно быть числом',
+    })
+    .min(0, requiredField),
+  packagingHeight: z.coerce
+    .number({
+      required_error: requiredField,
+      invalid_type_error: 'Значение должно быть числом',
+    })
+    .min(0, requiredField),
+  packagingWeight: z.coerce
+    .number({
+      required_error: requiredField,
+      invalid_type_error: 'Значение должно быть числом',
+    })
+    .min(0, requiredField),
 })
 
 export type CreateProductFormSchema = z.infer<typeof createProductFormSchema>

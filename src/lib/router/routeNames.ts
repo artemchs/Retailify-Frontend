@@ -8,4 +8,5 @@ export default {
   '/category-groups': 'Группы категорий товара',
   '/products': 'Модели товара',
   '/products/create': 'Добавить новую модель',
+  '/products/$productId/edit': 'Редактировать модель',
 }
