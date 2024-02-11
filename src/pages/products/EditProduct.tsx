@@ -1,4 +1,5 @@
 import Products from '@/api/services/Products'
+import { ErrorPage, LoadingPage } from '@/components/ui/async-page'
 import PageTitle from '@/components/ui/page-title'
 import EditProductForm from '@/features/products/components/actions/edit/EditProductForm'
 import { editProductRoute } from '@/lib/router/routeTree'
@@ -14,9 +15,13 @@ export default function EditProductPage() {
   return (
     <div className='container flex flex-col gap-8'>
       <PageTitle title='Редактировать  модель товара' />
-      {isLoading && 'Загрузка...'}
-      {isError && 'Ошибка'}
-      {data && <EditProductForm productId={productId} product={data} />}
+      {isLoading ? (
+        <LoadingPage />
+      ) : isError ? (
+        <ErrorPage />
+      ) : (
+        <EditProductForm productId={productId} product={data} />
+      )}
     </div>
   )
 }

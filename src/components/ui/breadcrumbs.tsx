@@ -7,26 +7,37 @@ export default function Breadcrumbs() {
     location: { pathname },
   } = useRouterState()
 
-  const breadcrumbs = pathname.split('/').map((_, index, segments) => {
-    const currentPath = segments.slice(0, index + 1).join('/')
-    const route = (currentPath || '/') as keyof typeof routeNames
+  const segments = pathname.split('/').filter((segment) => segment !== '') // Remove empty segments
+
+  const breadcrumbs = segments.map((segment, index) => {
+    const path = `/${segments.slice(0, index + 1).join('/')}` // Build path up to this segment
+    const route = Object.keys(routeNames).find((key) => {
+      const pattern = key.replace(/\*/g, '([^/]+)') // Replace * with a regex pattern
+      return new RegExp(`^${pattern}$`).test(path)
+    })
 
     return {
-      name: routeNames[route],
+      name: routeNames[route] || segment, // Use segment if no route name found
       route,
+      value: segment, // Store the segment value for dynamic segments
+      path,
     }
   })
 
   return (
     <div className='flex items-center gap-1'>
-      {breadcrumbs.map(({ name, route }, index) => (
-        <div className='flex items-center gap-1' key={route}>
+      {breadcrumbs.map(({ name, route, value, path }, index) => (
+        <div className='flex items-center gap-1' key={route || value}>
           {index > 0 && (
             <ChevronRight className='text-muted-foreground h-4 w-4' />
           )}
-          <Link className='hover:underline' to={route}>
-            {name}
-          </Link>
+          {route ? (
+            <Link className='hover:underline' to={path}>
+              {name}
+            </Link>
+          ) : (
+            <span className='text-muted-foreground'>{name}</span>
+          )}
         </div>
       ))}
     </div>
