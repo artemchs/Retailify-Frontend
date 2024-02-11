@@ -1,5 +1,6 @@
 import Products from '@/api/services/Products'
 import CreateProductLink from '@/features/products/components/actions/create/CreateProductLink'
+import FilterProducts from '@/features/products/components/table/FilterProducts'
 import { columns } from '@/features/products/components/table/columns'
 import CrudLayout from '@/layouts/CrudLayout'
 import { productsRoute } from '@/lib/router/routeTree'
@@ -23,6 +24,7 @@ export default function ProductsPage() {
       topBarElements={
         <>
           <CreateProductLink />
+          <FilterProducts />
         </>
       }
     />
