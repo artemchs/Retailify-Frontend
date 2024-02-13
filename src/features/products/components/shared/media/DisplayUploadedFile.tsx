@@ -49,7 +49,7 @@ export function DisplayUploadedFile({
   return (
     <img
       className={cn(
-        'border shadow-sm border-input rounded-lg object-contain bg-white dark:bg-black',
+        'border shadow-sm border-input rounded-lg object-cover bg-white dark:bg-black flex shrink-0',
         className
       )}
       src={data}

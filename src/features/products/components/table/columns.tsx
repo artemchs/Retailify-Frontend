@@ -9,10 +9,12 @@ export const columns: ColumnDef<ProductFindAll>[] = [
     id: 'Медиа',
     cell: ({ row }) =>
       row.original.media?.[0] && (
-        <DisplayUploadedFile
-          id={row.original.media?.[0].id}
-          className='h-20 w-20 shadow-sm'
-        />
+        <div className='w-24 h-24 shrink-0'>
+          <DisplayUploadedFile
+            id={row.original.media?.[0].id}
+            className='w-full aspect-square shadow-sm'
+          />
+        </div>
       ),
   },
   {
@@ -26,6 +28,13 @@ export const columns: ColumnDef<ProductFindAll>[] = [
     ),
     cell: ({ row }) => {
       return <span className='font-medium'>{row.original.title}</span>
+    },
+  },
+  {
+    id: 'Артикул',
+    header: 'Артикул',
+    cell: ({ row }) => {
+      return <span className='text-muted-foreground'>{row.original.sku}</span>
     },
   },
   {

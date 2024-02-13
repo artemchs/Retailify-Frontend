@@ -3,6 +3,7 @@ export type ProductGender = 'MALE' | 'FEMALE' | 'UNISEX'
 
 export type Product = {
   id: string
+  sku: string
   createdAt: Date
   updatedAt: Date
   title: string
@@ -52,6 +53,7 @@ export type Product = {
 
 export type ProductFindAll = {
   id: string
+  sku: string
   createdAt: Date
   updatedAt: Date
   title: string
