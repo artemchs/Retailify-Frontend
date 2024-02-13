@@ -2,7 +2,6 @@ import { v4 as uuid } from 'uuid'
 import { Grip, UploadCloud, X } from 'lucide-react'
 import { ChangeEvent, useCallback, useRef, useState } from 'react'
 import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
-import Storage from '@/api/services/Storage'
 import {
   DisplayErrorFile,
   DisplayLoadingFile,
@@ -28,6 +27,8 @@ import {
 import { restrictToParentElement } from '@dnd-kit/modifiers'
 import { CSS } from '@dnd-kit/utilities'
 import { cn } from '@/lib/utils'
+import { useDropzone } from 'react-dropzone'
+import client from '@/api/client'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,7 +56,6 @@ export default function UploadMediaInput({ field, form }: Props) {
   )
 
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const uploadMutation = Storage.useUpload()
 
   const values = field.value as UploadedMedia[]
   const [uploadStates, setUploadStates] = useState<{
@@ -73,36 +73,67 @@ export default function UploadMediaInput({ field, form }: Props) {
     return MAX_FILE_SIZE >= file.size && ACCEPTED_FILE_TYPES.includes(file.type)
   }
 
-  async function selectFile(file: File) {
-    const key = `products/${uuid()}`
-    setUploadStates((prevStates) => ({ ...prevStates, [key]: 'uploading' }))
-    const newArray = [...values]
-    newArray.push({
-      id: key,
-      index: newArray.length,
-    })
-    setValues(newArray)
+  const handleFilesUpload = useCallback(
+    async (files?: File[]) => {
+      if (files && files.length >= 1) {
+        await Promise.all(
+          files.map(async (file) => {
+            const key = `products/${uuid()}`
 
-    try {
-      await uploadMutation.mutateAsync({ file, key })
-      setUploadStates((prevStates) => ({ ...prevStates, [key]: 'idle' }))
-    } catch (error) {
-      setUploadStates((prevStates) => ({ ...prevStates, [key]: 'error' }))
-      console.error('Error uploading file:', error)
-    }
-  }
+            setUploadStates((prevStates) => ({
+              ...prevStates,
+              [key]: 'uploading',
+            }))
+            const newArray = values
+            newArray.push({
+              id: key,
+              index: newArray.length,
+            })
+            setValues(newArray)
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files?.length >= 1) {
-      for (let i = 0; i < e.target.files.length; i++) {
-        const file = e.target.files?.[i]
-        if (!file) return null
-        if (!validateFile(file)) return null
-
-        selectFile(file)
+            try {
+              const { data } = await client.post(`/storage?key=${key}`)
+              await fetch(data, {
+                body: file,
+                method: 'PUT',
+              })
+              setUploadStates((prevStates) => ({
+                ...prevStates,
+                [key]: 'idle',
+              }))
+            } catch (error) {
+              setUploadStates((prevStates) => ({
+                ...prevStates,
+                [key]: 'error',
+              }))
+              console.error('Error uploading file:', error)
+            }
+          })
+        )
       }
+    },
+    [setValues, values]
+  )
+
+  const onDrop = useCallback(
+    (files?: File[]) => {
+      if (files && files.length >= 1) {
+        const acceptedFiles = files.filter((file) => validateFile(file))
+        handleFilesUpload(acceptedFiles)
+      }
+    },
+    [handleFilesUpload]
+  )
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? [])
+
+    if (files && files.length >= 1) {
+      const acceptedFiles = files.filter((file) => validateFile(file))
+      handleFilesUpload(acceptedFiles)
     }
   }
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -131,9 +162,18 @@ export default function UploadMediaInput({ field, form }: Props) {
         ref={inputRef}
         onChange={handleInputChange}
         multiple
+        {...getInputProps()}
       />
       <div className='flex flex-col gap-2 md:gap-4'>
-        <div className='flex text-muted-foreground w-full rounded-lg border border-input border-dashed p-4 items-center justify-center flex-col gap-2'>
+        <div
+          {...getRootProps()}
+          className={cn(
+            'flex transition-all w-full rounded-lg border border-dashed p-4 items-center justify-center flex-col gap-2',
+            isDragActive
+              ? 'border-primary text-primary'
+              : 'border-input text-muted-foreground'
+          )}
+        >
           <UploadCloud className='h-8 w-8 md:h-10 md:w-10 lg:h-12 lg:w-12' />
           <p className='text-center text-sm md:text-base'>
             <span

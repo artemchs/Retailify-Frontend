@@ -17,6 +17,7 @@ export default function Breadcrumbs() {
     })
 
     return {
+      // @ts-expect-error idk
       name: routeNames[route] || segment, // Use segment if no route name found
       route,
       value: segment, // Store the segment value for dynamic segments

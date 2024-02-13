@@ -1,20 +1,20 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { createGoodsReceiptFormSchema } from './create-goods-receipt-form-schema'
+import { createGoodsReceiptFormSchema } from '../../../types/create-goods-receipt-form-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PackagePlus } from 'lucide-react'
 import { toast } from 'sonner'
 import { useState } from 'react'
 import GoodsReceipts from '@/api/services/GoodsReceipts'
 import { AlertDestructive } from '@/components/AlertDestructive'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form'
+import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
+import SelectSupplier from '@/features/suppliers/components/shared/SelectSupplier'
+import SelectWarehouse from '@/features/warehouses/components/shared/SelectWarehouse'
+import SaveButton from '@/components/forms/SaveButton'
+import SelectPaymentOption from '../../shared/SelectPaymentOption'
+import SelectPaymentTerm from '../../shared/SelectPaymentTerm'
+import { DatePickerWithPresets } from '@/components/ui/date-picker'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -25,11 +25,11 @@ export default function CreateGoodsReceiptForm({ setIsOpened }: Props) {
     resolver: zodResolver(createGoodsReceiptFormSchema),
     defaultValues: {
       goodsReceiptDate: new Date(),
-      paymentOption: 'PRIVATE_FUNDS',
-      paymentTerm: 'PAYMENT_IN_ADVANCE',
       supplierId: '',
       warehouseId: '',
       variants: [],
+      paymentOption: 'CURRENT_ACCOUNT',
+      paymentTerm: 'IN_ADVANCE',
     },
   })
 
@@ -63,13 +63,26 @@ export default function CreateGoodsReceiptForm({ setIsOpened }: Props) {
         <form className='flex flex-col gap-4'>
           <FormField
             control={form.control}
+            name='goodsReceiptDate'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Дата прихода' />
+                <DatePickerWithPresets
+                  fieldName='goodsReceiptDate'
+                  field={field}
+                  form={form}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name='supplierId'
             render={({ field }) => (
               <FormItem>
                 <FormLabelForRequiredFields text='Поставщик' />
-                <FormControl>
-                  <Input placeholder={warehouseName} {...field} />
-                </FormControl>
+                <SelectSupplier field={field} form={form} />
                 <FormMessage />
               </FormItem>
             )}
@@ -80,9 +93,40 @@ export default function CreateGoodsReceiptForm({ setIsOpened }: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormLabelForRequiredFields text='Склад' />
-                <FormControl>
-                  <Input placeholder={warehouseAddress} {...field} />
-                </FormControl>
+                <SelectWarehouse form={form} field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='paymentOption'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Способ оплаты' />
+                <SelectPaymentOption field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='paymentTerm'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Условия оплаты' />
+                <SelectPaymentTerm field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='variants'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Товар' />
+
                 <FormMessage />
               </FormItem>
             )}

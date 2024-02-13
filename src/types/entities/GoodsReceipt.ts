@@ -1,21 +1,13 @@
-export type SupplierInvoicePaymentOption =
-  | 'PRIVATE_FUNDS'
-  | 'CURRENT_ACCOUNT'
-  | 'CASH_REGISTER'
-export type SupplierInvoicePaymentTerm =
-  | 'CASH_ON_DELIVERY'
-  | 'PAYMENT_IN_ADVANCE'
-  | 'PAYMENT_ON_REALIZATION'
-
-export const supplierInvoicePaymentOptionsTranslation = {
+export const paymentOptions = {
   PRIVATE_FUNDS: 'Личные средства',
   CURRENT_ACCOUNT: 'Расчетный счет',
   CASH_REGISTER: 'Касса',
 }
-export const supplierInvoicePaymentTermsTranslation = {
-  CASH_ON_DELIVERY: 'При приходе',
-  PAYMENT_IN_ADVANCE: 'На перед',
-  PAYMENT_ON_REALIZATION: 'На реализацию',
+
+export const paymentTerms = {
+  ON_DELIVERY: 'При приходе',
+  IN_ADVANCE: 'На перед',
+  ON_REALIZATION: 'На реализацию',
 }
 
 export type GoodsReceipt = {
@@ -27,8 +19,8 @@ export type GoodsReceipt = {
   name: string
   goodsReceiptDate: Date
   supplierInvoice: {
-    paymentOption: SupplierInvoicePaymentOption
-    paymentTerm: SupplierInvoicePaymentTerm
+    paymentOption: keyof typeof paymentOptions
+    paymentTerm: keyof typeof paymentTerms
     accountsPayable: string
   } | null
 }

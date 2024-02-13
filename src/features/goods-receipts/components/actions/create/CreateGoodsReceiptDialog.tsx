@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog'
 import { PackagePlus } from 'lucide-react'
 import { useState } from 'react'
+import CreateGoodsReceiptForm from './CreateGoodsReceiptForm'
 
 export default function CreateGoodsReceiptDialog() {
   const [isOpened, setIsOpened] = useState(false)
@@ -24,6 +25,7 @@ export default function CreateGoodsReceiptDialog() {
         <DialogHeader>
           <DialogTitle>Новый приход</DialogTitle>
         </DialogHeader>
+        <CreateGoodsReceiptForm setIsOpened={setIsOpened} />
       </DialogContent>
     </Dialog>
   )
