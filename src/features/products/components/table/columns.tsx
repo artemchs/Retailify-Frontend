@@ -22,7 +22,7 @@ export const columns: ColumnDef<ProductFindAll>[] = [
     header: () => (
       <SortableDataTableHeader
         label='Название'
-        orderByProperty='name'
+        orderByProperty='title'
         routeId='/layout/products'
       />
     ),
@@ -32,7 +32,13 @@ export const columns: ColumnDef<ProductFindAll>[] = [
   },
   {
     id: 'Артикул',
-    header: 'Артикул',
+    header: () => (
+      <SortableDataTableHeader
+        label='Артикул'
+        orderByProperty='sku'
+        routeId='/layout/products'
+      />
+    ),
     cell: ({ row }) => {
       return <span className='text-muted-foreground'>{row.original.sku}</span>
     },

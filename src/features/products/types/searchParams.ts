@@ -8,19 +8,12 @@ export const productsSearchParamsSchema = z.object({
     .object({
       title: z.enum(['asc', 'desc']).optional(),
       createdAt: z.enum(['asc', 'desc']).optional(),
-      description: z.enum(['asc', 'desc']).optional(),
-      price: z.enum(['asc', 'desc']).optional(),
-      sale: z.enum(['asc', 'desc']).optional(),
-      packagingLength: z.enum(['asc', 'desc']).optional(),
-      packagingWidth: z.enum(['asc', 'desc']).optional(),
-      packagingHeight: z.enum(['asc', 'desc']).optional(),
-      packagingWeight: z.enum(['asc', 'desc']).optional(),
-      totalStock: z.enum(['asc', 'desc']).optional(),
+      sku: z.enum(['asc', 'desc']).optional(),
+      totalReceivedQuantity: z.enum(['asc', 'desc']).optional(),
+      totalWarehouseQuantity: z.enum(['asc', 'desc']).optional(),
     })
     .optional(),
   isArchived: z.number().optional(),
 })
 
-export type ProductsSearchParams = z.infer<
-  typeof productsSearchParamsSchema
->
+export type ProductsSearchParams = z.infer<typeof productsSearchParamsSchema>
