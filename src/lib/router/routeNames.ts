@@ -4,6 +4,7 @@ export default {
   '/suppliers': 'Поставщики',
   '/warehouses': 'Склады',
   '/goods-receipts': 'Приход товара',
+  '/goods-receipts/create': 'Добавить накладную прихода',
   '/categories': 'Категории товара',
   '/category-groups': 'Группы категорий товара',
   '/products': 'Модели товара',

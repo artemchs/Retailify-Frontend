@@ -15,12 +15,9 @@ import SaveButton from '@/components/forms/SaveButton'
 import SelectPaymentOption from '../../shared/SelectPaymentOption'
 import SelectPaymentTerm from '../../shared/SelectPaymentTerm'
 import { DatePickerWithPresets } from '@/components/ui/date-picker'
+import SelectProductsVariants from '../../shared/SelectProductVariants'
 
-type Props = {
-  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export default function CreateGoodsReceiptForm({ setIsOpened }: Props) {
+export default function CreateGoodsReceiptForm() {
   const form = useForm<z.infer<typeof createGoodsReceiptFormSchema>>({
     resolver: zodResolver(createGoodsReceiptFormSchema),
     defaultValues: {
@@ -34,7 +31,6 @@ export default function CreateGoodsReceiptForm({ setIsOpened }: Props) {
   })
 
   function onSuccess() {
-    setIsOpened(false)
     toast('Новая накладная прихода была успешно добавлена.', {
       icon: <PackagePlus className='h-4 w-4' />,
       cancel: {
@@ -76,57 +72,61 @@ export default function CreateGoodsReceiptForm({ setIsOpened }: Props) {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name='supplierId'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabelForRequiredFields text='Поставщик' />
-                <SelectSupplier field={field} form={form} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='warehouseId'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabelForRequiredFields text='Склад' />
-                <SelectWarehouse form={form} field={field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='paymentOption'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabelForRequiredFields text='Способ оплаты' />
-                <SelectPaymentOption field={field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='paymentTerm'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabelForRequiredFields text='Условия оплаты' />
-                <SelectPaymentTerm field={field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className='flex flex-col lg:flex-row gap-4'>
+            <FormField
+              control={form.control}
+              name='warehouseId'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabelForRequiredFields text='Склад' />
+                  <SelectWarehouse form={form} field={field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='supplierId'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabelForRequiredFields text='Поставщик' />
+                  <SelectSupplier field={field} form={form} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className='flex flex-col lg:flex-row gap-4'>
+            <FormField
+              control={form.control}
+              name='paymentOption'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabelForRequiredFields text='Способ оплаты' />
+                  <SelectPaymentOption field={field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='paymentTerm'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabelForRequiredFields text='Условия оплаты' />
+                  <SelectPaymentTerm field={field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name='variants'
             render={({ field }) => (
               <FormItem>
                 <FormLabelForRequiredFields text='Товар' />
-
+                <SelectProductsVariants field={field} form={form} />
                 <FormMessage />
               </FormItem>
             )}

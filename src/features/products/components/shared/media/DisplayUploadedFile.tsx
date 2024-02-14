@@ -1,6 +1,6 @@
 import Storage from '@/api/services/Storage'
 import { cn } from '@/lib/utils'
-import { Loader2, XCircle } from 'lucide-react'
+import { ImageOff, Loader2, XCircle } from 'lucide-react'
 
 export function DisplayLoadingFile({ className }: { className: string }) {
   return (
@@ -25,6 +25,19 @@ export function DisplayErrorFile({ className }: { className: string }) {
     >
       <XCircle className='h-6 w-6 shrink-0' />
       <span className='text-sm'>Ошибка</span>
+    </div>
+  )
+}
+
+export function DisplayNoFile({ className }: { className: string }) {
+  return (
+    <div
+      className={cn(
+        'border shadow-sm border-input rounded-lg bg-muted flex items-center justify-center',
+        className
+      )}
+    >
+      <ImageOff className='h-4 w-4 text-muted-foreground' />
     </div>
   )
 }

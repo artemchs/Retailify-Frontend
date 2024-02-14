@@ -1,5 +1,5 @@
 import GoodsReceipts from '@/api/services/GoodsReceipts'
-import CreateGoodsReceiptDialog from '@/features/goods-receipts/components/actions/create/CreateGoodsReceiptDialog'
+import CreateGoodsReceiptLink from '@/features/goods-receipts/components/actions/create/CreateGoodsReceiptLink'
 import { columns } from '@/features/goods-receipts/components/table/columns'
 import CrudLayout from '@/layouts/CrudLayout'
 import { goodsReceiptsRoute } from '@/lib/router/routeTree'
@@ -22,7 +22,7 @@ export default function GoodsReceiptsPage() {
       title='Приход товара'
       topBarElements={
         <>
-          <CreateGoodsReceiptDialog />
+          <CreateGoodsReceiptLink />
         </>
       }
     />

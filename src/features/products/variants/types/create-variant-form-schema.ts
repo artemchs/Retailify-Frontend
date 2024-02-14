@@ -3,11 +3,10 @@ import { z } from 'zod'
 
 export const createVariantFormSchema = z.object({
   size: z.string().min(1, requiredField),
-  sku: z.string().min(1, requiredField),
-  price: z.number({
+  price: z.coerce.number({
     required_error: requiredField,
   }),
-  sale: z.number().optional(),
+  sale: z.coerce.number().optional(),
 })
 
 export type CreateVariantFormSchema = z.infer<typeof createVariantFormSchema>

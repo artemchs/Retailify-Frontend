@@ -6,7 +6,6 @@ export type Variant = {
   totalReceivedQuantity: number
   totalWarehouseQuantity: number
   size: string
-  sku: string
   barcode: string
   price: number
   sale: number | null

@@ -9,7 +9,7 @@ import { suppliersSearchParamsSchema } from '@/features/suppliers/types/searchPa
 import { warehousesSearchParamsSchema } from '@/features/warehouses/types/searchParams'
 import Layout from '@/layouts/Layout'
 import EmployeesPage from '@/pages/Employees'
-import GoodsReceiptsPage from '@/pages/GoodsReceipts'
+import GoodsReceiptsPage from '@/pages/goods-receipts/GoodsReceipts'
 import HomePage from '@/pages/Home'
 import SuppliersPage from '@/pages/Suppliers'
 import WarehousesPage from '@/pages/Warehouses'
@@ -25,6 +25,7 @@ import { accessToken } from '@/utils/accessToken'
 import { isAuthenticated } from '@/utils/isAuthenticated'
 import setContextUser from '@/utils/setContextUser'
 import { Route, redirect, rootRouteWithContext } from '@tanstack/react-router'
+import CreateGoodsReceiptPage from '@/pages/goods-receipts/CreateGoodsReceipt'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -130,6 +131,12 @@ export const goodsReceiptsRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
+export const createGoodsReceiptRoute = new Route({
+  getParentRoute: () => layout,
+  component: CreateGoodsReceiptPage,
+  path: '/goods-receipts/create',
+})
+
 export const categoryGroupsRoute = new Route({
   getParentRoute: () => layout,
   component: CategoryGroupsPage,
@@ -175,6 +182,7 @@ export const routeTree = rootRoute.addChildren([
     suppliersRoute,
     warehousesRoute,
     goodsReceiptsRoute,
+    createGoodsReceiptRoute,
     productsRoute,
     createProductRoute,
     categoryGroupsRoute,

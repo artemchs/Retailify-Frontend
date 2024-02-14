@@ -18,8 +18,12 @@ export type ProductsFindAll = {
   info: FindAllInfo
 }
 
+interface ProductWithVariants extends Product {
+  variants: Variant[]
+}
+
 export type ProductsFindAllInfiniteList = {
-  items: Product[]
+  items: ProductWithVariants[]
   nextCursor?: string
 }
 
@@ -44,6 +48,9 @@ export default {
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: ['products'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
         })
         onSuccess()
       },
@@ -107,6 +114,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['product', { id }],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
@@ -133,6 +143,9 @@ export default {
         })
         queryClient.invalidateQueries({
           queryKey: ['product', { id }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
         })
         onSuccess()
       },
@@ -161,18 +174,19 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['product', { id }],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
     }),
 
-  useCreateValue: ({
-    setErrorMessage,
+  useCreateVariant: ({
     onSuccess,
     productId,
   }: {
-    setErrorMessage: SetErrorMessage
     onSuccess: OnSuccess
     productId: string
   }) =>
@@ -191,10 +205,11 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['product-variants', { id: productId }],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
         onSuccess()
       },
-      onError: (error: AxiosError) =>
-        onErrorHandler({ error, setErrorMessage }),
     }),
 
   useFindAllInfiniteListVariant: (
@@ -257,6 +272,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['product-variants-infinite-list', { productId }],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
@@ -292,44 +310,50 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['product-variants-infinite-list', { productId }],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
     }),
 
-    useRestoreVariant: ({
-      setErrorMessage,
-      onSuccess,
-      id,
-      productId,
-    }: {
-      setErrorMessage: SetErrorMessage
-      onSuccess: OnSuccess
-      id: string
-      productId: string
-    }) =>
-      useMutation({
-        mutationKey: ['restore-product-variant'],
-        mutationFn: async () => {
-          return await client.put(`/products/restore/${productId}/variants/${id}`)
-        },
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: ['products'],
-          })
-          queryClient.invalidateQueries({
-            queryKey: ['product', { id }],
-          })
-          queryClient.invalidateQueries({
-            queryKey: ['product-variant', { id, productId }],
-          })
-          queryClient.invalidateQueries({
-            queryKey: ['product-variants-infinite-list', { productId }],
-          })
-          onSuccess()
-        },
-        onError: (error: AxiosError) =>
-          onErrorHandler({ error, setErrorMessage }),
-      }),
+  useRestoreVariant: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+    productId,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+    productId: string
+  }) =>
+    useMutation({
+      mutationKey: ['restore-product-variant'],
+      mutationFn: async () => {
+        return await client.put(`/products/restore/${productId}/variants/${id}`)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['products'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['product', { id }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['product-variant', { id, productId }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['product-variants-infinite-list', { productId }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
 }

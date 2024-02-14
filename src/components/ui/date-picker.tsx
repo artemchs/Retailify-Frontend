@@ -43,7 +43,7 @@ export function DatePickerWithPresets({ field, form, fieldName }: Props) {
           )}
         >
           <CalendarIcon className='mr-2 h-4 w-4' />
-          {date ? format(date, 'PPP') : <span>Pick a date</span>}
+          {date ? format(date, 'PPP') : <span>Выберите дату</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -56,7 +56,7 @@ export function DatePickerWithPresets({ field, form, fieldName }: Props) {
           }
         >
           <SelectTrigger>
-            <SelectValue placeholder='Select' />
+            <SelectValue placeholder='Выберите' />
           </SelectTrigger>
           <SelectContent position='popper'>
             <SelectItem value='0'>Сегодня</SelectItem>
