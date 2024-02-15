@@ -16,6 +16,8 @@ import SelectPaymentOption from '../../shared/SelectPaymentOption'
 import SelectPaymentTerm from '../../shared/SelectPaymentTerm'
 import { DatePickerWithPresets } from '@/components/ui/date-picker'
 import SelectProductsVariants from '../../shared/SelectProductVariants'
+import ProductVariantsTable from '../../shared/ProductVariantsTable'
+import DisplayTotalCost from '../../shared/DisplayTotalCost'
 
 export default function CreateGoodsReceiptForm() {
   const form = useForm<z.infer<typeof createGoodsReceiptFormSchema>>({
@@ -126,7 +128,13 @@ export default function CreateGoodsReceiptForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabelForRequiredFields text='Товар' />
-                <SelectProductsVariants field={field} form={form} />
+                <div className='flex flex-col gap-2'>
+                  <SelectProductsVariants field={field} form={form} />
+                  <ProductVariantsTable field={field} form={form} />
+                  <div className='mt-2'>
+                    <DisplayTotalCost field={field} />
+                  </div>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

@@ -32,18 +32,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Variant } from './ProductVariantsTable'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   field: ControllerRenderProps<any, 'variants'>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any, any, undefined>
-}
-
-type Variant = {
-  variantId: string
-  supplierPrice: number
-  receivedQuantity: number
 }
 
 export default function SelectProductsVariants({ field, form }: Props) {
@@ -162,8 +157,7 @@ function ProductsTable({
           <TableHead></TableHead>
           <TableHead>Медиа</TableHead>
           <TableHead>Название/рамер</TableHead>
-          <TableHead>На складе (шт)</TableHead>
-          <TableHead>По приходу (шт)</TableHead>
+          <TableHead>Цена продажи (грн)</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -194,10 +188,13 @@ function ProductsTable({
                             onCheckedChange={(value) => {
                               if (value) {
                                 const newSelectedVariants: Variant[] =
-                                  item.variants.map(({ id }) => ({
+                                  item.variants.map(({ id, size }) => ({
                                     receivedQuantity: 0,
                                     supplierPrice: 0,
                                     variantId: id,
+                                    productName: item.title,
+                                    size,
+                                    productId: item.id,
                                   }))
                                 setVariants([
                                   ...variants,
@@ -224,12 +221,7 @@ function ProductsTable({
                           )}
                         </TableCell>
                         <TableCell>{item.title}</TableCell>
-                        <TableCell className='text-right'>
-                          {item.totalReceivedQuantity}
-                        </TableCell>
-                        <TableCell className='text-right'>
-                          {item.totalWarehouseQuantity}
-                        </TableCell>
+                        <TableCell></TableCell>
                       </TableRow>
                       {item.variants.map((variant) => (
                         <TableRow key={variant.id}>
@@ -245,6 +237,9 @@ function ProductsTable({
                                         receivedQuantity: 0,
                                         supplierPrice: 0,
                                         variantId: variant.id,
+                                        productName: item.title,
+                                        size: variant.size,
+                                        productId: item.id,
                                       },
                                     ])
                                   } else {
@@ -257,17 +252,9 @@ function ProductsTable({
                               />
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <div className='flex items-center justify-between'>
-                              <span>{variant.size}</span>
-                              <span>{variant.price} грн</span>
-                            </div>
-                          </TableCell>
+                          <TableCell>{variant.size}</TableCell>
                           <TableCell className='text-right'>
-                            {variant.totalReceivedQuantity}
-                          </TableCell>
-                          <TableCell className='text-right'>
-                            {variant.totalWarehouseQuantity}
+                            {variant.price}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -346,24 +333,22 @@ function AddVariant({ productId }: { productId: string }) {
         />
       </TableCell>
       <TableCell>
-        <FormField
-          control={form.control}
-          name='sale'
-          render={({ field }) => (
-            <FormItem>
-              <Input
-                className='h-7 text-sm'
-                placeholder='Скидка'
-                type='number'
-                {...field}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </TableCell>
-      <TableCell>
-        <div className='flex justify-end'>
+        <div className='flex items-center gap-2'>
+          <FormField
+            control={form.control}
+            name='sale'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <Input
+                  className='h-7 text-sm'
+                  placeholder='Скидка'
+                  type='number'
+                  {...field}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button
             className='h-7 w-7 shrink-0'
             size='icon'
