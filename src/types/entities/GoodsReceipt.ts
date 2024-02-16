@@ -31,4 +31,19 @@ export type GoodsReceipt = {
     paymentTerm: keyof typeof paymentTerms
     accountsPayable: string
   } | null
+  productVariants:
+    | {
+        variant: {
+          id: string
+          size: string
+          product: {
+            id: string
+            title: string
+          } | null
+        } | null
+        receivedQuantity: number
+        supplierPrice: string
+      }[]
+    | null
+  isArchived: boolean
 }

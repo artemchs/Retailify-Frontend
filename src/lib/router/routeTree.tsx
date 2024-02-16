@@ -26,6 +26,7 @@ import { isAuthenticated } from '@/utils/isAuthenticated'
 import setContextUser from '@/utils/setContextUser'
 import { Route, redirect, rootRouteWithContext } from '@tanstack/react-router'
 import CreateGoodsReceiptPage from '@/pages/goods-receipts/CreateGoodsReceipt'
+import EditGoodsReceiptPage from '@/pages/goods-receipts/EditGoodsReceipt'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -123,20 +124,6 @@ export const warehousesRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
-export const goodsReceiptsRoute = new Route({
-  getParentRoute: () => layout,
-  component: GoodsReceiptsPage,
-  path: '/goods-receipts',
-  validateSearch: (search) => goodsReceiptsSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
-})
-
-export const createGoodsReceiptRoute = new Route({
-  getParentRoute: () => layout,
-  component: CreateGoodsReceiptPage,
-  path: '/goods-receipts/create',
-})
-
 export const categoryGroupsRoute = new Route({
   getParentRoute: () => layout,
   component: CategoryGroupsPage,
@@ -175,6 +162,27 @@ export const editProductRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
+export const goodsReceiptsRoute = new Route({
+  getParentRoute: () => layout,
+  component: GoodsReceiptsPage,
+  path: '/goods-receipts',
+  validateSearch: (search) => goodsReceiptsSearchParamsSchema.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
+export const createGoodsReceiptRoute = new Route({
+  getParentRoute: () => layout,
+  component: CreateGoodsReceiptPage,
+  path: '/goods-receipts/create',
+})
+
+export const editGoodsReceiptRoute = new Route({
+  getParentRoute: () => layout,
+  component: EditGoodsReceiptPage,
+  path: '/goods-receipts/$goodsReceiptId/edit',
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
 export const routeTree = rootRoute.addChildren([
   layout.addChildren([
     homeRoute,
@@ -188,6 +196,7 @@ export const routeTree = rootRoute.addChildren([
     categoryGroupsRoute,
     categoriesRoute,
     editProductRoute,
+    editGoodsReceiptRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

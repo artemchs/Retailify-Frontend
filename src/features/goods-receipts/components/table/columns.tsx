@@ -6,6 +6,7 @@ import {
   paymentTerms,
 } from '@/types/entities/GoodsReceipt'
 import { ColumnDef } from '@tanstack/react-table'
+import GoodsReceiptActions from './GoodsReceiptActions'
 
 export const columns: ColumnDef<GoodsReceipt>[] = [
   {
@@ -67,5 +68,15 @@ export const columns: ColumnDef<GoodsReceipt>[] = [
         </div>
       )
     },
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const { id, isArchived } = row.original
+
+      return <GoodsReceiptActions id={id} isArchived={isArchived} />
+    },
+    enableSorting: false,
+    enableHiding: false,
   },
 ]

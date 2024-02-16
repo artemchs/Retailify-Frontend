@@ -8,6 +8,7 @@ import { queryClient } from '@/lib/query-client/tanstack-query-client'
 import onErrorHandler from './utils/onErrorHandler'
 import { AxiosError } from 'axios'
 import { CreateGoodsReceiptFormSchema } from '@/features/goods-receipts/types/create-goods-receipt-form-schema'
+import { EditGoodsReceiptFormSchema } from '@/features/goods-receipts/types/edit-goods-receipt-form-schema'
 
 export type GoodsReceiptFindAll = {
   items: GoodsReceipt[]
@@ -30,7 +31,7 @@ export default {
     useQuery({
       queryKey: ['goods-receipt', { id }],
       queryFn: async () => {
-        const { data } = await client.get(`/goods-receipt/${id}`)
+        const { data } = await client.get(`/goods-receipts/${id}`)
         return data as GoodsReceipt
       },
     }),
@@ -48,6 +49,36 @@ export default {
         return await client.post('/goods-receipts', body)
       },
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['products'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['goods-receipts'],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useEdit: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+  }) =>
+    useMutation({
+      mutationKey: ['edit-product'],
+      mutationFn: async ({ body }: { body: EditGoodsReceiptFormSchema }) => {
+        return await client.put(`/goods-receipts/${id}`, body)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['products'],
+        })
         queryClient.invalidateQueries({
           queryKey: ['goods-receipts'],
         })
