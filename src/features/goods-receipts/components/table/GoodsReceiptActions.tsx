@@ -1,5 +1,6 @@
 import ArchiveGoodsReceiptAlertDialog from '../actions/archive/ArchiveGoodsReceiptAlertDialog'
 import EditGoodsReceiptLink from '../actions/edit/EditGoodsReceiptLink'
+import RestoreGoodsReceiptAlertDialog from '../actions/restore/RestoreGoodsReceiptAlertDialog'
 
 export default function GoodsReceiptActions({
   id,
@@ -20,6 +21,7 @@ export default function GoodsReceiptActions({
   return (
     <div className='flex items-center gap-2 justify-end'>
       <EditGoodsReceiptLink id={id} />
+      <RestoreGoodsReceiptAlertDialog id={id} />
     </div>
   )
 }
