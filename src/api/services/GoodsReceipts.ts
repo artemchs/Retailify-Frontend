@@ -80,7 +80,79 @@ export default {
           queryKey: ['products'],
         })
         queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
+        queryClient.invalidateQueries({
           queryKey: ['goods-receipts'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['goods-receipt', { id }],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useArchive: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+  }) =>
+    useMutation({
+      mutationKey: ['archive-goods-receipt'],
+      mutationFn: async () => {
+        return await client.delete(`/goods-receipts/${id}`)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['products'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['goods-receipts'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['goods-receipt', { id }],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useRestore: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+  }) =>
+    useMutation({
+      mutationKey: ['restore-goods-receipt'],
+      mutationFn: async () => {
+        return await client.put(`/goods-receipts/restore/${id}`)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['products'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['goods-receipts'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['goods-receipt', { id }],
         })
         onSuccess()
       },
