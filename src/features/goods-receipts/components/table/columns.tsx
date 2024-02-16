@@ -1,17 +1,13 @@
-import SelectCell from '@/components/data-tables/SelectCell'
-import SelectHeader from '@/components/data-tables/SelectHeader'
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
-import { GoodsReceipt } from '@/types/entities/GoodsReceipt'
+import { CurrencyFormatter, DateFormatter } from '@/components/ui/units'
+import {
+  GoodsReceipt,
+  paymentOptions,
+  paymentTerms,
+} from '@/types/entities/GoodsReceipt'
 import { ColumnDef } from '@tanstack/react-table'
 
 export const columns: ColumnDef<GoodsReceipt>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => <SelectHeader table={table} />,
-    cell: ({ row }) => <SelectCell row={row} />,
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     id: 'Название',
     accessorKey: 'name',
@@ -33,5 +29,43 @@ export const columns: ColumnDef<GoodsReceipt>[] = [
         routeId='/layout/goods-receipts'
       />
     ),
+    cell: ({ row }) => <DateFormatter date={row.original.goodsReceiptDate} />,
+  },
+  {
+    id: 'Склад',
+    header: 'Склад',
+    cell: ({ row }) => row.original.warehouse?.name,
+  },
+  {
+    id: 'Поставщик',
+    header: 'Поставщик',
+    cell: ({ row }) => row.original.supplier?.name,
+  },
+  {
+    id: 'Способ оплаты',
+    accessorFn: (row) =>
+      row.supplierInvoice?.paymentOption &&
+      paymentOptions[row.supplierInvoice?.paymentOption],
+  },
+  {
+    id: 'Условия оплаты',
+    accessorFn: (row) =>
+      row.supplierInvoice?.paymentTerm &&
+      paymentTerms[row.supplierInvoice?.paymentTerm],
+  },
+  {
+    id: 'Общая стоимость',
+    header: () => <div className='text-right'>Общая стоимость</div>,
+    cell: ({ row }) => {
+      const totalCost = row.original.supplierInvoice?.accountsPayable
+        ? parseFloat(row.original.supplierInvoice?.accountsPayable)
+        : 0
+
+      return (
+        <div className='w-full text-right'>
+          <CurrencyFormatter value={totalCost} />
+        </div>
+      )
+    },
   },
 ]

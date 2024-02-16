@@ -22,7 +22,7 @@ export function DateFormatter({
   date: Date
   className?: string
 }) {
-  const formattedDate = new Intl.DateTimeFormat('uk-UA', {
+  const formattedDate = new Intl.DateTimeFormat('ru-RU', {
     year: 'numeric',
     month: 'short',
     day: '2-digit',

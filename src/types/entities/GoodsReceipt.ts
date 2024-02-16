@@ -16,6 +16,14 @@ export type GoodsReceipt = {
   updatedAt: Date
   supplierId: string | null
   warehouseId: string | null
+  supplier: {
+    id: string
+    name: string
+  } | null
+  warehouse: {
+    id: string
+    name: string
+  } | null
   name: string
   goodsReceiptDate: Date
   supplierInvoice: {

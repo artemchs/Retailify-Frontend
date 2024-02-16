@@ -107,6 +107,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['warehouse', { id }],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['goods-receipts'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>

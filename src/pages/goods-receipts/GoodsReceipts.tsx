@@ -1,5 +1,6 @@
 import GoodsReceipts from '@/api/services/GoodsReceipts'
 import CreateGoodsReceiptLink from '@/features/goods-receipts/components/actions/create/CreateGoodsReceiptLink'
+import FilterGoodsReceipts from '@/features/goods-receipts/components/table/FilterGoodsReceipts'
 import { columns } from '@/features/goods-receipts/components/table/columns'
 import CrudLayout from '@/layouts/CrudLayout'
 import { goodsReceiptsRoute } from '@/lib/router/routeTree'
@@ -23,6 +24,7 @@ export default function GoodsReceiptsPage() {
       topBarElements={
         <>
           <CreateGoodsReceiptLink />
+          <FilterGoodsReceipts />
         </>
       }
     />

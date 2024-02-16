@@ -4,10 +4,10 @@ import { GoodsReceipt } from '@/types/entities/GoodsReceipt'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import client from '../client'
 import { OnSuccess, SetErrorMessage } from './types'
-import { CreateGoodsReceiptFormSchema } from '@/features/goods-receipts/components/actions/create/create-goods-receipt-form-schema'
 import { queryClient } from '@/lib/query-client/tanstack-query-client'
 import onErrorHandler from './utils/onErrorHandler'
 import { AxiosError } from 'axios'
+import { CreateGoodsReceiptFormSchema } from '@/features/goods-receipts/types/create-goods-receipt-form-schema'
 
 export type GoodsReceiptFindAll = {
   items: GoodsReceipt[]
@@ -15,22 +15,12 @@ export type GoodsReceiptFindAll = {
 }
 
 export default {
-  useFindAll: ({
-    page,
-    rowsPerPage,
-    query,
-    orderBy,
-  }: GoodsReceiptsSearchParams) =>
+  useFindAll: (searchParams: GoodsReceiptsSearchParams) =>
     useQuery({
-      queryKey: ['goods-receipts', { page, rowsPerPage, query, orderBy }],
+      queryKey: ['goods-receipts', searchParams],
       queryFn: async () => {
         const { data } = await client.get('/goods-receipts', {
-          params: {
-            page,
-            rowsPerPage,
-            query,
-            orderBy,
-          },
+          params: searchParams,
         })
         return data as GoodsReceiptFindAll
       },
