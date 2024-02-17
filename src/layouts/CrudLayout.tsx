@@ -2,7 +2,7 @@ import { DataTable } from '@/components/ui/data-table'
 import PageTitle from '@/components/ui/page-title'
 import { routeTree } from '@/lib/router/routeTree'
 import { RouteIds } from '@tanstack/react-router'
-import { ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, Row } from '@tanstack/react-table'
 import React from 'react'
 
 export interface FindAll<TData> {
@@ -22,6 +22,8 @@ interface CrudLayoutProps<TData, TValue> {
   topBarElements: React.ReactNode
   title: string
   childrenField?: keyof TData
+  RenderSubComponent?: ({ row }: { row: Row<TData> }) => JSX.Element
+  getRowCanExpand?: (row: Row<TData>) => boolean
 }
 
 export default function CrudLayout<TData, TValue>({
@@ -33,6 +35,8 @@ export default function CrudLayout<TData, TValue>({
   title,
   topBarElements,
   childrenField,
+  RenderSubComponent,
+  getRowCanExpand,
 }: CrudLayoutProps<TData, TValue>) {
   return (
     <>
@@ -46,6 +50,8 @@ export default function CrudLayout<TData, TValue>({
         isError={isError}
         routeId={routeId}
         childrenField={childrenField}
+        RenderSubComponent={RenderSubComponent}
+        getRowCanExpand={getRowCanExpand}
       />
     </>
   )

@@ -1,6 +1,7 @@
 import {
   ColumnDef,
   ExpandedState,
+  Row,
   Table as TableType,
   VisibilityState,
   flexRender,
@@ -36,7 +37,7 @@ import { RouteIds, useNavigate, useSearch } from '@tanstack/react-router'
 import PaginationControls from './pagination-controls'
 import { routeTree } from '@/lib/router/routeTree'
 import SearchBar from './search-bar'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Button } from './button'
 import {
   DropdownMenu,
@@ -55,6 +56,8 @@ interface DataTableProps<TData, TValue> {
   totalPages: number
   topBarElements: React.ReactNode
   childrenField?: keyof TData
+  RenderSubComponent?: ({ row }: { row: Row<TData> }) => JSX.Element
+  getRowCanExpand?: (row: Row<TData>) => boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -66,6 +69,8 @@ export function DataTable<TData, TValue>({
   totalPages,
   topBarElements,
   childrenField,
+  RenderSubComponent,
+  getRowCanExpand,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -90,6 +95,7 @@ export function DataTable<TData, TValue>({
       ? (row) => row[childrenField] as TData[] | undefined
       : undefined,
     getExpandedRowModel: getExpandedRowModel(),
+    getRowCanExpand,
     onExpandedChange: setExpanded,
     state: {
       rowSelection,
@@ -164,19 +170,26 @@ export function DataTable<TData, TValue>({
               <>
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && 'selected'}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
+                    <Fragment key={row.id}>
+                      <TableRow data-state={row.getIsSelected() && 'selected'}>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                      {RenderSubComponent && row.getIsExpanded() && (
+                        <TableRow className='hover:bg-transparent'>
+                          {/* 2nd row is a custom 1 cell row */}
+                          <TableCell colSpan={row.getVisibleCells().length}>
+                            <RenderSubComponent row={row} />
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </Fragment>
                   ))
                 ) : (
                   <TableRow>

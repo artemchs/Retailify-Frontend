@@ -1,6 +1,7 @@
 import Products from '@/api/services/Products'
 import CreateProductLink from '@/features/products/components/actions/create/CreateProductLink'
 import FilterProducts from '@/features/products/components/table/FilterProducts'
+import RenderProductSubComponent from '@/features/products/components/table/RenderProductSubComponent'
 import { columns } from '@/features/products/components/table/columns'
 import CrudLayout from '@/layouts/CrudLayout'
 import { productsRoute } from '@/lib/router/routeTree'
@@ -27,6 +28,8 @@ export default function ProductsPage() {
           <FilterProducts />
         </>
       }
+      RenderSubComponent={RenderProductSubComponent}
+      getRowCanExpand={(row) => !!row.original.id}
     />
   )
 }

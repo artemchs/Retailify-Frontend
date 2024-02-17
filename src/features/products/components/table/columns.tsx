@@ -3,8 +3,30 @@ import { ProductFindAll } from '@/types/entities/Product'
 import { ColumnDef } from '@tanstack/react-table'
 import { DisplayUploadedFile } from '../shared/media/DisplayUploadedFile'
 import ProductActions from './ProductActions'
+import { Button } from '@/components/ui/button'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 
 export const columns: ColumnDef<ProductFindAll>[] = [
+  {
+    id: 'expander',
+    header: () => null,
+    cell: ({ row }) => {
+      return (
+        <Button
+          size='icon'
+          variant='ghost'
+          disabled={!row.getCanExpand()}
+          onClick={row.getToggleExpandedHandler()}
+        >
+          {row.getIsExpanded() ? (
+            <ChevronDown className='h-4 w-4' />
+          ) : (
+            <ChevronRight className='h-4 w-4' />
+          )}
+        </Button>
+      )
+    },
+  },
   {
     id: 'Медиа',
     cell: ({ row }) =>

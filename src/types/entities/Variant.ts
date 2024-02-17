@@ -10,4 +10,17 @@ export type Variant = {
   price: number
   sale: number | null
   isArchived: boolean
+  warehouseStockEntries:
+    | {
+        id: string
+        createdAt: Date
+        updatedAt: Date
+        variantId: string | null
+        warehouseId: string | null
+        warehouse: {
+          name: string
+        } | null
+        warehouseQuantity: number
+      }[]
+    | null
 }
