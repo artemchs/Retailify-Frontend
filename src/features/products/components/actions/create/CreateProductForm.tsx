@@ -27,6 +27,7 @@ import TitleInput from '../../shared/TitleInput'
 import ColorsCombobox from '@/features/colors/components/shared/ColorsCombobox'
 import CharacteristicsInput from '../../shared/characteristics/CharacteristicsInput'
 import { Input } from '@/components/ui/input'
+import VariantsInput from '../../shared/variants/VariantsInput'
 
 export default function CreateProductForm() {
   const form = useForm<z.infer<typeof createProductFormSchema>>({
@@ -255,6 +256,19 @@ export default function CreateProductForm() {
               )}
             />
           </div>
+          <FormField
+            control={form.control}
+            name='variants'
+            render={({ field }) => (
+              <FormItem>
+                <Label>Размеры товара:</Label>
+                <FormControl>
+                  <VariantsInput field={field} form={form} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <SaveButton isPending={isPending} form={form} onSubmit={onSubmit} />
         </form>
       </Form>
