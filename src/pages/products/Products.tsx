@@ -28,8 +28,12 @@ export default function ProductsPage() {
           <FilterProducts />
         </>
       }
-      RenderSubComponent={RenderProductSubComponent}
-      getRowCanExpand={(row) => !!row.original.id}
+      getRowCanExpand={(row) => {
+        if (!row.original.variants || row.original.variants.length === 0)
+          return false
+        return true
+      }}
+      renderSubComponent={RenderProductSubComponent}
     />
   )
 }

@@ -49,6 +49,15 @@ export type Product = {
         characteristicId: string | null
       }[]
     | null
+  variants:
+    | {
+        id: string
+        size: string
+        price: number
+        sale: number | null
+        isArchived: boolean
+      }[]
+    | null
 }
 
 export type ProductFindAll = {
@@ -88,6 +97,23 @@ export type ProductFindAll = {
     | {
         id: string
         index: number
+      }[]
+    | null
+  variants:
+    | {
+        id: string
+        size: string
+        price: number
+        sale: number | null
+        totalReceivedQuantity: number
+        totalWarehouseQuantity: number
+        warehouseStockEntries: {
+          warehouseQuantity: number
+          warehouse: {
+            id: string
+            name: string
+          } | null
+        }[]
       }[]
     | null
 }

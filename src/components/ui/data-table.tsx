@@ -56,7 +56,7 @@ interface DataTableProps<TData, TValue> {
   totalPages: number
   topBarElements: React.ReactNode
   childrenField?: keyof TData
-  RenderSubComponent?: ({ row }: { row: Row<TData> }) => JSX.Element
+  renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
   getRowCanExpand?: (row: Row<TData>) => boolean
 }
 
@@ -69,8 +69,8 @@ export function DataTable<TData, TValue>({
   totalPages,
   topBarElements,
   childrenField,
-  RenderSubComponent,
   getRowCanExpand,
+  renderSubComponent,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -94,9 +94,9 @@ export function DataTable<TData, TValue>({
     getSubRows: childrenField
       ? (row) => row[childrenField] as TData[] | undefined
       : undefined,
-    getExpandedRowModel: getExpandedRowModel(),
-    getRowCanExpand,
     onExpandedChange: setExpanded,
+    getRowCanExpand,
+    getExpandedRowModel: getExpandedRowModel(),
     state: {
       rowSelection,
       columnVisibility,
@@ -181,11 +181,10 @@ export function DataTable<TData, TValue>({
                           </TableCell>
                         ))}
                       </TableRow>
-                      {RenderSubComponent && row.getIsExpanded() && (
+                      {row.getIsExpanded() && renderSubComponent && (
                         <TableRow className='hover:bg-transparent'>
-                          {/* 2nd row is a custom 1 cell row */}
                           <TableCell colSpan={row.getVisibleCells().length}>
-                            <RenderSubComponent row={row} />
+                            {renderSubComponent({ row })}
                           </TableCell>
                         </TableRow>
                       )}

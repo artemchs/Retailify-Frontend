@@ -22,7 +22,7 @@ interface CrudLayoutProps<TData, TValue> {
   topBarElements: React.ReactNode
   title: string
   childrenField?: keyof TData
-  RenderSubComponent?: ({ row }: { row: Row<TData> }) => JSX.Element
+  renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
   getRowCanExpand?: (row: Row<TData>) => boolean
 }
 
@@ -35,7 +35,7 @@ export default function CrudLayout<TData, TValue>({
   title,
   topBarElements,
   childrenField,
-  RenderSubComponent,
+  renderSubComponent,
   getRowCanExpand,
 }: CrudLayoutProps<TData, TValue>) {
   return (
@@ -50,7 +50,7 @@ export default function CrudLayout<TData, TValue>({
         isError={isError}
         routeId={routeId}
         childrenField={childrenField}
-        RenderSubComponent={RenderSubComponent}
+        renderSubComponent={renderSubComponent}
         getRowCanExpand={getRowCanExpand}
       />
     </>

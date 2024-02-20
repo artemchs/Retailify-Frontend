@@ -28,6 +28,7 @@ import CharacteristicsInput from '../../shared/characteristics/CharacteristicsIn
 import TextEditor from '../../shared/text-editor/TextEditor'
 import UploadMediaInput from '../../shared/media/UploadMediaInput'
 import { Product } from '@/types/entities/Product'
+import VariantsInput from '../../shared/variants/VariantsInput'
 
 type Props = {
   productId: string
@@ -51,6 +52,15 @@ export default function EditProductForm({ productId, product }: Props) {
             id: colorId,
             index,
             name: color?.name,
+          }))
+        : [],
+      variants: product?.variants
+        ? product.variants.map(({ id, isArchived, price, sale, size }) => ({
+            id,
+            isArchived,
+            price,
+            sale: sale ?? undefined,
+            size,
           }))
         : [],
       description: product?.description ? product.description : '',
@@ -274,6 +284,23 @@ export default function EditProductForm({ productId, product }: Props) {
               )}
             />
           </div>
+          <FormField
+            control={form.control}
+            name='variants'
+            render={({ field }) => (
+              <FormItem>
+                <Label>Размеры товара:</Label>
+                <FormControl>
+                  <VariantsInput
+                    field={field}
+                    form={form}
+                    productId={productId}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <SaveButton isPending={isPending} form={form} onSubmit={onSubmit} />
         </form>
       </Form>

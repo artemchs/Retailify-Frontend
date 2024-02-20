@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/command'
 import { useScrollToFetchData } from '@/hooks/useScrollToFetchData'
 import { debounce } from 'lodash'
-import { Loader, Ruler, Save, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { Fragment, useCallback, useMemo, useState } from 'react'
 import {
   Table,
@@ -24,13 +24,7 @@ import {
   DisplayNoFile,
   DisplayUploadedFile,
 } from '@/features/products/components/shared/media/DisplayUploadedFile'
-import { Input } from '@/components/ui/input'
-import { ControllerRenderProps, UseFormReturn, useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { createVariantFormSchema } from '@/features/products/variants/types/create-variant-form-schema'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
-import { FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Variant } from './ProductVariantsTable'
 
@@ -258,7 +252,6 @@ function ProductsTable({
                           </TableCell>
                         </TableRow>
                       ))}
-                      <AddVariant productId={item.id} />
                     </Fragment>
                   )
                 })}
@@ -270,101 +263,5 @@ function ProductsTable({
         </>
       </TableBody>
     </Table>
-  )
-}
-
-function AddVariant({ productId }: { productId: string }) {
-  const form = useForm<z.infer<typeof createVariantFormSchema>>({
-    resolver: zodResolver(createVariantFormSchema),
-    defaultValues: {
-      size: '',
-    },
-  })
-
-  function onSuccess() {
-    toast('Новый вариант товара был успешно добавлен.', {
-      icon: <Ruler className='h-4 w-4' />,
-      cancel: {
-        label: 'Ок',
-        onClick: toast.dismiss,
-      },
-    })
-  }
-
-  const { mutate, isPending } = Products.useCreateVariant({
-    productId,
-    onSuccess,
-  })
-
-  function onSubmit(values: z.infer<typeof createVariantFormSchema>) {
-    mutate({ body: values })
-  }
-
-  return (
-    <TableRow className='hover:bg-transparent'>
-      <TableCell></TableCell>
-      <TableCell>
-        <FormField
-          control={form.control}
-          name='size'
-          render={({ field }) => (
-            <FormItem>
-              <Input className='h-7 text-sm' placeholder='Размер' {...field} />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </TableCell>
-      <TableCell>
-        <FormField
-          control={form.control}
-          name='price'
-          render={({ field }) => (
-            <FormItem>
-              <Input
-                className='h-7 text-sm'
-                placeholder='Цена (грн)'
-                type='number'
-                {...field}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </TableCell>
-      <TableCell>
-        <div className='flex items-center gap-2'>
-          <FormField
-            control={form.control}
-            name='sale'
-            render={({ field }) => (
-              <FormItem className='w-full'>
-                <Input
-                  className='h-7 text-sm'
-                  placeholder='Скидка'
-                  type='number'
-                  {...field}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            className='h-7 w-7 shrink-0'
-            size='icon'
-            variant='secondary'
-            disabled={isPending}
-            type='button'
-            onClick={form.handleSubmit(onSubmit)}
-          >
-            {isPending ? (
-              <Loader className='h-4 w-4 animate-spin' />
-            ) : (
-              <Save className='h-4 w-4' />
-            )}
-          </Button>
-        </div>
-      </TableCell>
-    </TableRow>
   )
 }
