@@ -27,6 +27,8 @@ import setContextUser from '@/utils/setContextUser'
 import { Route, redirect, rootRouteWithContext } from '@tanstack/react-router'
 import CreateGoodsReceiptPage from '@/pages/goods-receipts/CreateGoodsReceipt'
 import EditGoodsReceiptPage from '@/pages/goods-receipts/EditGoodsReceipt'
+import InventoryAdjustmentsPage from '@/pages/InventoryAdjustments'
+import { inventoryAdjustmentsSearchParamsSchema } from '@/features/inventory-adjustments/types/inventory-adjustment-search-params'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -162,6 +164,15 @@ export const editProductRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
+export const inventoryAdjustmentsRoute = new Route({
+  getParentRoute: () => layout,
+  component: InventoryAdjustmentsPage,
+  path: '/inventory-adjustments',
+  validateSearch: (search) =>
+    inventoryAdjustmentsSearchParamsSchema.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
 export const goodsReceiptsRoute = new Route({
   getParentRoute: () => layout,
   component: GoodsReceiptsPage,
@@ -197,6 +208,7 @@ export const routeTree = rootRoute.addChildren([
     categoriesRoute,
     editProductRoute,
     editGoodsReceiptRoute,
+    inventoryAdjustmentsRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

@@ -24,3 +24,9 @@ export type Variant = {
       }[]
     | null
 }
+
+export interface VariantWithProduct extends Variant {
+  product: {
+    title: string
+  } | null
+}

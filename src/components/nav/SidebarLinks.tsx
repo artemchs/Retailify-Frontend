@@ -1,5 +1,6 @@
 import { Link, useRouteContext } from '@tanstack/react-router'
 import {
+  BookText,
   Factory,
   Home,
   LibraryBig,
@@ -69,6 +70,13 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Модели товара'
+        />
+        <SidebarLink
+          Icon={BookText}
+          to='/inventory-adjustments'
+          cashier={false}
+          ecommerceManager={false}
+          text='Инвентаризация'
         />
       </Section>
     </div>

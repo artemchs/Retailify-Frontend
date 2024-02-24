@@ -53,6 +53,9 @@ export default {
           queryKey: ['products'],
         })
         queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
+        queryClient.invalidateQueries({
           queryKey: ['goods-receipts'],
         })
         onSuccess()

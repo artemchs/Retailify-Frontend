@@ -9,7 +9,7 @@ import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { ProductsSearchParams } from '@/features/products/types/searchParams'
 import { EditProductFormSchema } from '@/features/products/types/edit-product-form-schema'
-import { Variant } from '@/types/entities/Variant'
+import { Variant, VariantWithProduct } from '@/types/entities/Variant'
 
 export type ProductsFindAll = {
   items: ProductFindAll[]
@@ -225,6 +225,27 @@ export default {
         )
 
         return data as VariantsFindAllInfiniteList
+      },
+      initialPageParam: '',
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    }),
+
+  useFindAllInfiniteListVariantForWarehouse: (params: {
+    query?: string
+    cursor?: string
+    warehouseId: string
+  }) =>
+    useInfiniteQuery({
+      queryKey: ['product-variants-infinite-list-for-warehouse', params],
+      queryFn: async ({ pageParam }) => {
+        const { data } = await client.get(`products/_/variants/for-warehouse`, {
+          params: { ...params, cursor: pageParam },
+        })
+
+        return data as {
+          items: VariantWithProduct[]
+          nextCursor?: string
+        }
       },
       initialPageParam: '',
       getNextPageParam: (lastPage) => lastPage.nextCursor,

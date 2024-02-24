@@ -7,12 +7,18 @@ import {
 } from '@/components/ui/dialog'
 import { Edit } from 'lucide-react'
 import { useState } from 'react'
-import Brands from '@/api/services/Brands'
-import EditBrandForm from './EditBrandForm'
+import InventoryAdjustments from '@/api/services/InventoryAdjustments'
+import EditInventoryAdjustmentReasonForm from './EditInventoryAdjustmentReasonForm'
 
-export default function EditBrandDialog({ id }: { id: string }) {
+export default function EditInventoryAdjustmentReasonDialog({
+  id,
+}: {
+  id: string
+}) {
   const [isOpened, setIsOpened] = useState(false)
-  const { data, isLoading, isError } = Brands.useFindOne({ id })
+  const { data, isLoading, isError } = InventoryAdjustments.useFindOneReason({
+    id,
+  })
 
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
@@ -23,14 +29,14 @@ export default function EditBrandDialog({ id }: { id: string }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Редактировать бренд</DialogTitle>
+          <DialogTitle>Редактировать причину инвентаризации товара</DialogTitle>
         </DialogHeader>
-        <EditBrandForm
+        <EditInventoryAdjustmentReasonForm
           id={id}
           isError={isError}
           isLoading={isLoading}
-          brand={data ?? undefined}
           setIsOpened={setIsOpened}
+          reason={data}
         />
       </DialogContent>
     </Dialog>
