@@ -2,6 +2,7 @@ import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import { DateFormatter } from '@/components/ui/units'
 import { InventoryAdjustment } from '@/types/entities/InventoryAdjustment'
 import { ColumnDef } from '@tanstack/react-table'
+import InventoryAdjustmentActions from './InventoryAdjustmentActions'
 
 export const columns: ColumnDef<InventoryAdjustment>[] = [
   {
@@ -38,5 +39,15 @@ export const columns: ColumnDef<InventoryAdjustment>[] = [
     id: 'Склад',
     header: 'Склад',
     accessorFn: ({ warehouse }) => warehouse?.name,
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const { id, isArchived } = row.original
+
+      return <InventoryAdjustmentActions id={id} isArchived={isArchived} />
+    },
+    enableSorting: false,
+    enableHiding: false,
   },
 ]

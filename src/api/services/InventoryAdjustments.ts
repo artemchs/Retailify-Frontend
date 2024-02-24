@@ -1,5 +1,6 @@
 import { FindAllInfo } from '@/types/FindAllInfo'
 import {
+  FullInventoryAdjustment,
   InventoryAdjustment,
   InventoryAdjustmentReason,
 } from '@/types/entities/InventoryAdjustment'
@@ -42,7 +43,7 @@ export default {
       queryKey: ['inventory-adjustment', { id }],
       queryFn: async () => {
         const { data } = await client.get(`/inventory-adjustments/${id}`)
-        return data as InventoryAdjustment
+        return data as FullInventoryAdjustment
       },
     }),
 
