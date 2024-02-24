@@ -1,3 +1,4 @@
+import ArchiveInventoryAdjustmentAlertDialog from '../actions/archive/ArchiveInventoryAdjustmentAlertDialog'
 import EditInventoryAdjustmentDialog from '../actions/edit/EditInventoryAdjustmentDialog'
 
 export default function InventoryAdjustmentActions({
@@ -11,6 +12,7 @@ export default function InventoryAdjustmentActions({
     return (
       <div className='flex items-center gap-2 justify-end'>
         <EditInventoryAdjustmentDialog id={id} />
+        <ArchiveInventoryAdjustmentAlertDialog id={id} />
       </div>
     )
   }

@@ -1,6 +1,6 @@
 import { AlertDestructive } from '@/components/AlertDestructive'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -55,7 +55,7 @@ export default function EditInventoryAdjustmentForm({
   function onSuccess() {
     setIsOpened(false)
     toast('Накладная инвентаризации была успешно отредактирована.', {
-      icon: <Plus className='h-4 w-4' />,
+      icon: <Edit className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
         onClick: toast.dismiss,
