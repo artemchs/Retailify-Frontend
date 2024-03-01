@@ -2,6 +2,7 @@ import { Link, useRouteContext } from '@tanstack/react-router'
 import {
   BookText,
   Factory,
+  GitCompareArrows,
   Home,
   LibraryBig,
   PackagePlus,
@@ -77,6 +78,13 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Инвентаризация'
+        />
+        <SidebarLink
+          Icon={GitCompareArrows}
+          to='/inventory-transfers'
+          cashier={false}
+          ecommerceManager={false}
+          text='Перемещение товара'
         />
       </Section>
     </div>

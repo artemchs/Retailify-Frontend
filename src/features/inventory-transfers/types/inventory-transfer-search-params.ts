@@ -1,10 +1,11 @@
 import { z } from 'zod'
 
-export const inventoryAdjustmentsSearchParamsSchema = z.object({
+export const inventoryTransfersSearchParamsSchema = z.object({
   page: z.number().catch(1),
   query: z.string().optional(),
   rowsPerPage: z.number().catch(20),
-  warehouseIds: z.array(z.string()).optional(),
+  sourceWarehouseIds: z.array(z.string()).optional(),
+  destinationWarehouseIds: z.array(z.string()).optional(),
   reasonIds: z.array(z.string()).optional(),
   date: z
     .object({
@@ -30,6 +31,6 @@ export const inventoryAdjustmentsSearchParamsSchema = z.object({
   isArchived: z.number().optional(),
 })
 
-export type InventoryAdjustmentsSearchParamsSchema = z.infer<
-  typeof inventoryAdjustmentsSearchParamsSchema
+export type InventoryTransfersSearchParamsSchema = z.infer<
+  typeof inventoryTransfersSearchParamsSchema
 >

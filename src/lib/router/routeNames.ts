@@ -12,4 +12,5 @@ export default {
   '/products/create': 'Добавить новую модель',
   '/products/*/edit': 'Редактировать модель',
   '/inventory-adjustments': 'Инвентаризация',
+  '/inventory-transfers': 'Перемещение товара',
 }

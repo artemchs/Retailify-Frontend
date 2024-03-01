@@ -29,6 +29,7 @@ import CreateGoodsReceiptPage from '@/pages/goods-receipts/CreateGoodsReceipt'
 import EditGoodsReceiptPage from '@/pages/goods-receipts/EditGoodsReceipt'
 import InventoryAdjustmentsPage from '@/pages/InventoryAdjustments'
 import { inventoryAdjustmentsSearchParamsSchema } from '@/features/inventory-adjustments/types/inventory-adjustment-search-params'
+import InventoryTransfersPage from '@/pages/InventoryTransfers'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -194,6 +195,13 @@ export const editGoodsReceiptRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
+export const inventoryTransfersRoute = new Route({
+  getParentRoute: () => layout,
+  component: InventoryTransfersPage,
+  path: '/inventory-transfers',
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
 export const routeTree = rootRoute.addChildren([
   layout.addChildren([
     homeRoute,
@@ -209,6 +217,7 @@ export const routeTree = rootRoute.addChildren([
     editProductRoute,
     editGoodsReceiptRoute,
     inventoryAdjustmentsRoute,
+    inventoryTransfersRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

@@ -1,49 +1,49 @@
+import { InventoryTransfersSearchParamsSchema } from '@/features/inventory-transfers/types/inventory-transfer-search-params'
 import { FindAllInfo } from '@/types/FindAllInfo'
 import {
-  FullInventoryAdjustment,
-  InventoryAdjustment,
-  InventoryAdjustmentReason,
-} from '@/types/entities/InventoryAdjustment'
+  FullInventoryTransfer,
+  InventoryTransfer,
+  InventoryTransferReason,
+} from '@/types/entities/InventoryTransfer'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import client from '../client'
 import { OnSuccess, SetErrorMessage } from './types'
-import { CreateInventoryAdjustmentFormSchema } from '@/features/inventory-adjustments/types/create-inventory-adjustment-form-schema'
+import { CreateInventoryTransferFormSchema } from '@/features/inventory-transfers/types/create-inventory-transfer-form-schema'
 import { queryClient } from '@/lib/query-client/tanstack-query-client'
 import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
-import { EditInventoryAdjustmentFormSchema } from '@/features/inventory-adjustments/types/edit-inventory-adjustment-form-schema'
-import { CreateInventoryAdjustmentReasonFormSchema } from '@/features/inventory-adjustments/reasons/types/create-inventory-adjustment-reason-form-schema'
-import { InventoryAdjustmentsSearchParamsSchema } from '@/features/inventory-adjustments/types/inventory-adjustment-search-params'
-import { EditInventoryAdjustmentReasonFormSchema } from '@/features/inventory-adjustments/reasons/types/edit-inventory-adjustment-reason-form-schema'
+import { EditInventoryTransferFormSchema } from '@/features/inventory-transfers/types/edit-inventory-transfer-form-schema'
+import { CreateInventoryTransferReasonFormSchema } from '@/features/inventory-transfers/reasons/types/create-inventory-transfer-reason-form-schema'
+import { EditInventoryTransferReasonFormSchema } from '@/features/inventory-transfers/reasons/types/edit-inventory-transfer-reason-form-schema'
 
-export type InventoryAdjustmentsFindAll = {
-  items: InventoryAdjustment[]
+export type InventoryTransfersFindAll = {
+  items: InventoryTransfer[]
   info: FindAllInfo
 }
 
-export type InventoryAdjustmentReasonsFindAll = {
-  items: InventoryAdjustmentReason[]
+export type InventoryTransferReasonsFindAll = {
+  items: InventoryTransferReason[]
   nextCursor?: string
 }
 
 export default {
-  useFindAll: (searchParams: InventoryAdjustmentsSearchParamsSchema) =>
+  useFindAll: (searchParams: InventoryTransfersSearchParamsSchema) =>
     useQuery({
-      queryKey: ['inventory-adjustments', searchParams],
+      queryKey: ['inventory-transfers', searchParams],
       queryFn: async () => {
-        const { data } = await client.get('/inventory-adjustments', {
+        const { data } = await client.get('/inventory-transfers', {
           params: searchParams,
         })
-        return data as InventoryAdjustmentsFindAll
+        return data as InventoryTransfersFindAll
       },
     }),
 
   useFindOne: ({ id }: { id: string }) =>
     useQuery({
-      queryKey: ['inventory-adjustment', { id }],
+      queryKey: ['inventory-transfer', { id }],
       queryFn: async () => {
-        const { data } = await client.get(`/inventory-adjustments/${id}`)
-        return data as FullInventoryAdjustment
+        const { data } = await client.get(`/inventory-transfers/${id}`)
+        return data as FullInventoryTransfer
       },
     }),
 
@@ -55,13 +55,13 @@ export default {
     onSuccess: OnSuccess
   }) =>
     useMutation({
-      mutationKey: ['create-inventory-adjustment'],
+      mutationKey: ['create-inventory-transfer'],
       mutationFn: async ({
         body,
       }: {
-        body: CreateInventoryAdjustmentFormSchema
+        body: CreateInventoryTransferFormSchema
       }) => {
-        return await client.post('/inventory-adjustments', body)
+        return await client.post('/inventory-transfers', body)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
@@ -77,7 +77,7 @@ export default {
           queryKey: ['products-infinite-list'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustments'],
+          queryKey: ['inventory-transfers'],
         })
         onSuccess()
       },
@@ -95,13 +95,13 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['edit-inventory-adjustment'],
+      mutationKey: ['edit-inventory-transfer'],
       mutationFn: async ({
         body,
       }: {
-        body: EditInventoryAdjustmentFormSchema
+        body: EditInventoryTransferFormSchema
       }) => {
-        return await client.put(`/inventory-adjustments/${id}`, body)
+        return await client.put(`/inventory-transfers/${id}`, body)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
@@ -117,10 +117,10 @@ export default {
           queryKey: ['products-infinite-list'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustments'],
+          queryKey: ['inventory-transfers'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment', { id }],
+          queryKey: ['inventory-transfer', { id }],
         })
         onSuccess()
       },
@@ -138,9 +138,9 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['archive-inventory-adjustment'],
+      mutationKey: ['archive-inventory-transfer'],
       mutationFn: async () => {
-        return await client.delete(`/inventory-adjustments/${id}`)
+        return await client.delete(`/inventory-transfers/${id}`)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
@@ -156,10 +156,10 @@ export default {
           queryKey: ['products-infinite-list'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustments'],
+          queryKey: ['inventory-transfers'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment', { id }],
+          queryKey: ['inventory-transfer', { id }],
         })
         onSuccess()
       },
@@ -177,9 +177,9 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['restore-inventory-adjustment'],
+      mutationKey: ['restore-inventory-transfer'],
       mutationFn: async () => {
-        return await client.put(`/inventory-adjustments/restore/${id}`)
+        return await client.put(`/inventory-transfers/restore/${id}`)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
@@ -195,10 +195,10 @@ export default {
           queryKey: ['products-infinite-list'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustments'],
+          queryKey: ['inventory-transfers'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment', { id }],
+          queryKey: ['inventory-transfer', { id }],
         })
         onSuccess()
       },
@@ -214,23 +214,23 @@ export default {
     onSuccess: OnSuccess
   }) =>
     useMutation({
-      mutationKey: ['create-inventory-adjustment-reason'],
+      mutationKey: ['create-inventory-transfer-reason'],
       mutationFn: async ({
         body,
       }: {
-        body: CreateInventoryAdjustmentReasonFormSchema
+        body: CreateInventoryTransferReasonFormSchema
       }) => {
-        return await client.post('/inventory-adjustments/reasons', body)
+        return await client.post('/inventory-transfers/reasons', body)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustments'],
+          queryKey: ['inventory-transfers'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment'],
+          queryKey: ['inventory-transfer'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment-reasons'],
+          queryKey: ['inventory-transfer-reasons'],
         })
         onSuccess()
       },
@@ -240,13 +240,13 @@ export default {
 
   useFindAllReasons: (params: { query?: string }) =>
     useInfiniteQuery({
-      queryKey: ['inventory-adjustment-reasons', params],
+      queryKey: ['inventory-transfer-reasons', params],
       queryFn: async ({ pageParam }) => {
-        const { data } = await client.get('/inventory-adjustments/reasons', {
+        const { data } = await client.get('/inventory-transfers/reasons', {
           params: { ...params, cursor: pageParam },
         })
 
-        return data as InventoryAdjustmentReasonsFindAll
+        return data as InventoryTransferReasonsFindAll
       },
       initialPageParam: '',
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -254,12 +254,10 @@ export default {
 
   useFindOneReason: ({ id }: { id: string }) =>
     useQuery({
-      queryKey: ['inventory-adjustment-reason', { id }],
+      queryKey: ['inventory-transfer-reason', { id }],
       queryFn: async () => {
-        const { data } = await client.get(
-          `/inventory-adjustments/reasons/${id}`
-        )
-        return data as InventoryAdjustmentReason
+        const { data } = await client.get(`/inventory-transfers/reasons/${id}`)
+        return data as InventoryTransferReason
       },
     }),
 
@@ -273,26 +271,26 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['edit-inventory-adjustment-reason'],
+      mutationKey: ['edit-inventory-transfer-reason'],
       mutationFn: async ({
         body,
       }: {
-        body: EditInventoryAdjustmentReasonFormSchema
+        body: EditInventoryTransferReasonFormSchema
       }) => {
-        return await client.put(`/inventory-adjustments/reasons/${id}`, body)
+        return await client.put(`/inventory-transfers/reasons/${id}`, body)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustments'],
+          queryKey: ['inventory-transfers'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment'],
+          queryKey: ['inventory-transfer'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment-reasons'],
+          queryKey: ['inventory-transfer-reasons'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment-reason', { id }],
+          queryKey: ['inventory-transfer-reason', { id }],
         })
         onSuccess()
       },
@@ -310,19 +308,19 @@ export default {
     id: string
   }) =>
     useMutation({
-      mutationKey: ['remove-inventory-adjustment-reason'],
+      mutationKey: ['remove-inventory-transfer-reason'],
       mutationFn: async () => {
-        return await client.delete(`/inventory-adjustments/reasons/${id}`)
+        return await client.delete(`/inventory-transfers/reasons/${id}`)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustments'],
+          queryKey: ['inventory-transfers'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment'],
+          queryKey: ['inventory-transfer'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['inventory-adjustment-reasons'],
+          queryKey: ['inventory-transfer-reasons'],
         })
         onSuccess()
       },
