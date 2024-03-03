@@ -32,14 +32,24 @@ export type FullInventoryTransfer = {
   sourceWarehouseId: string | null
   destinationWarehouseId: string | null
   isArchived: boolean
-  transferItems: {
+  transferItems: ({
+    variant: {
+      product: {
+        title: string
+      } | null
+      size: string
+      warehouseStockEntries: {
+        warehouseQuantity: number
+      }[]
+    } | null
+  } & {
     id: string
     createdAt: Date
     updatedAt: Date
     inventoryTransferId: string | null
     variantId: string | null
     quantity: number
-  }[]
+  })[]
 }
 
 export type InventoryTransferReason = {

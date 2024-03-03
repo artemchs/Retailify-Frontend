@@ -14,7 +14,7 @@ type Props = {
   form: UseFormReturn<any, any, undefined>
 }
 
-export default function InventoryAdjustmentReasonsCombobox({
+export default function InventoryTransferReasonsCombobox({
   field,
   form,
 }: Props) {

@@ -8,9 +8,14 @@ import { useState } from 'react'
 type Props = {
   ids: string[]
   setIds(ids?: string[]): void
+  title?: string
 }
 
-export default function SelectWarehousesForFiltering({ ids, setIds }: Props) {
+export default function SelectWarehousesForFiltering({
+  ids,
+  setIds,
+  title,
+}: Props) {
   const [query, setQuery] = useState('')
   const {
     data,
@@ -35,7 +40,7 @@ export default function SelectWarehousesForFiltering({ ids, setIds }: Props) {
       setIds={setIds}
       setQuery={setQuery}
       status={status}
-      title='Склады'
+      title={title ?? 'Склады'}
     />
   )
 }

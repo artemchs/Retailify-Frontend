@@ -1,17 +1,17 @@
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import { DateFormatter } from '@/components/ui/units'
-import { InventoryAdjustment } from '@/types/entities/InventoryAdjustment'
+import { InventoryTransfer } from '@/types/entities/InventoryTransfer'
 import { ColumnDef } from '@tanstack/react-table'
-import InventoryAdjustmentActions from './InventoryAdjustmentActions'
+import InventoryTransferActions from './InventoryTransferActions'
 
-export const columns: ColumnDef<InventoryAdjustment>[] = [
+export const columns: ColumnDef<InventoryTransfer>[] = [
   {
     id: 'Название',
     header: () => (
       <SortableDataTableHeader
         label='Название'
         orderByProperty='name'
-        routeId='/layout/inventory-adjustments'
+        routeId='/layout/inventory-transfers'
       />
     ),
     cell: ({ row }) => {
@@ -25,7 +25,7 @@ export const columns: ColumnDef<InventoryAdjustment>[] = [
       <SortableDataTableHeader
         label='Дата'
         orderByProperty='date'
-        routeId='/layout/inventory-adjustments'
+        routeId='/layout/inventory-transfers'
       />
     ),
     cell: ({ row }) => <DateFormatter date={row.original.date} />,
@@ -36,16 +36,21 @@ export const columns: ColumnDef<InventoryAdjustment>[] = [
     accessorFn: ({ reason }) => reason?.name,
   },
   {
-    id: 'Склад',
-    header: 'Склад',
-    accessorFn: ({ warehouse }) => warehouse?.name,
+    id: 'Со склада',
+    header: 'Со склада',
+    accessorFn: ({ sourceWarehouse }) => sourceWarehouse?.name,
+  },
+  {
+    id: 'На склад',
+    header: 'На склад',
+    accessorFn: ({ destinationWarehouse }) => destinationWarehouse?.name,
   },
   {
     id: 'actions',
     cell: ({ row }) => {
       const { id, isArchived } = row.original
 
-      return <InventoryAdjustmentActions id={id} isArchived={isArchived} />
+      return <InventoryTransferActions id={id} isArchived={isArchived} />
     },
     enableSorting: false,
     enableHiding: false,

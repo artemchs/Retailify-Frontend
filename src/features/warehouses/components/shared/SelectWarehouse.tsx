@@ -8,12 +8,13 @@ import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field: ControllerRenderProps<any, 'warehouseId'>
+  field: ControllerRenderProps<any, any>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any, any, undefined>
+  fieldName?: string
 }
 
-export default function SelectWarehouse({ field, form }: Props) {
+export default function SelectWarehouse({ field, form, fieldName }: Props) {
   const [query, setQuery] = useState('')
   const {
     data,
@@ -26,7 +27,7 @@ export default function SelectWarehouse({ field, form }: Props) {
 
   const selectedValue = field.value as string
   function setSelectedValue(id?: string) {
-    form.setValue('warehouseId', id)
+    form.setValue(fieldName ?? 'warehouseId', id)
   }
 
   const selectedWarehouse = Warehouses.useFindOne({ id: selectedValue })

@@ -30,6 +30,7 @@ import EditGoodsReceiptPage from '@/pages/goods-receipts/EditGoodsReceipt'
 import InventoryAdjustmentsPage from '@/pages/InventoryAdjustments'
 import { inventoryAdjustmentsSearchParamsSchema } from '@/features/inventory-adjustments/types/inventory-adjustment-search-params'
 import InventoryTransfersPage from '@/pages/InventoryTransfers'
+import { inventoryTransfersSearchParamsSchema } from '@/features/inventory-transfers/types/inventory-transfer-search-params'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -199,6 +200,8 @@ export const inventoryTransfersRoute = new Route({
   getParentRoute: () => layout,
   component: InventoryTransfersPage,
   path: '/inventory-transfers',
+  validateSearch: (search) =>
+    inventoryTransfersSearchParamsSchema.parse(search),
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 

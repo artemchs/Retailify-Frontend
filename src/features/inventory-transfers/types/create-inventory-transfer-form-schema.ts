@@ -1,16 +1,19 @@
 import { requiredField } from '@/utils/zodErrorMessages'
 import { z } from 'zod'
 
-const variant = z.object({
+const item = z.object({
   variantId: z.string(),
   quantity: z.coerce.number(),
+  warehouseQuantity: z.number().optional(),
+  size: z.string().optional(),
+  title: z.string().optional(),
 })
 
-export type InventoryTransferVariant = z.infer<typeof variant>
+export type InventoryTransferItem = z.infer<typeof item>
 
 export const createInventoryTransferFormSchema = z.object({
   date: z.date({ required_error: requiredField }),
-  transferItems: z.array(variant),
+  transferItems: z.array(item),
   reasonId: z.string().min(1, requiredField),
   sourceWarehouseId: z.string().min(1, requiredField),
   destinationWarehouseId: z.string().min(1, requiredField),
