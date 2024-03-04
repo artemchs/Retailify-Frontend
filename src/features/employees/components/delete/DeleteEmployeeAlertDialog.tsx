@@ -38,9 +38,8 @@ export default function DeleteEmployeeAlertDialog({ id }: { id: string }) {
   return (
     <AlertDialog open={isOpened} onOpenChange={setIsOpened}>
       <AlertDialogTrigger asChild>
-        <Button size='sm' variant='destructive'>
-          <Trash2 className='h-4 w-4 mr-2' />
-          Удалить
+        <Button size='icon' variant='destructive'>
+          <Trash2 className='h-4 w-4' />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

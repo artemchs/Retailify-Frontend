@@ -26,6 +26,8 @@ export const columns: ColumnDef<ProductFindAll>[] = [
         </Button>
       )
     },
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: 'Медиа',

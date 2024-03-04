@@ -38,9 +38,8 @@ export default function ArchiveWarehouseAlertDialog({ id }: { id: string }) {
   return (
     <AlertDialog open={isOpened} onOpenChange={setIsOpened}>
       <AlertDialogTrigger asChild>
-        <Button size='sm' variant='secondary'>
-          <Archive className='h-4 w-4 mr-2' />
-          Архивировать
+        <Button size='icon' variant='secondary'>
+          <Archive className='h-4 w-4' />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

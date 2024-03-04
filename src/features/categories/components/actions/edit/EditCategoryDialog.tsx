@@ -22,9 +22,8 @@ export default function EditCategoryDialog({ id }: { id: string }) {
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
       <DialogTrigger asChild>
-        <Button variant='secondary' size='sm'>
-          <Edit className='h-4 w-4 mr-2' />
-          Редактировать
+        <Button variant='secondary' size='icon'>
+          <Edit className='h-4 w-4' />
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -37,7 +36,7 @@ export default function EditCategoryDialog({ id }: { id: string }) {
           isError={isError}
           isLoading={isLoading}
           setIsOpened={setIsOpened}
-          category={data}
+          category={data ?? undefined}
         />
       </DialogContent>
     </Dialog>

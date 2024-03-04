@@ -61,7 +61,7 @@ export default function EditInventoryTransferForm({
           title: item.variant?.product?.title,
           warehouseQuantity:
             (item.variant?.warehouseStockEntries[0].warehouseQuantity ?? 0) +
-            item.quantity,
+            (data.isArchived ? 0 : item.quantity),
         }))
       )
     }
