@@ -10,7 +10,13 @@ import { useState } from 'react'
 import ProductTags from '@/api/services/ProductTags'
 import EditProductTagForm from './EditProductTagForm'
 
-export default function EditProductTagDialog({ id }: { id: string }) {
+export default function EditProductTagDialog({
+  id,
+  onSuccess,
+}: {
+  id: string
+  onSuccess?: (id: string) => void
+}) {
   const [isOpened, setIsOpened] = useState(false)
   const { data, isLoading, isError } = ProductTags.useFindOne({ id })
 
@@ -31,6 +37,7 @@ export default function EditProductTagDialog({ id }: { id: string }) {
           isLoading={isLoading}
           setIsOpened={setIsOpened}
           data={data ?? undefined}
+          onSuccess={onSuccess}
         />
       </DialogContent>
     </Dialog>

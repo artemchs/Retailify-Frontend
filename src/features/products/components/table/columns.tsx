@@ -5,6 +5,7 @@ import { DisplayUploadedFile } from '../shared/media/DisplayUploadedFile'
 import ProductActions from './ProductActions'
 import { Button } from '@/components/ui/button'
 import { ChevronDown, ChevronRight } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 
 export const columns: ColumnDef<ProductFindAll>[] = [
   {
@@ -65,6 +66,17 @@ export const columns: ColumnDef<ProductFindAll>[] = [
     ),
     cell: ({ row }) => {
       return <span className='text-muted-foreground'>{row.original.sku}</span>
+    },
+  },
+  {
+    id: 'Теги',
+    header: 'Теги',
+    cell: ({ row }) => {
+      return row.original.tags && row.original.tags?.length >= 1 ? (
+        <Badge variant='secondary'>
+          {row.original.tags.map(({ name }) => name).join(', ')}
+        </Badge>
+      ) : null
     },
   },
   {

@@ -29,6 +29,7 @@ import TextEditor from '../../shared/text-editor/TextEditor'
 import UploadMediaInput from '../../shared/media/UploadMediaInput'
 import { Product } from '@/types/entities/Product'
 import VariantsInput from '../../shared/variants/VariantsInput'
+import ProductTagsCombobox from '@/features/product-tags/components/shared/ProductTagsCombobox'
 
 type Props = {
   productId: string
@@ -72,6 +73,7 @@ export default function EditProductForm({ productId, product }: Props) {
       gender: product?.gender,
       season: product?.season,
       brandId: product?.brandId ?? '',
+      tags: product?.tags ?? [],
     },
   })
 
@@ -130,6 +132,19 @@ export default function EditProductForm({ productId, product }: Props) {
                     form={form}
                     control={form.control}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='tags'
+            render={({ field }) => (
+              <FormItem>
+                <Label>Теги</Label>
+                <FormControl>
+                  <ProductTagsCombobox field={field} form={form} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

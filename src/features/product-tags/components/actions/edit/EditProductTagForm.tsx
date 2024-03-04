@@ -26,6 +26,7 @@ type Props = {
   id: string
   isLoading: boolean
   isError: boolean
+  onSuccess?: (id: string) => void
 }
 
 export default function EditProductTagForm({
@@ -34,6 +35,7 @@ export default function EditProductTagForm({
   isError,
   isLoading,
   data,
+  onSuccess,
 }: Props) {
   const form = useForm<z.infer<typeof editProductTagFormSchema>>({
     resolver: zodResolver(editProductTagFormSchema),
@@ -50,6 +52,10 @@ export default function EditProductTagForm({
         onClick: toast.dismiss,
       },
     })
+
+    if (onSuccess) {
+      onSuccess(id)
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')

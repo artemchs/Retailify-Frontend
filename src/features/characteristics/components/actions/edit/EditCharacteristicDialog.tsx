@@ -35,7 +35,7 @@ export default function EditCharacteristicDialog({
           id={id}
           isError={isError}
           isLoading={isLoading}
-          characteristic={data}
+          characteristic={data ?? undefined}
           setIsOpened={setIsOpened}
           onSuccess={onSuccess}
         />

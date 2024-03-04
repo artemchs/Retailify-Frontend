@@ -43,6 +43,8 @@ const characteristicValuesSchema = z
   )
   .optional()
 
+const productTagsSchema = z.array(z.object({ id: z.string() })).optional()
+
 const packagingDimensionsSchema = z.coerce
   .number({
     required_error: requiredField,
@@ -57,6 +59,7 @@ export const createProductFormSchema = z.object({
   description: z.string().min(1, requiredField),
   gender: z.enum(['MALE', 'FEMALE', 'UNISEX']),
   season: z.enum(['WINTER', 'SPRING_FALL', 'SUMMER', 'ALL_SEASON']),
+  tags: productTagsSchema,
   colors: colorsSchema,
   variants: variantsSchema,
   media: mediaSchema,

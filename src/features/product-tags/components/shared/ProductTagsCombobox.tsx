@@ -15,7 +15,7 @@ type Props = {
   form: UseFormReturn<any, any, undefined>
 }
 
-export default function CharacteristicsCombobox({ field, form }: Props) {
+export default function ProductTagsCombobox({ field, form }: Props) {
   const [query, setQuery] = useState('')
   const {
     data,

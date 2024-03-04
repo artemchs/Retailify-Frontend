@@ -15,12 +15,10 @@ import { toast } from 'sonner'
 
 export default function RemoveProductTagAlertDialog({
   id,
-  setSelectedValue,
-  selectedValue,
+  onSuccess,
 }: {
   id: string
-  selectedValue?: string
-  setSelectedValue?: (id?: string) => void
+  onSuccess?: (id: string) => void
 }) {
   const [isOpened, setIsOpened] = useState(false)
 
@@ -32,8 +30,9 @@ export default function RemoveProductTagAlertDialog({
         onClick: toast.dismiss,
       },
     })
-    if (selectedValue === id && setSelectedValue) {
-      setSelectedValue()
+
+    if (onSuccess) {
+      onSuccess(id)
     }
   }
 

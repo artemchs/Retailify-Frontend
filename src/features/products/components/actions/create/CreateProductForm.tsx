@@ -28,6 +28,7 @@ import ColorsCombobox from '@/features/colors/components/shared/ColorsCombobox'
 import CharacteristicsInput from '../../shared/characteristics/CharacteristicsInput'
 import { Input } from '@/components/ui/input'
 import VariantsInput from '../../shared/variants/VariantsInput'
+import ProductTagsCombobox from '@/features/product-tags/components/shared/ProductTagsCombobox'
 
 export default function CreateProductForm() {
   const form = useForm<z.infer<typeof createProductFormSchema>>({
@@ -45,6 +46,9 @@ export default function CreateProductForm() {
       packagingWidth: 0,
       gender: 'UNISEX',
       season: 'ALL_SEASON',
+      tags: [],
+      brandId: '',
+      variants: [],
     },
   })
 
@@ -102,6 +106,19 @@ export default function CreateProductForm() {
                     form={form}
                     control={form.control}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='tags'
+            render={({ field }) => (
+              <FormItem>
+                <Label>Теги</Label>
+                <FormControl>
+                  <ProductTagsCombobox field={field} form={form} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
