@@ -29,5 +29,11 @@ export default function SortableDataTableHeader({
     })
   }
 
-  return <DropdownOrderBy label={label} value={orderBy?.[orderByProperty]} setValue={setValue} />
+  return (
+    <DropdownOrderBy
+      label={label}
+      value={orderBy?.[orderByProperty]}
+      setValue={setValue}
+    />
+  )
 }

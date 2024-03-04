@@ -14,6 +14,7 @@ export const columns: ColumnDef<CategoryGroup>[] = [
         routeId='/layout/category-groups'
       />
     ),
+    cell: ({ row }) => <span className='font-medium'>{row.original.name}</span>,
   },
   {
     id: 'Кол-во категорий',

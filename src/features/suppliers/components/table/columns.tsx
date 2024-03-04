@@ -14,6 +14,7 @@ export const columns: ColumnDef<Supplier>[] = [
         routeId='/layout/suppliers'
       />
     ),
+    cell: ({ row }) => <span className='font-medium'>{row.original.name}</span>,
   },
   {
     id: 'Адрес',

@@ -19,6 +19,7 @@ export const columns: ColumnDef<GoodsReceipt>[] = [
         routeId='/layout/goods-receipts'
       />
     ),
+    cell: ({ row }) => <span className='font-medium'>{row.original.name}</span>,
   },
   {
     id: 'Дата прихода',

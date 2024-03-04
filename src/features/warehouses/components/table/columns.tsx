@@ -14,6 +14,7 @@ export const columns: ColumnDef<Warehouse>[] = [
         routeId='/layout/warehouses'
       />
     ),
+    cell: ({ row }) => <span className='font-medium'>{row.original.name}</span>,
   },
   {
     id: 'Адрес',
