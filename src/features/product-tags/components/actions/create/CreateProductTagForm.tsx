@@ -1,5 +1,3 @@
-import SaveButton from '@/components/forms/SaveButton'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -12,39 +10,29 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { AlertDestructive } from '@/components/AlertDestructive'
+import { zodResolver } from '@hookform/resolvers/zod'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
 import { Input } from '@/components/ui/input'
-import AsyncInput from '@/components/forms/AsyncInput'
-import { Brand } from '@/types/entities/Brand'
-import { editBrandFormSchema } from '@/features/brands/types/edit-brand-form-schema'
-import Brands from '@/api/services/Brands'
-import { brandName } from '../../shared/placeholders'
+import SaveButton from '@/components/forms/SaveButton'
+import { createProductTagFormSchema } from '@/features/product-tags/types/create-product-tag-form-schema'
+import ProductTags from '@/api/services/ProductTags'
+import { productTagName } from '../../shared/placeholders'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-  brand?: Brand
-  id: string
-  isLoading: boolean
-  isError: boolean
 }
 
-export default function EditBrandForm({
-  setIsOpened,
-  id,
-  isError,
-  isLoading,
-  brand,
-}: Props) {
-  const form = useForm<z.infer<typeof editBrandFormSchema>>({
-    resolver: zodResolver(editBrandFormSchema),
+export default function CreateProductTagForm({ setIsOpened }: Props) {
+  const form = useForm<z.infer<typeof createProductTagFormSchema>>({
+    resolver: zodResolver(createProductTagFormSchema),
     defaultValues: {
-      name: brand?.name,
+      name: '',
     },
   })
 
-  function defaultOnSuccess() {
+  function onSuccess() {
     setIsOpened(false)
-    toast('Бренд был успешно отредактирован.', {
+    toast('Новый тег был успешно добавлен.', {
       cancel: {
         label: 'Ок',
         onClick: toast.dismiss,
@@ -53,13 +41,12 @@ export default function EditBrandForm({
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = Brands.useEdit({
+  const { mutate, isPending } = ProductTags.useCreate({
     setErrorMessage,
-    onSuccess: defaultOnSuccess,
-    id,
+    onSuccess,
   })
 
-  function onSubmit(values: z.infer<typeof editBrandFormSchema>) {
+  function onSubmit(values: z.infer<typeof createProductTagFormSchema>) {
     mutate({
       body: values,
     })
@@ -79,11 +66,7 @@ export default function EditBrandForm({
               <FormItem>
                 <FormLabelForRequiredFields text='Название' />
                 <FormControl>
-                  <AsyncInput
-                    input={<Input placeholder={brandName} {...field} />}
-                    isError={isError}
-                    isLoading={isLoading}
-                  />
+                  <Input placeholder={productTagName} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

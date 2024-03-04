@@ -27,6 +27,12 @@ export type Product = {
     id: string
     name: string
   } | null
+  tags:
+    | {
+        id: string
+        name: string
+      }[]
+    | null
   colors:
     | {
         colorId: string
@@ -83,6 +89,12 @@ export type ProductFindAll = {
     id: string
     name: string
   } | null
+  tags:
+    | {
+        id: string
+        name: string
+      }[]
+    | null
   colors:
     | {
         colorId: string
