@@ -23,6 +23,11 @@ export const columns: ColumnDef<PointOfSale>[] = [
     accessorFn: ({ address }) => address,
   },
   {
+    id: 'Склад',
+    header: 'Склад',
+    accessorFn: ({ warehouse }) => warehouse?.name,
+  },
+  {
     id: 'Кассиры',
     header: 'Кассиры',
     cell: ({ row }) => {

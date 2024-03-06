@@ -23,6 +23,7 @@ import { Label } from '@/components/ui/label'
 import EmployeesCombobox from '@/features/employees/components/EmployeesCombobox'
 import CategoryGroupsComboboxMultiple from '@/features/category-groups/components/shared/CategoryGroupsComboboxMultiple'
 import CategoriesComboboxMultiple from '@/features/categories/components/shared/CategoriesComboboxMultiple'
+import SelectWarehouse from '@/features/warehouses/components/shared/SelectWarehouse'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -35,9 +36,10 @@ export default function CreatePosForm({ setIsOpened }: Props) {
       name: '',
       address: '',
       cashiers: [],
-      categoryGroupIds: [],
-      categoryIds: [],
+      categoryGroups: [],
+      categories: [],
       productTags: [],
+      warehouseId: '',
     },
   })
 
@@ -97,6 +99,23 @@ export default function CreatePosForm({ setIsOpened }: Props) {
           />
           <FormField
             control={form.control}
+            name='warehouseId'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Склад' />
+                <FormControl>
+                  <SelectWarehouse
+                    field={field}
+                    form={form}
+                    fieldName='warehouseId'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name='cashiers'
             render={({ field }) => (
               <FormItem>
@@ -137,7 +156,7 @@ export default function CreatePosForm({ setIsOpened }: Props) {
           />
           <FormField
             control={form.control}
-            name='categoryGroupIds'
+            name='categoryGroups'
             render={({ field }) => (
               <FormItem>
                 <Label>Группы категорий товара:</Label>
@@ -150,7 +169,7 @@ export default function CreatePosForm({ setIsOpened }: Props) {
           />
           <FormField
             control={form.control}
-            name='categoryIds'
+            name='categories'
             render={({ field }) => (
               <FormItem>
                 <Label>Категории товара:</Label>

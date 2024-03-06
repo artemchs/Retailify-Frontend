@@ -90,7 +90,7 @@ export default function DropdownSubItemForFiltering<Entity, EntityFindAll>({
         <div className='flex items-center gap-2'>
           {title}{' '}
           {ids.length >= 1 && (
-            <Badge className='h-5' variant='outline'>
+            <Badge className='h-5' variant='secondary'>
               {ids.length}
             </Badge>
           )}

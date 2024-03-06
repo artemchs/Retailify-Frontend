@@ -7,6 +7,7 @@ import SelectProductTagsForFiltering from '@/features/product-tags/components/sh
 import SelectCategoryGroupsForFiltering from '@/features/category-groups/components/shared/SelectCategoryGroupsForFiltering'
 import SelectCategoriesForFiltering from '@/features/categories/components/shared/SelectCategoriesForFiltering'
 import SelectEmployeesForFiltering from '@/features/employees/components/SelectEmployeesForFiltering'
+import SelectWarehousesForFiltering from '@/features/warehouses/components/shared/SelectWarehousesForFiltering'
 
 export default function FilterPointsOfSale() {
   const {
@@ -15,6 +16,7 @@ export default function FilterPointsOfSale() {
     productTagIds,
     categoryGroupIds,
     categoryIds,
+    warehouseIds,
   } = useSearch({
     from: pointsOfSaleRoute.id,
   })
@@ -30,6 +32,7 @@ export default function FilterPointsOfSale() {
       cashierIds,
       categoryGroupIds,
       categoryIds,
+      warehouseIds,
     ]) {
       if (arr && arr.length >= 1) {
         number += 1
@@ -69,6 +72,12 @@ export default function FilterPointsOfSale() {
     })
   }
 
+  function setWarehouseIds(values?: string[]) {
+    navigate({
+      search: (prev) => ({ ...prev, warehouseIds: values }),
+    })
+  }
+
   function resetFilters() {
     navigate({
       search: (prev) => ({
@@ -78,12 +87,18 @@ export default function FilterPointsOfSale() {
         categoryGroupIds: undefined,
         categoryIds: undefined,
         cashierIds: undefined,
+        warehouseIds: undefined,
       }),
     })
   }
 
   return (
     <DropdownFilter numOfApplied={numOfApplied()} resetFilters={resetFilters}>
+      <SelectWarehousesForFiltering
+        ids={warehouseIds ?? []}
+        setIds={setWarehouseIds}
+        title='Склад'
+      />
       <SelectProductTagsForFiltering
         ids={productTagIds ?? []}
         setIds={setProductTagIds}

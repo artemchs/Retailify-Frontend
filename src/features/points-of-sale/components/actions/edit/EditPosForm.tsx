@@ -25,6 +25,7 @@ import CategoryGroupsComboboxMultiple from '@/features/category-groups/component
 import CategoriesComboboxMultiple from '@/features/categories/components/shared/CategoriesComboboxMultiple'
 import { editPosFormSchema } from '@/features/points-of-sale/types/edit-point-of-sale-form-schema'
 import AsyncInput from '@/components/forms/AsyncInput'
+import SelectWarehouse from '@/features/warehouses/components/shared/SelectWarehouse'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -50,6 +51,7 @@ export default function EditPosForm({
       categoryGroups: data?.categoryGroups ?? [],
       categories: data?.categories ?? [],
       productTags: data?.productTags ?? [],
+      warehouseId: data?.warehouse?.id,
     },
   })
 
@@ -108,6 +110,29 @@ export default function EditPosForm({
                 <FormControl>
                   <AsyncInput
                     input={<Input placeholder={posAddress} {...field} />}
+                    isError={isError}
+                    isLoading={isLoading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='warehouseId'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Склад' />
+                <FormControl>
+                  <AsyncInput
+                    input={
+                      <SelectWarehouse
+                        field={field}
+                        form={form}
+                        fieldName='warehouseId'
+                      />
+                    }
                     isError={isError}
                     isLoading={isLoading}
                   />

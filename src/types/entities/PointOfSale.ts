@@ -15,6 +15,10 @@ export type PointOfSale = {
     id: string
     name: string
   }[]
+  warehouse: {
+    id: string
+    name: string
+  } | null
 } & {
   id: string
   createdAt: Date
@@ -42,6 +46,10 @@ export type FullPointOfSale =
         id: string
         name: string
       }[]
+      warehouse: {
+        id: string
+        name: string
+      } | null
     } & {
       id: string
       createdAt: Date

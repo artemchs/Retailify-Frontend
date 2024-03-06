@@ -20,6 +20,7 @@ export const createPosFormSchema = z.object({
   productTags: z.array(idWithName).optional(),
   categories: z.array(idWithName).optional(),
   categoryGroups: z.array(idWithName).optional(),
+  warehouseId: z.string(),
 })
 
 export type CreatePosFormSchema = z.infer<typeof createPosFormSchema>

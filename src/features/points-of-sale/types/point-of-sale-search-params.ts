@@ -8,6 +8,7 @@ export const posSearchParamsSchema = z.object({
   cashierIds: z.array(z.string()).optional(),
   categoryIds: z.array(z.string()).optional(),
   categoryGroupIds: z.array(z.string()).optional(),
+  warehouseIds: z.array(z.string()).optional(),
   orderBy: z
     .object({
       name: z.enum(['asc', 'desc']).optional(),
