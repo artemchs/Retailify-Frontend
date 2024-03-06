@@ -23,6 +23,7 @@ export default function SelectRole({ field }: Props) {
         </SelectTrigger>
       </FormControl>
       <SelectContent>
+        <SelectItem value='ADMIN'>Админ</SelectItem>
         <SelectItem value='CASHIER'>Кассир</SelectItem>
         <SelectItem value='ECOMMERCE_MANAGER'>Ecommerce менеджер</SelectItem>
       </SelectContent>

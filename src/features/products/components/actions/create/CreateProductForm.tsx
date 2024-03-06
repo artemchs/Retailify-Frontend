@@ -116,7 +116,7 @@ export default function CreateProductForm() {
             name='tags'
             render={({ field }) => (
               <FormItem>
-                <Label>Теги</Label>
+                <Label>Теги:</Label>
                 <FormControl>
                   <ProductTagsCombobox field={field} form={form} />
                 </FormControl>

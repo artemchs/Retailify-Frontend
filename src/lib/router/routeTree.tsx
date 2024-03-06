@@ -31,6 +31,8 @@ import InventoryAdjustmentsPage from '@/pages/InventoryAdjustments'
 import { inventoryAdjustmentsSearchParamsSchema } from '@/features/inventory-adjustments/types/inventory-adjustment-search-params'
 import InventoryTransfersPage from '@/pages/InventoryTransfers'
 import { inventoryTransfersSearchParamsSchema } from '@/features/inventory-transfers/types/inventory-transfer-search-params'
+import PointsOfSalePage from '@/pages/PointsOfSale'
+import { posSearchParamsSchema } from '@/features/points-of-sale/types/point-of-sale-search-params'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -205,6 +207,14 @@ export const inventoryTransfersRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
 })
 
+export const pointsOfSaleRoute = new Route({
+  getParentRoute: () => layout,
+  component: PointsOfSalePage,
+  path: '/points-of-sale',
+  validateSearch: (search) => posSearchParamsSchema.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
 export const routeTree = rootRoute.addChildren([
   layout.addChildren([
     homeRoute,
@@ -221,6 +231,7 @@ export const routeTree = rootRoute.addChildren([
     editGoodsReceiptRoute,
     inventoryAdjustmentsRoute,
     inventoryTransfersRoute,
+    pointsOfSaleRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

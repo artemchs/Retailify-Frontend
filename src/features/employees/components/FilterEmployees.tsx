@@ -6,12 +6,12 @@ import roleNames from '@/utils/roleNames'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 
 export default function FilterEmployees() {
-  const roleOptions: FilterOptions = Object.entries(roleNames)
-    .map(([value, label]) => ({
+  const roleOptions: FilterOptions = Object.entries(roleNames).map(
+    ([value, label]) => ({
       label,
       value,
-    }))
-    .filter((obj) => obj.value !== 'ADMIN')
+    })
+  )
 
   const { roles } = useSearch({
     from: employeesRoute.id,

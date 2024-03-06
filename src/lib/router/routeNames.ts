@@ -1,6 +1,6 @@
 export default {
   '/': 'Главная',
-  '/employees': 'Работники',
+  '/employees': 'Сотрудники',
   '/suppliers': 'Поставщики',
   '/warehouses': 'Склады',
   '/goods-receipts': 'Приход товара',
@@ -13,4 +13,5 @@ export default {
   '/products/*/edit': 'Редактировать модель',
   '/inventory-adjustments': 'Инвентаризация',
   '/inventory-transfers': 'Перемещение товара',
+  '/points-of-sale': 'Точки продаж',
 }

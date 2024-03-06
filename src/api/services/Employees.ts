@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import client from '../client'
 import { EmployeesSearchParams } from '@/features/employees/types/searchParams'
 import { OnSuccess, SetErrorMessage } from './types'
@@ -13,6 +13,11 @@ import { queryClient } from '@/lib/query-client/tanstack-query-client'
 export type EmployeesFindAll = {
   items: Employee[]
   info: FindAllInfo
+}
+
+export type EmployeesFindAllInfiniteList = {
+  items: Employee[]
+  nextCursor?: string
 }
 
 export default {
@@ -37,6 +42,20 @@ export default {
         })
         return data as EmployeesFindAll
       },
+    }),
+
+  useFindAllInfiniteList: (params: { query?: string }) =>
+    useInfiniteQuery({
+      queryKey: ['brands', params],
+      queryFn: async ({ pageParam }) => {
+        const { data } = await client.get('/employees/infinite-list', {
+          params: { ...params, cursor: pageParam },
+        })
+
+        return data as EmployeesFindAllInfiniteList
+      },
+      initialPageParam: '',
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
     }),
 
   useFindOne: ({ id }: { id: string }) =>

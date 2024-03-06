@@ -6,6 +6,7 @@ import {
   Home,
   LibraryBig,
   PackagePlus,
+  Store,
   Tags,
   Users,
   Warehouse,
@@ -29,6 +30,13 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Сотрудники'
+        />
+        <SidebarLink
+          Icon={Store}
+          to='/points-of-sale'
+          cashier={false}
+          ecommerceManager={false}
+          text='Точки продаж'
         />
         <SidebarLink
           Icon={Factory}

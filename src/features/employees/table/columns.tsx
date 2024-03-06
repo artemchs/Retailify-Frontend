@@ -4,9 +4,8 @@ import { getNameShorthand } from '@/utils/getNameShorthand'
 import { Badge } from '@/components/ui/badge'
 import roleNames from '@/utils/roleNames'
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
-import EditEmployeeDialog from '../components/edit/EditEmployeeDialog'
-import DeleteEmployeeAlertDialog from '../components/delete/DeleteEmployeeAlertDialog'
 import { Employee } from '@/types/entities/Employee'
+import EmployeesActions from './EmployeesActions'
 
 export const columns: ColumnDef<Employee>[] = [
   {
@@ -58,12 +57,7 @@ export const columns: ColumnDef<Employee>[] = [
     cell: ({ row }) => {
       const { id } = row.original
 
-      return (
-        <div className='flex items-center gap-2 justify-end'>
-          <EditEmployeeDialog id={id} />
-          <DeleteEmployeeAlertDialog id={id} />
-        </div>
-      )
+      return <EmployeesActions id={id} />
     },
     enableSorting: false,
     enableHiding: false,

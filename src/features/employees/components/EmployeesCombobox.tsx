@@ -1,26 +1,20 @@
-import { Characteristic } from '@/types/entities/Characteristic'
 import { useState } from 'react'
 import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
 import CrudComboboxMultiple from '@/components/forms/CrudComboboxMultiple'
-import ProductTags, { ProductTagsFindAll } from '@/api/services/ProductTags'
-import CreateProductTagDialog from '../actions/create/CreateProductTagDialog'
-import RemoveProductTagAlertDialog from '../actions/remove/RemoveProductTagAlertDialog'
-import EditProductTagDialog from '../actions/edit/EditProductTagDialog'
-import { ProductTag } from '@/types/entities/ProductTag'
+import Employees, {
+  EmployeesFindAllInfiniteList,
+} from '@/api/services/Employees'
+import { Employee } from '@/types/entities/Employee'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   field: ControllerRenderProps<any, any>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any, any, undefined>
-  formFieldName?: string
+  fieldName: string
 }
 
-export default function ProductTagsCombobox({
-  field,
-  form,
-  formFieldName,
-}: Props) {
+export default function EmployeesCombobox({ field, form, fieldName }: Props) {
   const [query, setQuery] = useState('')
   const {
     data,
@@ -29,23 +23,23 @@ export default function ProductTagsCombobox({
     isFetching,
     isFetchingNextPage,
     status,
-  } = ProductTags.useFindAll({ query })
+  } = Employees.useFindAllInfiniteList({ query })
 
-  const selectedValues = field.value as Characteristic[]
-  const setSelectedValues = (newValues: Characteristic[]) => {
-    form.setValue(formFieldName ?? 'tags', newValues)
+  const selectedValues = field.value as Employee[]
+  const setSelectedValues = (newValues: Employee[]) => {
+    form.setValue(fieldName, newValues)
   }
 
   function onSuccess(id: string) {
     form.setValue(
-      formFieldName ?? 'tags',
+      'characteristics',
       selectedValues.filter((obj) => obj.id !== id)
     )
   }
 
   return (
-    <CrudComboboxMultiple<ProductTag, ProductTagsFindAll>
-      placeholder='Выберите теги'
+    <CrudComboboxMultiple<Employee, EmployeesFindAllInfiniteList>
+      placeholder='Выберите пользователей'
       data={data}
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
@@ -54,11 +48,8 @@ export default function ProductTagsCombobox({
       status={status}
       setQuery={setQuery}
       idField='id'
-      nameField='name'
+      nameField='fullName'
       itemsField='items'
-      CreateDialog={CreateProductTagDialog}
-      DeleteAlertDialog={RemoveProductTagAlertDialog}
-      EditDialog={EditProductTagDialog}
       selectedValues={selectedValues}
       setSelectedValues={setSelectedValues}
       onSuccess={onSuccess}
