@@ -24,6 +24,7 @@ import { debounce } from 'lodash'
 import { Fragment, useCallback, useMemo, useState } from 'react'
 import { CheckIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Badge } from '../ui/badge'
 
 type Props<Entity, EntityFindAll> = {
   setQuery: React.Dispatch<React.SetStateAction<string>>
@@ -85,7 +86,16 @@ export default function DropdownSubItemForFiltering<Entity, EntityFindAll>({
 
   return (
     <DropdownMenuSub>
-      <DropdownMenuSubTrigger>{title}</DropdownMenuSubTrigger>
+      <DropdownMenuSubTrigger>
+        <div className='flex items-center gap-2'>
+          {title}{' '}
+          {ids.length >= 1 && (
+            <Badge className='h-5' variant='outline'>
+              {ids.length}
+            </Badge>
+          )}
+        </div>
+      </DropdownMenuSubTrigger>
       <DropdownMenuSubContent className='p-0 w-36 lg:w-auto'>
         <Command shouldFilter={false}>
           <CommandInput

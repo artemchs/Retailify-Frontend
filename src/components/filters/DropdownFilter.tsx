@@ -32,7 +32,7 @@ export default function DropdownFilter({
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='start' className='w-40 lg:w-64'>
+      <DropdownMenuContent align='end' className='w-40 lg:w-64'>
         <DropdownMenuLabel className='flex items-center justify-between'>
           <span>Фильтры</span>
           <button

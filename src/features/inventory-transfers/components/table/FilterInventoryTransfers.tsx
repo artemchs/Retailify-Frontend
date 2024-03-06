@@ -50,6 +50,7 @@ export default function FilterInventoryTransfers() {
       search: (prev) => ({ ...prev, sourceWarehouseIds: values }),
     })
   }
+
   function setDestinationWarehouseIds(values?: string[]) {
     navigate({
       search: (prev) => ({ ...prev, destinationWarehouseIds: values }),
