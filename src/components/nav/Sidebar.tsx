@@ -2,20 +2,48 @@ import { Separator } from '@/components/ui/separator'
 import SidebarLinks from './SidebarLinks'
 import UserInfo from './UserInfo'
 import Menu from './Menu'
-import ThemeToggle from '@/features/appearance/components/ThemeToggle'
+import { Button } from '../ui/button'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { ImperativePanelHandle } from 'react-resizable-panels'
 
-export default function Sidebar() {
+type Props = {
+  sidebarRef: React.RefObject<ImperativePanelHandle>
+  isExpanded?: boolean
+}
+
+export default function Sidebar({ sidebarRef, isExpanded }: Props) {
   return (
-    <nav className='hidden lg:flex h-full w-96 flex-col border-r'>
+    <nav className={cn('hidden lg:flex w-full h-full flex-col')}>
       <div className='p-3 flex items-center justify-between'>
-        <UserInfo />
+        <div className={cn(isExpanded ? 'flex' : 'hidden')}>
+          <UserInfo />
+        </div>
         <div className='flex items-center gap-2'>
-          <Menu />
-          <ThemeToggle />
+          <div className={cn(isExpanded ? 'flex' : 'hidden')}>
+            <Menu />
+          </div>
+          <Button
+            variant='outline'
+            size='icon'
+            onClick={() => {
+              if (sidebarRef.current?.isExpanded()) {
+                sidebarRef.current.collapse()
+              } else {
+                sidebarRef.current?.expand()
+              }
+            }}
+          >
+            {sidebarRef.current?.isCollapsed() ? (
+              <PanelLeftOpen className='h-4 w-4' />
+            ) : (
+              <PanelLeftClose className='h-4 w-4' />
+            )}
+          </Button>
         </div>
       </div>
       <Separator />
-      <SidebarLinks />
+      <SidebarLinks isCollapsed={!isExpanded} />
     </nav>
   )
 }

@@ -9,7 +9,6 @@ import { Button } from '../ui/button'
 import { MenuIcon } from 'lucide-react'
 import UserInfo from './UserInfo'
 import Menu from './Menu'
-import ThemeToggle from '@/features/appearance/components/ThemeToggle'
 import SidebarLinks from './SidebarLinks'
 import Logo from '../Logo'
 
@@ -35,13 +34,12 @@ function Sidesheet() {
           <SheetTitle>Меню</SheetTitle>
           <div className='flex items-center justify-between'>
             <UserInfo />
-            <div className='flex items-center gap-2'>
-              <Menu />
-              <ThemeToggle />
-            </div>
+            <Menu />
           </div>
         </SheetHeader>
-        <SidebarLinks />
+        <div className='overflow-y-auto'>
+          <SidebarLinks />
+        </div>
       </SheetContent>
     </Sheet>
   )

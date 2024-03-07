@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import { Link, useRouteContext } from '@tanstack/react-router'
 import {
   BookText,
@@ -13,7 +14,11 @@ import {
 } from 'lucide-react'
 import React from 'react'
 
-export default function SidebarLinks() {
+type Props = {
+  isCollapsed?: boolean
+}
+
+export default function SidebarLinks({ isCollapsed }: Props) {
   return (
     <div>
       <Section>
@@ -23,6 +28,7 @@ export default function SidebarLinks() {
           cashier={true}
           ecommerceManager={true}
           text='Главная'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={Users}
@@ -30,6 +36,7 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Сотрудники'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={Store}
@@ -37,6 +44,7 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Точки продаж'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={Factory}
@@ -44,6 +52,7 @@ export default function SidebarLinks() {
           cashier={true}
           ecommerceManager={true}
           text='Поставщики'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={Warehouse}
@@ -51,6 +60,7 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Склады'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={PackagePlus}
@@ -58,6 +68,7 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Приход товара'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={LibraryBig}
@@ -65,6 +76,7 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Категории товара'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={LibraryBig}
@@ -72,6 +84,7 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Группы категорий товара'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={Tags}
@@ -79,6 +92,7 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Модели товара'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={BookText}
@@ -86,6 +100,7 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Инвентаризация'
+          isCollapsed={isCollapsed}
         />
         <SidebarLink
           Icon={GitCompareArrows}
@@ -93,6 +108,7 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Перемещение товара'
+          isCollapsed={isCollapsed}
         />
       </Section>
     </div>
@@ -105,12 +121,14 @@ function SidebarLink({
   to,
   cashier,
   ecommerceManager,
+  isCollapsed,
 }: {
   text: string
   Icon: React.ComponentType<{ className?: string }>
   to: string
   cashier: boolean
   ecommerceManager: boolean
+  isCollapsed?: boolean
 }) {
   const { user } = useRouteContext({ from: '/layout' })
   const handleClose = () => {
@@ -142,11 +160,14 @@ function SidebarLink({
         inactiveProps={{
           className: 'hover:bg-secondary',
         }}
-        className='flex gap-2 items-center px-3 py-2 rounded-lg transition-colors'
+        className={cn(
+          'flex gap-2 items-center rounded-lg transition-colors',
+          isCollapsed ? 'h-9 w-9 justify-center' : 'px-3 py-2'
+        )}
         onClick={handleClose}
       >
-        <Icon className='h-4 w-4' />
-        <span>{text}</span>
+        <Icon className='h-4 w-4 shrink-0' />
+        {!isCollapsed && <span>{text}</span>}
       </Link>
     )
   } else {
