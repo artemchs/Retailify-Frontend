@@ -3,47 +3,40 @@ import SidebarLinks from './SidebarLinks'
 import UserInfo from './UserInfo'
 import Menu from './Menu'
 import { Button } from '../ui/button'
+import { toggleDesktopSidebar } from '@/utils/desktop-sidebar'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { ImperativePanelHandle } from 'react-resizable-panels'
 
-type Props = {
-  sidebarRef: React.RefObject<ImperativePanelHandle>
-  isExpanded?: boolean
-}
+//
 
-export default function Sidebar({ sidebarRef, isExpanded }: Props) {
+export default function Sidebar() {
   return (
-    <nav className={cn('hidden lg:flex w-full h-full flex-col')}>
+    <nav
+      className='hidden lg:flex h-full flex-col border-r data-[state=open]:w-96 data-[state=closed]:w-fit group'
+      data-state='open'
+      id='sidebar-desktop'
+    >
       <div className='p-3 flex items-center justify-between'>
-        <div className={cn(isExpanded ? 'flex' : 'hidden')}>
+        <div className='group-data-[state=closed]:hidden'>
           <UserInfo />
         </div>
         <div className='flex items-center gap-2'>
-          <div className={cn(isExpanded ? 'flex' : 'hidden')}>
+          <div className='group-data-[state=closed]:hidden'>
             <Menu />
           </div>
           <Button
-            variant='outline'
             size='icon'
-            onClick={() => {
-              if (sidebarRef.current?.isExpanded()) {
-                sidebarRef.current.collapse()
-              } else {
-                sidebarRef.current?.expand()
-              }
-            }}
+            variant='outline'
+            onClick={() => toggleDesktopSidebar()}
           >
-            {sidebarRef.current?.isCollapsed() ? (
-              <PanelLeftOpen className='h-4 w-4' />
-            ) : (
-              <PanelLeftClose className='h-4 w-4' />
-            )}
+            <>
+              <PanelLeftOpen className='hidden h-4 w-4 group-data-[state=closed]:flex' />
+              <PanelLeftClose className='hidden h-4 w-4 group-data-[state=open]:flex' />
+            </>
           </Button>
         </div>
       </div>
       <Separator />
-      <SidebarLinks isCollapsed={!isExpanded} />
+      <SidebarLinks />
     </nav>
   )
 }

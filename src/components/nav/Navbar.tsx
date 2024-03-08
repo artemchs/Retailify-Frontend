@@ -32,13 +32,13 @@ function Sidesheet() {
       <SheetContent side='right' className='flex flex-col gap-4'>
         <SheetHeader className='text-left'>
           <SheetTitle>Меню</SheetTitle>
-          <div className='flex items-center justify-between'>
-            <UserInfo />
-            <Menu />
-          </div>
         </SheetHeader>
         <div className='overflow-y-auto'>
           <SidebarLinks />
+        </div>
+        <div className='flex items-center justify-between'>
+          <UserInfo />
+          <Menu />
         </div>
       </SheetContent>
     </Sheet>
