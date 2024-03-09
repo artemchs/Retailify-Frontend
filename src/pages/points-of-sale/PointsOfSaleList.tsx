@@ -6,7 +6,7 @@ import CrudLayout from '@/layouts/CrudLayout'
 import { pointsOfSaleRoute } from '@/lib/router/routeTree'
 import { useSearch } from '@tanstack/react-router'
 
-export default function PointsOfSalePage() {
+export default function PointsOfSaleListPage() {
   const searchParams = useSearch({
     from: pointsOfSaleRoute.id,
   })

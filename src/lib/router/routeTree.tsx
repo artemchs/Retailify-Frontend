@@ -31,8 +31,10 @@ import InventoryAdjustmentsPage from '@/pages/InventoryAdjustments'
 import { inventoryAdjustmentsSearchParamsSchema } from '@/features/inventory-adjustments/types/inventory-adjustment-search-params'
 import InventoryTransfersPage from '@/pages/InventoryTransfers'
 import { inventoryTransfersSearchParamsSchema } from '@/features/inventory-transfers/types/inventory-transfer-search-params'
-import PointsOfSalePage from '@/pages/PointsOfSale'
 import { posSearchParamsSchema } from '@/features/points-of-sale/types/point-of-sale-search-params'
+import PointsOfSaleListPage from '@/pages/points-of-sale/PointsOfSaleList'
+import PointOfSalePage from '@/pages/points-of-sale/PointOfSale'
+import { cashierShiftSearchParamsSchema } from '@/features/points-of-sale/cashier-shifts/types/cashier-shift-search-params'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -41,11 +43,11 @@ interface RouteContext {
 function beforeLoadRole(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: any,
-  requiredRole: 'ADMIN' | 'CASHIER' | 'ECOMMERCE_MANAGER'
+  requiredRole: ('ADMIN' | 'CASHIER' | 'ECOMMERCE_MANAGER')[]
 ) {
   const contextUser: AccessTokenData = context.user
 
-  if (contextUser.role !== requiredRole) {
+  if (!requiredRole.includes(contextUser.role)) {
     throw redirect({
       to: '/',
     })
@@ -112,7 +114,7 @@ export const employeesRoute = new Route({
   component: EmployeesPage,
   path: '/employees',
   validateSearch: (search) => employeesSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const suppliersRoute = new Route({
@@ -127,7 +129,7 @@ export const warehousesRoute = new Route({
   component: WarehousesPage,
   path: '/warehouses',
   validateSearch: (search) => warehousesSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const categoryGroupsRoute = new Route({
@@ -135,7 +137,7 @@ export const categoryGroupsRoute = new Route({
   component: CategoryGroupsPage,
   path: '/category-groups',
   validateSearch: (search) => findAllCategoryGroupsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const categoriesRoute = new Route({
@@ -143,7 +145,7 @@ export const categoriesRoute = new Route({
   component: CategoriesPage,
   path: '/categories',
   validateSearch: (search) => findAllCategorySchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const productsRoute = new Route({
@@ -151,21 +153,21 @@ export const productsRoute = new Route({
   component: ProductsPage,
   path: '/products',
   validateSearch: (search) => productsSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const createProductRoute = new Route({
   getParentRoute: () => layout,
   component: CreateProductPage,
   path: '/products/create',
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const editProductRoute = new Route({
   getParentRoute: () => layout,
   component: EditProductPage,
   path: '/products/$productId/edit',
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const inventoryAdjustmentsRoute = new Route({
@@ -174,7 +176,7 @@ export const inventoryAdjustmentsRoute = new Route({
   path: '/inventory-adjustments',
   validateSearch: (search) =>
     inventoryAdjustmentsSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const goodsReceiptsRoute = new Route({
@@ -182,7 +184,7 @@ export const goodsReceiptsRoute = new Route({
   component: GoodsReceiptsPage,
   path: '/goods-receipts',
   validateSearch: (search) => goodsReceiptsSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const createGoodsReceiptRoute = new Route({
@@ -195,7 +197,7 @@ export const editGoodsReceiptRoute = new Route({
   getParentRoute: () => layout,
   component: EditGoodsReceiptPage,
   path: '/goods-receipts/$goodsReceiptId/edit',
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const inventoryTransfersRoute = new Route({
@@ -204,15 +206,22 @@ export const inventoryTransfersRoute = new Route({
   path: '/inventory-transfers',
   validateSearch: (search) =>
     inventoryTransfersSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const pointsOfSaleRoute = new Route({
   getParentRoute: () => layout,
-  component: PointsOfSalePage,
+  component: PointsOfSaleListPage,
   path: '/points-of-sale',
   validateSearch: (search) => posSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, 'ADMIN'),
+})
+
+export const pointOfSaleRoute = new Route({
+  getParentRoute: () => layout,
+  component: PointOfSalePage,
+  path: '/points-of-sale/$pointOfSaleId',
+  validateSearch: (search) => cashierShiftSearchParamsSchema.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const routeTree = rootRoute.addChildren([
@@ -232,6 +241,7 @@ export const routeTree = rootRoute.addChildren([
     inventoryAdjustmentsRoute,
     inventoryTransfersRoute,
     pointsOfSaleRoute,
+    pointOfSaleRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

@@ -2,6 +2,7 @@ import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import { PointOfSale } from '@/types/entities/PointOfSale'
 import { ColumnDef } from '@tanstack/react-table'
 import PointOfSaleActions from './PointOfSaleActions'
+import { Link } from '@tanstack/react-router'
 
 export const columns: ColumnDef<PointOfSale>[] = [
   {
@@ -14,7 +15,19 @@ export const columns: ColumnDef<PointOfSale>[] = [
       />
     ),
     cell: ({ row }) => {
-      return <span className='font-medium'>{row.original.name}</span>
+      return (
+        <Link
+          to='/points-of-sale/$pointOfSaleId'
+          params={{ pointOfSaleId: row.original.id }}
+          className='font-medium hover:underline'
+          search={{
+            page: 1,
+            rowsPerPage: 20,
+          }}
+        >
+          {row.original.name}
+        </Link>
+      )
     },
   },
   {
