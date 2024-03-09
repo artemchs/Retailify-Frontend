@@ -1,12 +1,14 @@
 import DropdownFilter from '@/components/filters/DropdownFilter'
 import { DatePickerWithRange } from '@/components/ui/date-picker'
+import { DropdownMenuSeparator } from '@/components/ui/dropdown-menu'
 import { Label } from '@/components/ui/label'
+import SelectEmployeesForFiltering from '@/features/employees/components/SelectEmployeesForFiltering'
 import { pointOfSaleRoute } from '@/lib/router/routeTree'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { DateRange } from 'react-day-picker'
 
 export default function FilterCashierShifts() {
-  const { createdAt, closedAt } = useSearch({
+  const { createdAt, closedAt, cashierIds } = useSearch({
     from: pointOfSaleRoute.id,
   })
   const navigate = useNavigate()
@@ -16,6 +18,12 @@ export default function FilterCashierShifts() {
 
     if (createdAt) number += 1
     if (closedAt) number += 1
+
+    for (const arr of [cashierIds]) {
+      if (arr && arr.length >= 1) {
+        number += 1
+      }
+    }
 
     return number
   }
@@ -32,12 +40,19 @@ export default function FilterCashierShifts() {
     })
   }
 
+  function setCashierIds(values?: string[]) {
+    navigate({
+      search: (prev) => ({ ...prev, cashierIds: values }),
+    })
+  }
+
   function resetFilters() {
     navigate({
       search: (prev) => ({
         ...prev,
         createdAt: undefined,
         closedAt: undefined,
+        cashierIds: undefined,
       }),
     })
   }
@@ -64,6 +79,12 @@ export default function FilterCashierShifts() {
           setDate={setClosedAt}
         />
       </div>
+      <DropdownMenuSeparator />
+      <SelectEmployeesForFiltering
+        ids={cashierIds ?? []}
+        setIds={setCashierIds}
+        title='Кассиры'
+      />
     </DropdownFilter>
   )
 }

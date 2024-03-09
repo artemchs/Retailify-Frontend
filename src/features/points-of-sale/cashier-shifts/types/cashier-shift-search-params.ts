@@ -32,6 +32,7 @@ export const cashierShiftSearchParamsSchema = z.object({
         .optional(),
     })
     .optional(),
+  cashierIds: z.array(z.string()).optional(),
   orderBy: z
     .object({
       name: z.enum(['asc', 'desc']).optional(),
