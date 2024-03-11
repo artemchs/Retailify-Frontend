@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ColumnDef,
   ExpandedState,
   Row,
+  RowSelectionState,
   Table as TableType,
   VisibilityState,
   flexRender,
@@ -37,7 +39,7 @@ import { RouteIds, useNavigate, useSearch } from '@tanstack/react-router'
 import PaginationControls from './pagination-controls'
 import { routeTree } from '@/lib/router/routeTree'
 import SearchBar from './search-bar'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Button } from './button'
 import {
   DropdownMenu,
@@ -58,6 +60,9 @@ interface DataTableProps<TData, TValue> {
   childrenField?: keyof TData
   renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
   getRowCanExpand?: (row: Row<TData>) => boolean
+  selectedRows?: RowSelectionState
+  setSelectedRows?: React.Dispatch<React.SetStateAction<RowSelectionState>>
+  setSelectedRowsWithData?: React.Dispatch<React.SetStateAction<any[]>>
 }
 
 export function DataTable<TData, TValue>({
@@ -71,8 +76,11 @@ export function DataTable<TData, TValue>({
   childrenField,
   getRowCanExpand,
   renderSubComponent,
+  selectedRows,
+  setSelectedRows,
+  setSelectedRowsWithData,
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [expanded, setExpanded] = useState<ExpandedState>({})
 
@@ -87,7 +95,7 @@ export function DataTable<TData, TValue>({
     manualPagination: true,
     getRowId,
     enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: setSelectedRows ? setSelectedRows : setRowSelection,
     onColumnVisibilityChange: setColumnVisibility,
     manualSorting: true,
     manualFiltering: true,
@@ -98,14 +106,32 @@ export function DataTable<TData, TValue>({
     getRowCanExpand,
     getExpandedRowModel: getExpandedRowModel(),
     state: {
-      rowSelection,
+      rowSelection: selectedRows ? selectedRows : rowSelection,
       columnVisibility,
       expanded,
     },
   })
 
+  useEffect(() => {
+    if (setSelectedRowsWithData) {
+      const handleSelectionState = (selections?: RowSelectionState) => {
+        setSelectedRowsWithData((prev) =>
+          selections
+            ? Object.keys(selections).map(
+                (key) =>
+                  table.getSelectedRowModel().rowsById[key]?.original ||
+                  prev.find((row) => row.id === key)
+              )
+            : []
+        )
+      }
+
+      handleSelectionState(selectedRows)
+    }
+  }, [selectedRows, setSelectedRowsWithData, table])
+
   return (
-    <div className='space-y-4'>
+    <div className='h-full max-h-full overflow-y-auto flex flex-col gap-4'>
       <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4'>
         <div className='flex flex-col lg:flex-row flex-grow lg:items-center gap-2'>
           <SearchBar routeId={routeId} />
@@ -123,7 +149,7 @@ export function DataTable<TData, TValue>({
           <ColumnsVisibilityDropdown table={table} />
         </div>
       </div>
-      <div className='rounded-md border'>
+      <div className='rounded-md border max-h-full overflow-y-auto shrink flex'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

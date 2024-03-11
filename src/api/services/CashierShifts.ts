@@ -27,10 +27,12 @@ export default {
       },
     }),
 
-  useFindOne: ({ id, posId }: { id: string; posId: string }) =>
+  useFindOne: ({ id, posId }: { id?: string; posId: string }) =>
     useQuery({
       queryKey: ['cashier-shift', { id, posId }],
       queryFn: async () => {
+        if (!id || !posId) return null
+
         const { data } = await client.get(
           `/points-of-sale/${posId}/shifts/${id}`
         )
@@ -52,7 +54,7 @@ export default {
       mutationFn: async ({ body }: { body: CreateCashierShiftFormSchema }) => {
         return await client.post(`/points-of-sale/${posId}/shifts`, body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['points-of-sale'],
         })
@@ -62,7 +64,7 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['cashier-shifts'],
         })
-        onSuccess()
+        onSuccess(data.id)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
@@ -124,13 +126,13 @@ export default {
           queryKey: ['points-of-sale'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['points-of-sal', { id: posId }],
+          queryKey: ['point-of-sale', { id: posId }],
         })
         queryClient.invalidateQueries({
           queryKey: ['cashier-shifts'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['cashier-shift', { id }],
+          queryKey: ['cashier-shift', { id, posId }],
         })
         onSuccess()
       },

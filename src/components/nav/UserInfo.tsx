@@ -8,7 +8,9 @@ import roleNames from '@/utils/roleNames'
 
 export default function UserInfo() {
   const { data, isLoading, isError } = Users.useGetMe()
-  const context = useRouteContext({ from: '/layout' })
+  const context = useRouteContext({
+    strict: false,
+  })
 
   if (isLoading) return <Loading />
   if (isError) return <Error />

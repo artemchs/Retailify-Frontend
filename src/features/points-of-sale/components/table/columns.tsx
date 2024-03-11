@@ -17,7 +17,7 @@ export const columns: ColumnDef<PointOfSale>[] = [
     cell: ({ row }) => {
       return (
         <Link
-          to='/points-of-sale/$pointOfSaleId'
+          to='/points-of-sale/$pointOfSaleId/shifts'
           params={{ pointOfSaleId: row.original.id }}
           className='font-medium hover:underline'
           search={{

@@ -5,6 +5,7 @@ import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { refreshTokens } from '@/utils/refreshTokens'
 import { accessToken } from '@/utils/accessToken'
+import { PointOfSaleWithLatestCashierShift } from '@/types/entities/PointOfSale'
 
 type UpdateMeBody = {
   email: string
@@ -27,6 +28,18 @@ export default {
           fullName: string
           profilePicture: string | null
         }>('/users/me')
+
+        return data
+      },
+    }),
+
+  useFindMyPointsOfSale: () =>
+    useQuery({
+      queryKey: ['my-points-of-sale'],
+      queryFn: async () => {
+        const { data } = await client.get<PointOfSaleWithLatestCashierShift[]>(
+          '/users/my-points-of-sale'
+        )
 
         return data
       },

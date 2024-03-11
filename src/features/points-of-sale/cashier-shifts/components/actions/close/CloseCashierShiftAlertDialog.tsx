@@ -7,9 +7,8 @@ import {
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
+import { ReactNode } from '@tanstack/react-router'
 import { Loader2, StopCircle } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -17,14 +16,26 @@ import { toast } from 'sonner'
 export default function CloseCashierShiftAlertDialog({
   id,
   posId,
+  trigger,
+  isCloseCashierShiftDialogOpened,
+  setIsCloseCashierShiftDialogOpened,
 }: {
   id: string
   posId: string
+  trigger?: ReactNode
+  isCloseCashierShiftDialogOpened?: boolean
+  setIsCloseCashierShiftDialogOpened?: React.Dispatch<
+    React.SetStateAction<boolean>
+  >
 }) {
   const [isOpened, setIsOpened] = useState(false)
 
   function onSuccess() {
-    setIsOpened(false)
+    if (setIsCloseCashierShiftDialogOpened) {
+      setIsCloseCashierShiftDialogOpened(false)
+    } else {
+      setIsOpened(false)
+    }
     toast('Смена кассира была успешно закрыта.', {
       icon: <StopCircle className='h-4 w-4' />,
       cancel: {
@@ -43,12 +54,17 @@ export default function CloseCashierShiftAlertDialog({
   })
 
   return (
-    <AlertDialog open={isOpened} onOpenChange={setIsOpened}>
-      <AlertDialogTrigger asChild>
-        <Button size='icon' variant='secondary'>
-          <StopCircle className='h-4 w-4' />
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialog
+      open={isCloseCashierShiftDialogOpened ?? isOpened}
+      onOpenChange={() => {
+        if (setIsCloseCashierShiftDialogOpened) {
+          setIsCloseCashierShiftDialogOpened(false)
+        } else {
+          setIsOpened(false)
+        }
+      }}
+    >
+      {trigger}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Закрыть смену кассира</AlertDialogTitle>
@@ -60,7 +76,13 @@ export default function CloseCashierShiftAlertDialog({
           <AlertDestructive text={errorMessage} />
         )}
         <AlertDialogFooter
-          cancelAction={() => setIsOpened(false)}
+          cancelAction={() => {
+            if (setIsCloseCashierShiftDialogOpened) {
+              setIsCloseCashierShiftDialogOpened(false)
+            } else {
+              setIsOpened(false)
+            }
+          }}
           submitButtonVariant='secondary'
           submitButtonChildren={
             <>

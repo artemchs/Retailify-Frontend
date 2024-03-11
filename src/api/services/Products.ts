@@ -10,6 +10,7 @@ import onErrorHandler from './utils/onErrorHandler'
 import { ProductsSearchParams } from '@/features/products/types/searchParams'
 import { EditProductFormSchema } from '@/features/products/types/edit-product-form-schema'
 import { Variant, VariantWithProduct } from '@/types/entities/Variant'
+import { VariantsSearchParamsSchema } from '@/features/products/variants/types/findAll-variants-search-params'
 
 export type ProductsFindAll = {
   items: ProductFindAll[]
@@ -28,6 +29,11 @@ export type ProductsFindAllInfiniteList = {
 export type VariantsFindAllInfiniteList = {
   items: Variant[]
   nextCursor?: string
+}
+
+export type VariantsFindAll = {
+  items: VariantWithProduct[]
+  info: FindAllInfo
 }
 
 export default {
@@ -259,6 +265,17 @@ export default {
           `/products/${productId}/variants/${id}`
         )
         return data as Variant
+      },
+    }),
+
+  useFindAllVariants: (searchParams: VariantsSearchParamsSchema) =>
+    useQuery({
+      queryKey: ['product-variants', searchParams],
+      queryFn: async () => {
+        const { data } = await client.get(`/products/_/variants`, {
+          params: searchParams,
+        })
+        return data as VariantsFindAll
       },
     }),
 

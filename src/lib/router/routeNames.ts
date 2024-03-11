@@ -14,4 +14,5 @@ export default {
   '/inventory-adjustments': 'Инвентаризация',
   '/inventory-transfers': 'Перемещение товара',
   '/points-of-sale': 'Точки продаж',
+  '/points-of-sale/*/shifts': 'Смены на точке продаж',
 }

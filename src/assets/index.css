@@ -111,6 +111,10 @@
   @apply absolute bg-sky-100 z-20 w-1 right-[-2px] top-0 bottom-[-2px] cursor-col-resize
 }
 
+.cashier-content-max-h {
+  max-height: calc(100dvh - 4rem)
+}
+
 
 @layer base {
   * {

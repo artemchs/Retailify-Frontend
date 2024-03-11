@@ -59,3 +59,15 @@ export type FullPointOfSale =
       isArchived: boolean
     })
   | null
+
+export type PointOfSaleWithLatestCashierShift = {
+  cashierShifts: {
+    id: string
+    isOpened: boolean
+  }[]
+} & {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+  name: string
+}

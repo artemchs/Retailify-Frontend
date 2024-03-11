@@ -33,8 +33,10 @@ import InventoryTransfersPage from '@/pages/InventoryTransfers'
 import { inventoryTransfersSearchParamsSchema } from '@/features/inventory-transfers/types/inventory-transfer-search-params'
 import { posSearchParamsSchema } from '@/features/points-of-sale/types/point-of-sale-search-params'
 import PointsOfSaleListPage from '@/pages/points-of-sale/PointsOfSaleList'
-import PointOfSalePage from '@/pages/points-of-sale/PointOfSale'
 import { cashierShiftSearchParamsSchema } from '@/features/points-of-sale/cashier-shifts/types/cashier-shift-search-params'
+import PointOfSaleShiftsPage from '@/pages/points-of-sale/PointOfSaleShifts'
+import CashRegisterPage from '@/pages/CashRegister'
+import { cashRegisterSearchParams } from '@/features/cash-register/types/cash-register-search-params'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -52,6 +54,8 @@ function beforeLoadRole(
       to: '/',
     })
   }
+
+  setContextUser(context)
 }
 
 const rootRoute = rootRouteWithContext<RouteContext>()({
@@ -218,10 +222,18 @@ export const pointsOfSaleRoute = new Route({
 
 export const pointOfSaleRoute = new Route({
   getParentRoute: () => layout,
-  component: PointOfSalePage,
-  path: '/points-of-sale/$pointOfSaleId',
+  component: PointOfSaleShiftsPage,
+  path: '/points-of-sale/$pointOfSaleId/shifts',
   validateSearch: (search) => cashierShiftSearchParamsSchema.parse(search),
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+})
+
+export const cashRegisterRoute = new Route({
+  getParentRoute: () => rootRoute,
+  component: CashRegisterPage,
+  path: '/cash-register',
+  validateSearch: (search) => cashRegisterSearchParams.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN', 'CASHIER']),
 })
 
 export const routeTree = rootRoute.addChildren([
@@ -242,6 +254,7 @@ export const routeTree = rootRoute.addChildren([
     inventoryTransfersRoute,
     pointsOfSaleRoute,
     pointOfSaleRoute,
+    cashRegisterRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

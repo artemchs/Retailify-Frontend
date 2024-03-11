@@ -22,9 +22,14 @@ import SaveButton from '@/components/forms/SaveButton'
 type Props = {
   posId: string
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
+  setShiftId?: (id: string) => void
 }
 
-export default function CreateCashierShiftForm({ setIsOpened, posId }: Props) {
+export default function CreateCashierShiftForm({
+  setIsOpened,
+  posId,
+  setShiftId,
+}: Props) {
   const form = useForm<z.infer<typeof createCashierShiftFormSchema>>({
     resolver: zodResolver(createCashierShiftFormSchema),
     defaultValues: {
@@ -32,15 +37,19 @@ export default function CreateCashierShiftForm({ setIsOpened, posId }: Props) {
     },
   })
 
-  function onSuccess() {
+  function onSuccess(data?: string) {
     setIsOpened(false)
-    toast('Новая смена товара была открыта.', {
+    toast('Новая смена кассира была открыта.', {
       icon: <Plus className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
         onClick: toast.dismiss,
       },
     })
+
+    if (setShiftId && data) {
+      setShiftId(data)
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')

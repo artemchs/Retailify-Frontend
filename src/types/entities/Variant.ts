@@ -1,3 +1,5 @@
+import { ProductFindAll } from './Product'
+
 export type Variant = {
   id: string
   createdAt: Date
@@ -23,10 +25,12 @@ export type Variant = {
         warehouseQuantity: number
       }[]
     | null
+  product: {
+    title: string
+    sku: string
+  } | null
 }
 
 export interface VariantWithProduct extends Variant {
-  product: {
-    title: string
-  } | null
+  product: ProductFindAll
 }

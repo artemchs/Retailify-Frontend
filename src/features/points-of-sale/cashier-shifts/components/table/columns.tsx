@@ -14,7 +14,7 @@ export const columns: ColumnDef<CashierShift>[] = [
       <SortableDataTableHeader
         label='Название'
         orderByProperty='name'
-        routeId='/layout/points-of-sale/$pointOfSaleId'
+        routeId='/layout/points-of-sale/$pointOfSaleId/shifts'
       />
     ),
     cell: ({ row }) => {
