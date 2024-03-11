@@ -15,4 +15,5 @@ export default {
   '/inventory-transfers': 'Перемещение товара',
   '/points-of-sale': 'Точки продаж',
   '/points-of-sale/*/shifts': 'Смены на точке продаж',
+  '/customers': 'Клиенты',
 }

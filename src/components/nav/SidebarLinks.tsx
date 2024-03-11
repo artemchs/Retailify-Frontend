@@ -8,10 +8,12 @@ import {
   PackagePlus,
   Store,
   Tags,
+  User,
   Users,
   Warehouse,
 } from 'lucide-react'
 import React from 'react'
+import { Separator } from '../ui/separator'
 
 export default function SidebarLinks() {
   return (
@@ -93,6 +95,16 @@ export default function SidebarLinks() {
           cashier={false}
           ecommerceManager={false}
           text='Перемещение товара'
+        />
+      </Section>
+      <Separator />
+      <Section>
+        <SidebarLink
+          Icon={User}
+          to='/customers'
+          cashier={false}
+          ecommerceManager={false}
+          text='Клиенты'
         />
       </Section>
     </div>

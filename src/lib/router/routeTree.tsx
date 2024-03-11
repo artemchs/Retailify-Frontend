@@ -37,6 +37,8 @@ import { cashierShiftSearchParamsSchema } from '@/features/points-of-sale/cashie
 import PointOfSaleShiftsPage from '@/pages/points-of-sale/PointOfSaleShifts'
 import CashRegisterPage from '@/pages/CashRegister'
 import { cashRegisterSearchParams } from '@/features/cash-register/types/cash-register-search-params'
+import CustomersPage from '@/pages/Customers'
+import { findAllCustomerSchema } from '@/features/customers/types/find-all-customer-schema'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -236,6 +238,14 @@ export const cashRegisterRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN', 'CASHIER']),
 })
 
+export const customerRoute = new Route({
+  getParentRoute: () => layout,
+  component: CustomersPage,
+  path: '/customers',
+  validateSearch: (search) => findAllCustomerSchema.parse(search),
+  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+})
+
 export const routeTree = rootRoute.addChildren([
   layout.addChildren([
     homeRoute,
@@ -255,6 +265,7 @@ export const routeTree = rootRoute.addChildren([
     pointsOfSaleRoute,
     pointOfSaleRoute,
     cashRegisterRoute,
+    customerRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

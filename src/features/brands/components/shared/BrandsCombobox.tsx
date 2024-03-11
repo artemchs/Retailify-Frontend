@@ -46,7 +46,7 @@ export default function BrandsCombobox({ field, form }: Props) {
       nameField='name'
       idField='id'
       setQuery={setQuery}
-      placeholder='Выберите брренд'
+      placeholder='Выберите бренд'
       selectedEntity={selectedBrand}
       CreateDialog={CreateBrandDialog}
       EditDialog={EditBrandDialog}
