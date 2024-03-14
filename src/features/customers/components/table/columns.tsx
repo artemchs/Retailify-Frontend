@@ -33,6 +33,20 @@ export const columns: ColumnDef<Customer>[] = [
     ),
   },
   {
+    id: 'Номер телефона',
+    accessorKey: 'Номер телефона',
+    header: () => (
+      <SortableDataTableHeader
+        label='Номер телефона'
+        orderByProperty='phoneNumber'
+        routeId='/layout/customers'
+      />
+    ),
+    cell: ({ row }) => (
+      <span className='font-medium'>{row.original.phoneNumber}</span>
+    ),
+  },
+  {
     id: 'Электронная почта',
     accessorKey: 'Электронная почта',
     header: () => (
@@ -46,6 +60,7 @@ export const columns: ColumnDef<Customer>[] = [
       <span className='font-medium'>{row.original.email}</span>
     ),
   },
+
   {
     id: 'actions',
     cell: ({ row }) => {

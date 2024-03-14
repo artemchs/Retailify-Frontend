@@ -11,6 +11,7 @@ export const findAllCustomerSchema = z.object({
       firstName: z.enum(['asc', 'desc']).optional(),
       lastName: z.enum(['asc', 'desc']).optional(),
       email: z.enum(['asc', 'desc']).optional(),
+      phoneNumber: z.enum(['asc', 'desc']).optional(),
     })
     .optional(),
 })

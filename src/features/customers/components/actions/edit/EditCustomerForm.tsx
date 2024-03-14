@@ -11,6 +11,7 @@ import {
   customerEmail,
   customerFirstName,
   customerLastName,
+  customerPhoneNumber,
 } from '../../shared/placeholders'
 import {
   Form,
@@ -24,6 +25,8 @@ import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredF
 import { Input } from '@/components/ui/input'
 import SaveButton from '@/components/forms/SaveButton'
 import AsyncInput from '@/components/forms/AsyncInput'
+import { Label } from '@/components/ui/label'
+import PhoneNumberInput from '@/components/forms/PhoneNumberInput'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -46,6 +49,7 @@ export default function EditCustomerForm({
       firstName: data?.firstName,
       lastName: data?.lastName,
       email: data?.email,
+      phoneNumber: data?.phoneNumber,
     },
   })
 
@@ -122,10 +126,34 @@ export default function EditCustomerForm({
           </div>
           <FormField
             control={form.control}
+            name='phoneNumber'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Номер телефона' />
+                <FormControl>
+                  <AsyncInput
+                    input={
+                      <PhoneNumberInput
+                        field={field}
+                        form={form}
+                        fieldName='phoneNumber'
+                        placeholder={customerPhoneNumber}
+                      />
+                    }
+                    isError={isError}
+                    isLoading={isLoading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name='email'
             render={({ field }) => (
               <FormItem>
-                <FormLabelForRequiredFields text='Электронная почта' />
+                <Label>Электронная почта:</Label>
                 <FormControl>
                   <AsyncInput
                     input={

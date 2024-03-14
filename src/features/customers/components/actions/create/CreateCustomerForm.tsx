@@ -20,8 +20,11 @@ import {
   customerEmail,
   customerFirstName,
   customerLastName,
+  customerPhoneNumber,
 } from '../../shared/placeholders'
 import SaveButton from '@/components/forms/SaveButton'
+import PhoneNumberInput from '@/components/forms/PhoneNumberInput'
+import { Label } from '@/components/ui/label'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -34,6 +37,7 @@ export default function CreateCustomerForm({ setIsOpened }: Props) {
       email: '',
       firstName: '',
       lastName: '',
+      phoneNumber: '',
     },
   })
 
@@ -97,10 +101,28 @@ export default function CreateCustomerForm({ setIsOpened }: Props) {
           </div>
           <FormField
             control={form.control}
+            name='phoneNumber'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Номер телефона' />
+                <FormControl>
+                  <PhoneNumberInput
+                    field={field}
+                    form={form}
+                    fieldName='phoneNumber'
+                    placeholder={customerPhoneNumber}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name='email'
             render={({ field }) => (
               <FormItem>
-                <FormLabelForRequiredFields text='Электронная почта' />
+                <Label>Электронная почта:</Label>
                 <FormControl>
                   <Input type='email' placeholder={customerEmail} {...field} />
                 </FormControl>
