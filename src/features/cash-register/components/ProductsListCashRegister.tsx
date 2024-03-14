@@ -3,19 +3,32 @@ import { DataTable } from '@/components/ui/data-table'
 import { cashRegisterRoute } from '@/lib/router/routeTree'
 import { useSearch } from '@tanstack/react-router'
 import { columns } from './products-table/columns'
-import {
-  CashRegisterRowSelectionState,
-  CashRegisterSelectedProductState,
-} from '@/pages/CashRegister'
+import { CashRegisterRowSelectionState } from '@/pages/CashRegister'
+import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
+import { CashRegisterItem } from '../types/cash-register-order-form-schema'
+import { useEffect } from 'react'
+
+type Props = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  field: ControllerRenderProps<any, 'items'>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  form: UseFormReturn<any, any, undefined>
+}
 
 export default function ProductsListCashRegister({
-  setSelectedProducts,
+  field,
+  form,
   rowSelection,
   setRowSelection,
-}: CashRegisterSelectedProductState & CashRegisterRowSelectionState) {
+}: Props & CashRegisterRowSelectionState) {
   const { page, rowsPerPage, orderBy, query, productIds, posId } = useSearch({
     from: cashRegisterRoute.id,
   })
+
+  const items = field.value as CashRegisterItem[]
+  function setSelectedRows(items: CashRegisterItem[]) {
+    form.setValue('items', items)
+  }
 
   const { data, isLoading, isError } = Products.useFindAllVariants({
     page,
@@ -27,8 +40,12 @@ export default function ProductsListCashRegister({
     posId,
   })
 
+  useEffect(() => {
+    console.log(new Date(), { items })
+  }, [items])
+
   return (
-    <div className='flex flex-col gap-4 max-h-full overflow-y-auto'>
+    <div className='flex flex-col w-full gap-4 max-h-full overflow-y-auto'>
       <DataTable
         columns={columns}
         data={data?.items ?? []}
@@ -39,7 +56,8 @@ export default function ProductsListCashRegister({
         totalPages={data?.info.totalPages ?? 1}
         selectedRows={rowSelection}
         setSelectedRows={setRowSelection}
-        setSelectedRowsWithData={setSelectedProducts}
+        selectedRowsWithData={items}
+        setSelectedRowsWithData={setSelectedRows}
       />
     </div>
   )

@@ -62,7 +62,8 @@ interface DataTableProps<TData, TValue> {
   getRowCanExpand?: (row: Row<TData>) => boolean
   selectedRows?: RowSelectionState
   setSelectedRows?: React.Dispatch<React.SetStateAction<RowSelectionState>>
-  setSelectedRowsWithData?: React.Dispatch<React.SetStateAction<any[]>>
+  selectedRowsWithData?: any[]
+  setSelectedRowsWithData?: (items: any[]) => void
 }
 
 export function DataTable<TData, TValue>({
@@ -78,6 +79,7 @@ export function DataTable<TData, TValue>({
   renderSubComponent,
   selectedRows,
   setSelectedRows,
+  selectedRowsWithData,
   setSelectedRowsWithData,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -115,23 +117,24 @@ export function DataTable<TData, TValue>({
   useEffect(() => {
     if (setSelectedRowsWithData) {
       const handleSelectionState = (selections?: RowSelectionState) => {
-        setSelectedRowsWithData((prev) =>
-          selections
-            ? Object.keys(selections).map(
-                (key) =>
-                  table.getSelectedRowModel().rowsById[key]?.original ||
-                  prev.find((row) => row.id === key)
-              )
-            : []
-        )
+        const items = selections
+          ? Object.keys(selections).map(
+              (key) =>
+                table.getSelectedRowModel().rowsById[key]?.original ||
+                selectedRowsWithData?.find((row) => row.id === key)
+            )
+          : []
+
+        setSelectedRowsWithData(items)
       }
 
       handleSelectionState(selectedRows)
     }
-  }, [selectedRows, setSelectedRowsWithData, table])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedRows])
 
   return (
-    <div className='h-full max-h-full overflow-y-auto flex flex-col gap-4'>
+    <div className='h-full max-h-full flex flex-col gap-4'>
       <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4'>
         <div className='flex flex-col lg:flex-row flex-grow lg:items-center gap-2'>
           <SearchBar routeId={routeId} />

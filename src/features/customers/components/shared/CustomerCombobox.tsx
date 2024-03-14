@@ -86,6 +86,8 @@ export default function CustomerCombobox({ field, form }: Props) {
               </button>
             </AlertDialogTrigger>
           }
+          setSelectedValue={setSelectedValue}
+          selectedValue={selectedValue}
         />
       )}
     />
