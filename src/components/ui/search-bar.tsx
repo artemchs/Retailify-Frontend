@@ -35,7 +35,7 @@ export default function SearchBar({ routeId }: Props) {
   }
 
   return (
-    <div className='w-full lg:max-w-sm relative'>
+    <div className='w-full lg:max-w-sm relative '>
       <SearchIcon className='h-4 w-4 text-muted-foreground absolute top-0 bottom-0 my-auto left-3 pointer-events-none' />
       <Input
         type='text'
@@ -43,6 +43,7 @@ export default function SearchBar({ routeId }: Props) {
         className='pl-8'
         value={inputValue}
         onChange={onChange}
+        autoFocus={true}
       />
     </div>
   )

@@ -28,7 +28,7 @@ export default function CashRegisterForm() {
     <div className='cashier-content-max-h flex flex-grow'>
       <Form {...form}>
         <form className='max-h-full flex flex-grow'>
-          <div className='flex w-full p-4 gap-4 h-full'>
+          <div className='flex w-full h-full'>
             <div className='w-full h-full'>
               <FormField
                 control={form.control}
@@ -47,8 +47,8 @@ export default function CashRegisterForm() {
                 )}
               />
             </div>
-            <div className='w-2/4 max-h-full overflow-y-auto border-l border-input pl-4'>
-              <div className='flex flex-col gap-4 h-full justify-between max-h-full overflow-y-auto'>
+            <div className='w-2/4 max-h-full overflow-y-auto border-l border-input'>
+              <div className='flex flex-col gap-4 h-full justify-between max-h-full overflow-y-auto p-4'>
                 <CheckoutZone
                   control={form.control}
                   form={form}

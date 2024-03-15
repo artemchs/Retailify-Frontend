@@ -45,7 +45,7 @@ export default function ProductsListCashRegister({
   }, [items])
 
   return (
-    <div className='flex flex-col w-full gap-4 max-h-full overflow-y-auto'>
+    <div className='flex flex-col w-full gap-4 max-h-full overflow-y-auto p-4'>
       <DataTable
         columns={columns}
         data={data?.items ?? []}

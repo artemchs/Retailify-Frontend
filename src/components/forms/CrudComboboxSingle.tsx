@@ -43,6 +43,7 @@ type Props<Entity, EntityFindAll> = {
     selectedValue?: string
     setSelectedValue?: (id?: string) => void
   }) => ReactNode
+  selectedEntityName?: string
 }
 
 export default function CrudComboboxSingle<Entity, EntityFindAll>({
@@ -63,6 +64,7 @@ export default function CrudComboboxSingle<Entity, EntityFindAll>({
   CreateDialog,
   DeleteAlertDialog,
   EditDialog,
+  selectedEntityName,
 }: Props<Entity, EntityFindAll>) {
   const [searchInputValue, setSearchInputValue] = useState('')
   const [isOpened, setIsOpened] = useState(false)
@@ -99,7 +101,9 @@ export default function CrudComboboxSingle<Entity, EntityFindAll>({
         >
           {selectedValue ? (
             <span>
-              {selectedEntity?.isLoading
+              {selectedEntityName
+                ? selectedEntityName
+                : selectedEntity?.isLoading
                 ? 'Загрузка...'
                 : selectedEntity?.isError
                 ? 'Произошла ошибка.'

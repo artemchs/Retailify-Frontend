@@ -47,11 +47,16 @@ export default function CustomerCombobox({ field, form }: Props) {
       setSelectedValue={setSelectedValue}
       selectedValue={selectedValue}
       itemsField='items'
-      nameField='email'
+      nameField='phoneNumber'
       idField='id'
       setQuery={setQuery}
       placeholder='Выберите клиента'
       selectedEntity={selectedEntity}
+      selectedEntityName={
+        selectedEntity.data
+          ? `${selectedEntity.data.firstName} ${selectedEntity.data.lastName}`
+          : ''
+      }
       CreateDialog={() => (
         <CreateCustomerDialog
           trigger={
