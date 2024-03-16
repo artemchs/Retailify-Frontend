@@ -1,17 +1,21 @@
 import CashierShifts from '@/api/services/CashierShifts'
+import PointsOfSale from '@/api/services/PointsOfSale'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { CurrencyFormatter } from '@/components/ui/units'
 import CloseCashierShiftAlertDialog from '@/features/points-of-sale/cashier-shifts/components/actions/close/CloseCashierShiftAlertDialog'
 import CreateCashierShiftDialog from '@/features/points-of-sale/cashier-shifts/components/actions/create/CreateCashierShiftDialog'
 import DepositCashierShiftDialog from '@/features/points-of-sale/cashier-shifts/components/actions/deposit/DepositCashierShiftDialog'
 import WithdrawalCashierShiftDialog from '@/features/points-of-sale/cashier-shifts/components/actions/withdrawal/WithdrawalCashierShiftDialog'
 import { cashRegisterRoute } from '@/lib/router/routeTree'
+import { cn } from '@/lib/utils'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
 import {
@@ -37,6 +41,7 @@ export default function CurrentShiftDropdown({
     id: shiftId,
     posId,
   })
+  const pos = PointsOfSale.useFindOne({ id: posId })
 
   const navigate = useNavigate({
     from: cashRegisterRoute.id,
@@ -70,6 +75,18 @@ export default function CurrentShiftDropdown({
   }, [shiftId, setIsCreateCashierShiftDialogOpened, data])
 
   const isShiftOpened = Boolean(shiftId && data?.isOpened)
+
+  function ShiftStatusIcon({ className }: { className: string }) {
+    return isLoading ? (
+      <Loader2 className={cn('animate-spin', className)} />
+    ) : !shiftId || !data?.isOpened ? (
+      <Minus className={cn('opacity-50 shrink-0', className)} />
+    ) : isError ? (
+      <XCircle className={cn('text-destructive shrink-0', className)} />
+    ) : (
+      <CheckCircle2 className={cn('text-green-600 shrink-0', className)} />
+    )
+  }
 
   return (
     <>
@@ -110,20 +127,39 @@ export default function CurrentShiftDropdown({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant='outline' type='button' role='combobox'>
-            {!data || !shiftId || !data.isOpened ? (
-              <Minus className='opacity-50 h-4 w-4 mr-2 shrink-0' />
-            ) : isLoading ? (
-              <Loader2 className='h-4 w-4 mr-2 animate-spin' />
-            ) : isError ? (
-              <XCircle className='text-destructive h-4 w-4 mr-2 shrink-0' />
-            ) : (
-              <CheckCircle2 className='h-4 w-4 mr-2 text-green-600 shrink-0' />
-            )}
+            <ShiftStatusIcon className='h-4 w-4 mr-2' />
             Моя смена
             <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
+          <DropdownMenuLabel className='font-normal'>
+            <div className='flex flex-col space-y-1'>
+              <p className='text-sm font-medium'>
+                Средств:{' '}
+                {pos.isLoading
+                  ? 'Загрузка...'
+                  : pos.isError
+                  ? 'Ошибка'
+                  : pos.data && (
+                      <CurrencyFormatter value={Number(pos.data.balance)} />
+                    )}
+              </p>
+              <div className='text-xs leading-none flex items-center gap-1'>
+                <ShiftStatusIcon className='h-3 w-3' />
+                {isLoading ? (
+                  <p>Загрузка...</p>
+                ) : !shiftId || !data?.isOpened ? (
+                  <p className='opacity-50'>Смена закрыта</p>
+                ) : isError ? (
+                  <p className='text-destructive'>Ошибка</p>
+                ) : (
+                  <p className='text-green-600'>Смена открыта</p>
+                )}
+              </div>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DropdownMenuItem
             disabled={isShiftOpened}
             onClick={() => setIsCreateCashierShiftDialogOpened(true)}
