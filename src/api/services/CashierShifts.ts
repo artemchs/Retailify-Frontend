@@ -9,6 +9,7 @@ import { queryClient } from '@/lib/query-client/tanstack-query-client'
 import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { EditCashierShiftFormSchema } from '@/features/points-of-sale/cashier-shifts/types/edit-cashier-shift-form-schema'
+import { CashierShiftTransactionFormSchema } from '@/features/points-of-sale/cashier-shifts/types/cashier-shift-transaction-form-schema'
 
 export type CashierShiftsFindAll = {
   items: CashierShift[]
@@ -59,7 +60,7 @@ export default {
           queryKey: ['points-of-sale'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['points-of-sal', { id: posId }],
+          queryKey: ['point-of-sale', { id: posId }],
         })
         queryClient.invalidateQueries({
           queryKey: ['cashier-shifts'],
@@ -91,7 +92,7 @@ export default {
           queryKey: ['points-of-sale'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['points-of-sal', { id: posId }],
+          queryKey: ['point-of-sale', { id: posId }],
         })
         queryClient.invalidateQueries({
           queryKey: ['cashier-shifts'],
@@ -133,6 +134,90 @@ export default {
         })
         queryClient.invalidateQueries({
           queryKey: ['cashier-shift', { id, posId }],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useDeposit: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+    posId,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+    posId: string
+  }) =>
+    useMutation({
+      mutationKey: ['deposit-cashier-shift'],
+      mutationFn: async ({
+        body,
+      }: {
+        body: CashierShiftTransactionFormSchema
+      }) => {
+        return await client.post(
+          `/points-of-sale/${posId}/shifts/${id}/deposit`,
+          body
+        )
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['points-of-sale'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['point-of-sale', { id: posId }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['cashier-shifts'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['cashier-shift', { id }],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
+
+  useWithdrawal: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+    posId,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+    posId: string
+  }) =>
+    useMutation({
+      mutationKey: ['withdrawal-cashier-shift'],
+      mutationFn: async ({
+        body,
+      }: {
+        body: CashierShiftTransactionFormSchema
+      }) => {
+        return await client.post(
+          `/points-of-sale/${posId}/shifts/${id}/withdrawal`,
+          body
+        )
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['points-of-sale'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['point-of-sale', { id: posId }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['cashier-shifts'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['cashier-shift', { id }],
         })
         onSuccess()
       },

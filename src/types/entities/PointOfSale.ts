@@ -26,6 +26,7 @@ export type PointOfSale = {
   name: string
   address: string
   isArchived: boolean
+  balance: string
 }
 
 export type FullPointOfSale =
@@ -57,6 +58,7 @@ export type FullPointOfSale =
       name: string
       address: string
       isArchived: boolean
+      balance: string
     })
   | null
 
