@@ -1,7 +1,9 @@
 import SelectCell from '@/components/data-tables/SelectCell'
 import SelectHeader from '@/components/data-tables/SelectHeader'
+import { CurrencyFormatter } from '@/components/ui/units'
 import { DisplayUploadedFile } from '@/features/products/components/shared/media/DisplayUploadedFile'
 import { VariantWithProduct } from '@/types/entities/Variant'
+import getDiscountedPrice from '@/utils/getDiscountedPrice'
 import { ColumnDef } from '@tanstack/react-table'
 
 export const columns: ColumnDef<VariantWithProduct>[] = [
@@ -38,6 +40,22 @@ export const columns: ColumnDef<VariantWithProduct>[] = [
       return (
         <span className='text-muted-foreground'>
           {row.original.product?.sku}
+        </span>
+      )
+    },
+  },
+  {
+    id: 'Цена',
+    header: () => 'Цена',
+    cell: ({ row }) => {
+      const price = row.original.price
+      const sale = row.original.sale
+
+      return (
+        <span>
+          <CurrencyFormatter
+            value={getDiscountedPrice('PERCENTAGE', price, sale)}
+          />
         </span>
       )
     },

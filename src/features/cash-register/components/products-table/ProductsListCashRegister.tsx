@@ -2,11 +2,10 @@ import Products from '@/api/services/Products'
 import { DataTable } from '@/components/ui/data-table'
 import { cashRegisterRoute } from '@/lib/router/routeTree'
 import { useSearch } from '@tanstack/react-router'
-import { columns } from './products-table/columns'
+import { columns } from './columns'
 import { CashRegisterRowSelectionState } from '@/pages/CashRegister'
 import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
-import { CashRegisterItem } from '../types/cash-register-order-form-schema'
-import { useEffect } from 'react'
+import { CashRegisterItem } from '../../types/cash-register-order-form-schema'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,10 +38,6 @@ export default function ProductsListCashRegister({
     productIds,
     posId,
   })
-
-  useEffect(() => {
-    console.log(new Date(), { items })
-  }, [items])
 
   return (
     <div className='flex flex-col w-full gap-4 max-h-full overflow-y-auto p-4'>

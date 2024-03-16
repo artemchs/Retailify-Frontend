@@ -1,13 +1,14 @@
 import { RowSelectionState } from '@tanstack/react-table'
 import { useState } from 'react'
-import ProductsListCashRegister from './ProductsListCashRegister'
+import ProductsListCashRegister from './products-table/ProductsListCashRegister'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { cashRegisterOrderFormSchema } from '../types/cash-register-order-form-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import CheckoutZone from './CheckoutZoneCashRegister'
-import PaymentDialog from './PaymentDialog'
+import CheckoutZone from './checkout/CheckoutZoneCashRegister'
+import PaymentDialog from './checkout/PaymentDialog'
+import AddCustomBulkDiscountDialog from './checkout/AddCustomBulkDiscountDialog'
 
 export default function CashRegisterForm() {
   const form = useForm<z.infer<typeof cashRegisterOrderFormSchema>>({
@@ -47,15 +48,18 @@ export default function CashRegisterForm() {
                 )}
               />
             </div>
-            <div className='w-2/4 max-h-full overflow-y-auto border-l border-input'>
-              <div className='flex flex-col gap-4 h-full justify-between max-h-full overflow-y-auto p-4'>
+            <div className='w-[65%] max-h-full overflow-y-auto border-l border-input'>
+              <div className='flex w-full flex-col gap-4 h-full justify-between max-h-full overflow-y-auto p-4'>
                 <CheckoutZone
                   control={form.control}
                   form={form}
                   rowSelection={rowSelection}
                   setRowSelection={setRowSelection}
                 />
-                <PaymentDialog form={form} />
+                <div className='flex flex-col gap-2'>
+                  <AddCustomBulkDiscountDialog form={form} />
+                  <PaymentDialog form={form} />
+                </div>
               </div>
             </div>
           </div>
