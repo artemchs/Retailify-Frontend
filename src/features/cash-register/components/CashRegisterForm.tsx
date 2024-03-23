@@ -9,8 +9,17 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import CheckoutZone from './checkout/CheckoutZoneCashRegister'
 import PaymentDialog from './checkout/PaymentDialog'
 import AddCustomBulkDiscountDialog from './checkout/AddCustomBulkDiscountDialog'
+import Orders from '@/api/services/Orders'
+import { toast } from 'sonner'
+import { Check } from 'lucide-react'
 
-export default function CashRegisterForm() {
+export default function CashRegisterForm({
+  posId,
+  shiftId,
+}: {
+  posId: string
+  shiftId: string
+}) {
   const form = useForm<z.infer<typeof cashRegisterOrderFormSchema>>({
     resolver: zodResolver(cashRegisterOrderFormSchema),
     defaultValues: {
@@ -20,9 +29,26 @@ export default function CashRegisterForm() {
     },
   })
 
-  // function onSubmit(values: z.infer<typeof cashRegisterOrderFormSchema>) {
-  //   console.log({ values })
-  // }
+  function onSuccess() {
+    toast('Продажа успешна.', {
+      icon: <Check className='h-4 w-4' />,
+      cancel: {
+        label: 'Ок',
+        onClick: toast.dismiss,
+      },
+    })
+  }
+
+  const [errorMessage, setErrorMessage] = useState('')
+  const { mutate, isPending } = Orders.useCreate({
+    setErrorMessage,
+    onSuccess,
+    shiftId,
+  })
+
+  function onSubmit(values: z.infer<typeof cashRegisterOrderFormSchema>) {
+    mutate({ body: { ...values, posId } })
+  }
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   return (
@@ -58,7 +84,12 @@ export default function CashRegisterForm() {
                 />
                 <div className='flex flex-col gap-2'>
                   <AddCustomBulkDiscountDialog form={form} />
-                  <PaymentDialog form={form} />
+                  <PaymentDialog
+                    isPending={isPending}
+                    errorMessage={errorMessage}
+                    form={form}
+                    onSubmit={onSubmit}
+                  />
                 </div>
               </div>
             </div>

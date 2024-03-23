@@ -16,22 +16,36 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, DollarSign } from 'lucide-react'
 import { UseFormReturn, useWatch } from 'react-hook-form'
-import { CashRegisterItem } from '../../types/cash-register-order-form-schema'
+import {
+  CashRegisterItem,
+  cashRegisterOrderFormSchema,
+} from '../../types/cash-register-order-form-schema'
 import { CurrencyFormatter } from '@/components/ui/units'
 import PaymentMethodRadioGroup from './PaymentMethodRadioGroup'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { useState } from 'react'
 import getDiscountedPrice from '@/utils/getDiscountedPrice'
+import { z } from 'zod'
+import SaveButton from '@/components/forms/SaveButton'
+import { AlertDestructive } from '@/components/AlertDestructive'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any, any, undefined>
+  onSubmit(values: z.infer<typeof cashRegisterOrderFormSchema>): void
+  errorMessage?: string
+  isPending: boolean
 }
 
-export default function PaymentDialog({ form }: Props) {
+export default function PaymentDialog({
+  form,
+  onSubmit,
+  errorMessage,
+  isPending,
+}: Props) {
   const [isOpened, setIsOpened] = useState(false)
   const items: CashRegisterItem[] = useWatch({
     control: form.control,
@@ -59,13 +73,29 @@ export default function PaymentDialog({ form }: Props) {
   })
 
   const [givenCashAmount, setGivenCashAmount] = useState<string | undefined>()
-  const [mixedCashAmount, setMixedCashAmount] = useState<string | undefined>()
-  const [mixedCardAmount, setMixedCardAmount] = useState<string | undefined>()
+
+  const mixedCashAmount: number | undefined = useWatch({
+    control: form.control,
+    name: 'totalCashAmount',
+  })
+
+  function setMixedCashAmount(value?: string) {
+    form.setValue('totalCashAmount', value)
+  }
+
+  const mixedCardAmount: number | undefined = useWatch({
+    control: form.control,
+    name: 'totalCardAmount',
+  })
+
+  function setMixedCardAmount(value?: string) {
+    form.setValue('totalCardAmount', value)
+  }
 
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
       <DialogTrigger asChild>
-        <Button type='button'>
+        <Button type='button' disabled={!items || items.length === 0}>
           <ArrowRight className='h-4 w-4 mr-2' />
           Перейти к оплате
         </Button>
@@ -104,13 +134,17 @@ export default function PaymentDialog({ form }: Props) {
                   <TableCell className='text-right'>{quantity ?? 1}</TableCell>
                   <TableCell className='text-right'>
                     <CurrencyFormatter
-                      value={getDiscountedPrice(
-                        customSaleType,
-                        getDiscountedPrice('PERCENTAGE', price, sale),
-                        customSaleType === 'FIXED-AMOUNT'
-                          ? customSaleFixedAmount
-                          : customSalePercentage
-                      )}
+                      value={
+                        customSaleType
+                          ? getDiscountedPrice(
+                              customSaleType,
+                              getDiscountedPrice('PERCENTAGE', price, sale),
+                              customSaleType === 'FIXED-AMOUNT'
+                                ? customSaleFixedAmount
+                                : customSalePercentage
+                            )
+                          : getDiscountedPrice('PERCENTAGE', price, sale)
+                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -333,6 +367,16 @@ export default function PaymentDialog({ form }: Props) {
             </div>
           </div>
         )}
+        {errorMessage && errorMessage.length >= 1 && (
+          <AlertDestructive text={errorMessage} />
+        )}
+        <SaveButton
+          form={form}
+          onSubmit={onSubmit}
+          isPending={isPending}
+          text='Оплата'
+          icon={<DollarSign className='h-4 w-4 mr-2' />}
+        />
       </DialogContent>
     </Dialog>
   )

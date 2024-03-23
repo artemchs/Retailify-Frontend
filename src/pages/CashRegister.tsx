@@ -42,7 +42,7 @@ export default function CashRegisterPage() {
         </div>
         <CurrentShiftDropdown shiftId={shiftId} posId={posId} />
       </div>
-      <CashRegisterForm />
+      {shiftId && <CashRegisterForm posId={posId} shiftId={shiftId} />}
     </div>
   )
 }
