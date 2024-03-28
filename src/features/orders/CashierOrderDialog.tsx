@@ -71,7 +71,7 @@ export default function CashierOrderDialog({ id, trigger }: Props) {
                           : 0
                       }
                     />
-                    {customDiscount && (
+                    {customDiscount && customDiscount !== '0' && (
                       <span>
                         (без скидки:{' '}
                         <CurrencyFormatter
