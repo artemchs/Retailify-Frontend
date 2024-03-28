@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { ReactNode } from '@tanstack/react-router'
-import { Loader2, StopCircle } from 'lucide-react'
+import { BanIcon, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -37,7 +37,7 @@ export default function CloseCashierShiftAlertDialog({
       setIsOpened(false)
     }
     toast('Смена кассира была успешно закрыта.', {
-      icon: <StopCircle className='h-4 w-4' />,
+      icon: <BanIcon className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
         onClick: toast.dismiss,
@@ -89,7 +89,7 @@ export default function CloseCashierShiftAlertDialog({
               {isPending ? (
                 <Loader2 className='h-4 w-4 mr-2 animate-spin' />
               ) : (
-                <StopCircle className='h-4 w-4 mr-2' />
+                <BanIcon className='h-4 w-4 mr-2' />
               )}
               Закрыть смену кассира
             </>

@@ -10,10 +10,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { CurrencyFormatter } from '@/components/ui/units'
+import CashierOrdersDialog from '@/features/orders/CashierOrdersDialog'
 import CloseCashierShiftAlertDialog from '@/features/points-of-sale/cashier-shifts/components/actions/close/CloseCashierShiftAlertDialog'
 import CreateCashierShiftDialog from '@/features/points-of-sale/cashier-shifts/components/actions/create/CreateCashierShiftDialog'
 import DepositCashierShiftDialog from '@/features/points-of-sale/cashier-shifts/components/actions/deposit/DepositCashierShiftDialog'
 import WithdrawalCashierShiftDialog from '@/features/points-of-sale/cashier-shifts/components/actions/withdrawal/WithdrawalCashierShiftDialog'
+import CashierRefundsDialog from '@/features/refunds/components/shared/CashierRefundsDialog'
 import { cashRegisterRoute } from '@/lib/router/routeTree'
 import { cn } from '@/lib/utils'
 import { CaretSortIcon } from '@radix-ui/react-icons'
@@ -21,11 +23,13 @@ import { useNavigate } from '@tanstack/react-router'
 import {
   ArrowDown,
   ArrowUp,
+  BanIcon,
   CheckCircle2,
+  DollarSign,
   Loader2,
   Minus,
   Plus,
-  StopCircle,
+  Undo2,
   XCircle,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -67,6 +71,8 @@ export default function CurrentShiftDropdown({
     isWithdrawalCashierShiftDialogOpened,
     setIsWithdrawalCashierShiftDialogOpened,
   ] = useState(false)
+  const [isOrdersOpened, setIsOrdersOpened] = useState(false)
+  const [isRefundsOpened, setIsRefundsOpened] = useState(false)
 
   useEffect(() => {
     if (!shiftId) {
@@ -99,30 +105,36 @@ export default function CurrentShiftDropdown({
         setShiftId={setShiftId}
       />
       {shiftId && (
-        <CloseCashierShiftAlertDialog
-          isCloseCashierShiftDialogOpened={isCloseCashierShiftDialogOpened}
-          setIsCloseCashierShiftDialogOpened={
-            setIsCloseCashierShiftDialogOpened
-          }
-          id={shiftId}
-          posId={posId}
-        />
-      )}
-      {shiftId && (
-        <DepositCashierShiftDialog
-          posId={posId}
-          shiftId={shiftId}
-          isOpenedCustom={isDepositCashierShiftDialogOpened}
-          setIsOpenedCustom={setIsDepositCashierShiftDialogOpened}
-        />
-      )}
-      {shiftId && (
-        <WithdrawalCashierShiftDialog
-          posId={posId}
-          shiftId={shiftId}
-          isOpenedCustom={isWithdrawalCashierShiftDialogOpened}
-          setIsOpenedCustom={setIsWithdrawalCashierShiftDialogOpened}
-        />
+        <>
+          <CashierOrdersDialog
+            isOpenedCustom={isOrdersOpened}
+            setIsOpenedCustom={setIsOrdersOpened}
+          />
+          <CashierRefundsDialog
+            isOpenedCustom={isRefundsOpened}
+            setIsOpenedCustom={setIsRefundsOpened}
+          />
+          <WithdrawalCashierShiftDialog
+            posId={posId}
+            shiftId={shiftId}
+            isOpenedCustom={isWithdrawalCashierShiftDialogOpened}
+            setIsOpenedCustom={setIsWithdrawalCashierShiftDialogOpened}
+          />
+          <DepositCashierShiftDialog
+            posId={posId}
+            shiftId={shiftId}
+            isOpenedCustom={isDepositCashierShiftDialogOpened}
+            setIsOpenedCustom={setIsDepositCashierShiftDialogOpened}
+          />
+          <CloseCashierShiftAlertDialog
+            isCloseCashierShiftDialogOpened={isCloseCashierShiftDialogOpened}
+            setIsCloseCashierShiftDialogOpened={
+              setIsCloseCashierShiftDialogOpened
+            }
+            id={shiftId}
+            posId={posId}
+          />
+        </>
       )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -171,7 +183,7 @@ export default function CurrentShiftDropdown({
             disabled={!isShiftOpened}
             onClick={() => setIsCloseCashierShiftDialogOpened(true)}
           >
-            <StopCircle className='h-4 w-4 mr-2' />
+            <BanIcon className='h-4 w-4 mr-2' />
             Закрыть смену
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -188,6 +200,21 @@ export default function CurrentShiftDropdown({
           >
             <ArrowUp className='h-4 w-4 mr-2 text-destructive' />
             Изъятие средств
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            disabled={!isShiftOpened}
+            onClick={() => setIsOrdersOpened(true)}
+          >
+            <DollarSign className='h-4 w-4 mr-2' />
+            Продажи
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            disabled={!isShiftOpened}
+            onClick={() => setIsRefundsOpened(true)}
+          >
+            <Undo2 className='h-4 w-4 mr-2' />
+            Возвраты
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
