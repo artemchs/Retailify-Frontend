@@ -11,12 +11,14 @@ type Props = {
   trigger?: ReactNode
   setIsOpenedCustom: React.Dispatch<React.SetStateAction<boolean>>
   isOpenedCustom: boolean
+  shiftId: string
 }
 
 export default function CashierOrdersDialog({
   trigger,
   isOpenedCustom,
   setIsOpenedCustom,
+  shiftId,
 }: Props) {
   const [isOpened, setIsOpened] = useState(false)
 
@@ -30,7 +32,7 @@ export default function CashierOrdersDialog({
         <DialogHeader>
           <DialogTitle>Продажи</DialogTitle>
         </DialogHeader>
-        <CashierOrdersList />
+        <CashierOrdersList shiftId={shiftId} />
       </DialogContent>
     </Dialog>
   )

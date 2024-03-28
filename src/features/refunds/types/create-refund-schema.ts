@@ -5,6 +5,8 @@ export const createRefundSchema = z.object({
   items: z.array(
     z.object({
       id: z.string(),
+      name: z.string().optional(),
+      pricePerItemWithDiscount: z.coerce.number().optional(),
       quantity: z.coerce.number(),
     })
   ),

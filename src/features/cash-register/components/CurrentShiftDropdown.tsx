@@ -109,6 +109,7 @@ export default function CurrentShiftDropdown({
           <CashierOrdersDialog
             isOpenedCustom={isOrdersOpened}
             setIsOpenedCustom={setIsOrdersOpened}
+            shiftId={shiftId}
           />
           <CashierRefundsDialog
             isOpenedCustom={isRefundsOpened}

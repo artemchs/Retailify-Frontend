@@ -14,7 +14,7 @@ import { SearchIcon } from 'lucide-react'
 import { Fragment, useCallback, useMemo, useState } from 'react'
 import CashierOrderDialog from './CashierOrderDialog'
 
-export default function CashierOrdersList() {
+export default function CashierOrdersList({ shiftId }: { shiftId: string }) {
   const [query, setQuery] = useState('')
   const {
     data,
@@ -75,6 +75,7 @@ export default function CashierOrdersList() {
               <Fragment key={i}>
                 {items.map(({ id, name, invoice, createdAt, customer }) => (
                   <CashierOrderDialog
+                    shiftId={shiftId}
                     trigger={
                       <Card
                         key={id}
