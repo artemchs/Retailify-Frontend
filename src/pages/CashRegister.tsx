@@ -31,7 +31,7 @@ export default function CashRegisterPage() {
 
   return (
     <div className='flex flex-col h-screen'>
-      <div className='h-16 px-4 shrink-0 sticky top-0 w-full border border-b border-input bg-background flex items-center justify-between z-50'>
+      <div className='h-16 px-4 shrink-0 sticky top-0 w-full border-b border-input bg-background flex items-center justify-between z-50'>
         <div className='flex items-center gap-4'>
           <Button size='icon' variant='outline' asChild>
             <Link to='/'>

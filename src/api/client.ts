@@ -1,11 +1,11 @@
 import { accessToken } from '@/utils/accessToken'
 import { refreshTokens } from '@/utils/refreshTokens'
 import axios from 'axios'
-import { env } from 'process'
 
 const client = axios.create()
 
-client.defaults.baseURL = env.API_BASE_URL ?? 'http://localhost:3000/system'
+client.defaults.baseURL =
+  import.meta.env.API_BASE_URL ?? 'http://localhost:3000/system'
 
 client.defaults.timeout = 2000
 

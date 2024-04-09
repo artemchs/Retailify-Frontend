@@ -12,6 +12,7 @@ import AddCustomBulkDiscountDialog from './checkout/AddCustomBulkDiscountDialog'
 import Orders from '@/api/services/Orders'
 import { toast } from 'sonner'
 import { Check } from 'lucide-react'
+import MobileCheckoutZone from './MobileCheckoutZone'
 
 export default function CashRegisterForm({
   posId,
@@ -52,9 +53,19 @@ export default function CashRegisterForm({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   return (
-    <div className='cashier-content-max-h flex flex-grow'>
+    <div className='cashier-content-max-h flex lg:flex-grow'>
       <Form {...form}>
-        <form className='max-h-full flex flex-grow'>
+        <form className='max-h-full flex flex-col lg:flex-row lg:flex-grow max-w-full'>
+          <div className='lg:hidden flex w-full pt-4 pl-4 pr-4'>
+            <MobileCheckoutZone
+              form={form}
+              rowSelection={rowSelection}
+              setRowSelection={setRowSelection}
+              isPending={isPending}
+              errorMessage={errorMessage}
+              onSubmit={onSubmit}
+            />
+          </div>
           <div className='flex w-full h-full'>
             <div className='w-full h-full'>
               <FormField
@@ -74,7 +85,7 @@ export default function CashRegisterForm({
                 )}
               />
             </div>
-            <div className='w-[65%] max-h-full overflow-y-auto border-l border-input'>
+            <div className='hidden lg:block lg:w-[65%] max-h-full overflow-y-auto border-l border-input'>
               <div className='flex w-full flex-col gap-4 h-full justify-between max-h-full overflow-y-auto p-4'>
                 <CheckoutZone
                   control={form.control}
