@@ -49,7 +49,9 @@ export default function EditProductTagForm({
     toast('Тег был успешно отредактирован.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
 

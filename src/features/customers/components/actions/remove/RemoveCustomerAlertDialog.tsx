@@ -31,7 +31,9 @@ export default function RemoveCustomerAlertDialog({
     toast('Клиент был успешно удален.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
     if (selectedValue === id && setSelectedValue) {

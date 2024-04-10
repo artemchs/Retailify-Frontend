@@ -29,7 +29,9 @@ export default function RemoveInventoryTransferReasonAlertDialog({
     toast('Причина перемещения была успешно удалена.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
     if (selectedValue === id && setSelectedValue) {

@@ -24,7 +24,11 @@ import { AccessTokenData } from '@/types/AccessTokenData'
 import { accessToken } from '@/utils/accessToken'
 import { isAuthenticated } from '@/utils/isAuthenticated'
 import setContextUser from '@/utils/setContextUser'
-import { Route, redirect, rootRouteWithContext } from '@tanstack/react-router'
+import {
+  createRootRouteWithContext,
+  createRoute,
+  redirect,
+} from '@tanstack/react-router'
 import CreateGoodsReceiptPage from '@/pages/goods-receipts/CreateGoodsReceipt'
 import EditGoodsReceiptPage from '@/pages/goods-receipts/EditGoodsReceipt'
 import InventoryAdjustmentsPage from '@/pages/InventoryAdjustments'
@@ -60,9 +64,9 @@ function beforeLoadRole(
   setContextUser(context)
 }
 
-const rootRoute = rootRouteWithContext<RouteContext>()({
+const rootRoute = createRootRouteWithContext<RouteContext>()({
   beforeLoad: async ({ location, context }) => {
-    const contextUser: AccessTokenData = context.user
+    const contextUser: AccessTokenData | undefined = context.user
 
     if (!contextUser) {
       if (!accessToken.value()) {
@@ -85,37 +89,37 @@ const rootRoute = rootRouteWithContext<RouteContext>()({
   component: App,
 })
 
-const authRoute = new Route({
+const authRoute = createRoute({
   getParentRoute: () => rootRoute,
   component: AuthScreen,
   path: '/auth',
 })
 
-const logInRoute = new Route({
+const logInRoute = createRoute({
   getParentRoute: () => authRoute,
   component: LogInPage,
   path: '/log-in',
 })
 
-const signUpRoute = new Route({
+const signUpRoute = createRoute({
   getParentRoute: () => authRoute,
   component: SignUpPage,
   path: '/sign-up',
 })
 
-const layout = new Route({
+const layout = createRoute({
   getParentRoute: () => rootRoute,
   component: Layout,
   id: 'layout',
 })
 
-const homeRoute = new Route({
+const homeRoute = createRoute({
   getParentRoute: () => layout,
   component: HomePage,
   path: '/',
 })
 
-export const employeesRoute = new Route({
+export const employeesRoute = createRoute({
   getParentRoute: () => layout,
   component: EmployeesPage,
   path: '/employees',
@@ -123,14 +127,14 @@ export const employeesRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const suppliersRoute = new Route({
+export const suppliersRoute = createRoute({
   getParentRoute: () => layout,
   component: SuppliersPage,
   path: '/suppliers',
   validateSearch: (search) => suppliersSearchParamsSchema.parse(search),
 })
 
-export const warehousesRoute = new Route({
+export const warehousesRoute = createRoute({
   getParentRoute: () => layout,
   component: WarehousesPage,
   path: '/warehouses',
@@ -138,7 +142,7 @@ export const warehousesRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const categoryGroupsRoute = new Route({
+export const categoryGroupsRoute = createRoute({
   getParentRoute: () => layout,
   component: CategoryGroupsPage,
   path: '/category-groups',
@@ -146,7 +150,7 @@ export const categoryGroupsRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const categoriesRoute = new Route({
+export const categoriesRoute = createRoute({
   getParentRoute: () => layout,
   component: CategoriesPage,
   path: '/categories',
@@ -154,7 +158,7 @@ export const categoriesRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const productsRoute = new Route({
+export const productsRoute = createRoute({
   getParentRoute: () => layout,
   component: ProductsPage,
   path: '/products',
@@ -162,21 +166,21 @@ export const productsRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const createProductRoute = new Route({
+export const createProductRoute = createRoute({
   getParentRoute: () => layout,
   component: CreateProductPage,
   path: '/products/create',
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const editProductRoute = new Route({
+export const editProductRoute = createRoute({
   getParentRoute: () => layout,
   component: EditProductPage,
   path: '/products/$productId/edit',
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const inventoryAdjustmentsRoute = new Route({
+export const inventoryAdjustmentsRoute = createRoute({
   getParentRoute: () => layout,
   component: InventoryAdjustmentsPage,
   path: '/inventory-adjustments',
@@ -185,7 +189,7 @@ export const inventoryAdjustmentsRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const goodsReceiptsRoute = new Route({
+export const goodsReceiptsRoute = createRoute({
   getParentRoute: () => layout,
   component: GoodsReceiptsPage,
   path: '/goods-receipts',
@@ -193,20 +197,20 @@ export const goodsReceiptsRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const createGoodsReceiptRoute = new Route({
+export const createGoodsReceiptRoute = createRoute({
   getParentRoute: () => layout,
   component: CreateGoodsReceiptPage,
   path: '/goods-receipts/create',
 })
 
-export const editGoodsReceiptRoute = new Route({
+export const editGoodsReceiptRoute = createRoute({
   getParentRoute: () => layout,
   component: EditGoodsReceiptPage,
   path: '/goods-receipts/$goodsReceiptId/edit',
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const inventoryTransfersRoute = new Route({
+export const inventoryTransfersRoute = createRoute({
   getParentRoute: () => layout,
   component: InventoryTransfersPage,
   path: '/inventory-transfers',
@@ -215,14 +219,14 @@ export const inventoryTransfersRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const pointsOfSaleRoute = new Route({
+export const pointsOfSaleRoute = createRoute({
   getParentRoute: () => layout,
   component: PointsOfSaleListPage,
   path: '/points-of-sale',
   validateSearch: (search) => posSearchParamsSchema.parse(search),
 })
 
-export const pointOfSaleRoute = new Route({
+export const pointOfSaleRoute = createRoute({
   getParentRoute: () => layout,
   component: PointOfSaleShiftsPage,
   path: '/points-of-sale/$pointOfSaleId/shifts',
@@ -230,7 +234,7 @@ export const pointOfSaleRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
-export const cashRegisterRoute = new Route({
+export const cashRegisterRoute = createRoute({
   getParentRoute: () => rootRoute,
   component: CashRegisterPage,
   path: '/cash-register',
@@ -238,7 +242,7 @@ export const cashRegisterRoute = new Route({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN', 'CASHIER']),
 })
 
-export const customerRoute = new Route({
+export const customerRoute = createRoute({
   getParentRoute: () => layout,
   component: CustomersPage,
   path: '/customers',

@@ -27,7 +27,9 @@ export default function DeleteColorAlertDialog({
     toast('Цвет был успешно удален.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
 

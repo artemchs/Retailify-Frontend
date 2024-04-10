@@ -27,7 +27,9 @@ export default function RemoveProductTagAlertDialog({
     toast('Тег был успешно удален.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
 

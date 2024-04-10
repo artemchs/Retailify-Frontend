@@ -29,7 +29,9 @@ export default function RemoveInventoryAdjustmentReasonDialog({
     toast('Причина инвентаризации была успешно удалена.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
     if (selectedValue === id && setSelectedValue) {

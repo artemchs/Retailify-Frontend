@@ -47,7 +47,9 @@ export default function EditInventoryTransferReasonForm({
     toast('Накладная перемещения отредактирована.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

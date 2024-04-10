@@ -43,7 +43,9 @@ export default function WithdrawalCashierShiftForm({
       icon: <ArrowUp className='h-4 w-4 mr-2 text-destructive' />,
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

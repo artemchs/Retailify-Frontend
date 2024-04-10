@@ -23,7 +23,9 @@ export default function DeleteEmployeeAlertDialog({ id }: { id: string }) {
       icon: <Trash2 className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

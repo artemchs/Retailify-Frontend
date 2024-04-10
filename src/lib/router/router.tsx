@@ -1,7 +1,7 @@
-import { Router, RouterProvider } from '@tanstack/react-router'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree'
 
-const router = new Router({ routeTree, defaultPreload: 'intent' })
+const router = createRouter({ routeTree, defaultPreload: 'intent' })
 
 export function TanstackRouterProvider() {
   return <RouterProvider router={router} />

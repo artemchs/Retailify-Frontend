@@ -35,7 +35,9 @@ export default function CreateBrandForm({ setIsOpened }: Props) {
     toast('Новый бренд был успешно добавлен.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

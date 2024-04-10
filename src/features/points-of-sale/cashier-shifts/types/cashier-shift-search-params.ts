@@ -40,6 +40,8 @@ export const cashierShiftSearchParamsSchema = z.object({
       createdAt: z.enum(['asc', 'desc']).optional(),
     })
     .optional(),
+  shiftId: z.string().optional(),
+  posId: z.string(),
 })
 
 export type CashierShiftSearchParamsSchema = z.infer<

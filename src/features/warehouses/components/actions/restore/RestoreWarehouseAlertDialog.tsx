@@ -23,7 +23,9 @@ export default function RestoreWarehouseAlertDialog({ id }: { id: string }) {
       icon: <ArchiveRestore className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

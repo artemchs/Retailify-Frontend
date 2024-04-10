@@ -49,7 +49,9 @@ export default function EditCharacteristicValueForm({
     toast('Значение характеристики было успешно отредактировано.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

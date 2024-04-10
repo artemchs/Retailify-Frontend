@@ -39,7 +39,9 @@ export default function CreateCharacteristicValueForm({
     toast('Новое значени характеристики было успешно добавлено.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

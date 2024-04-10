@@ -47,7 +47,9 @@ export default function EditBrandForm({
     toast('Бренд был успешно отредактирован.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

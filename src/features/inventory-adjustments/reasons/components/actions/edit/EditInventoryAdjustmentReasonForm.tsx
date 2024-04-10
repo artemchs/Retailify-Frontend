@@ -49,7 +49,9 @@ export default function EditInventoryAdjustmentReasonForm({
     toast('Накладная инвентаризации отредактирована.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

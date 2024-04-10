@@ -39,7 +39,9 @@ export default function CreateInventoryTransferReasonForm({
     toast('Новая причина перемещения добавлена.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

@@ -36,7 +36,9 @@ export default function CreateColorForm({ setIsOpened }: Props) {
     toast('Новый цвет был успешно добавлен.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

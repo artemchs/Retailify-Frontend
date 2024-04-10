@@ -60,7 +60,9 @@ export default function EditSupplierForm({
       icon: <Factory className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

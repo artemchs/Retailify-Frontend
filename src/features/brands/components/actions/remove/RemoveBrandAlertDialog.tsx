@@ -29,7 +29,9 @@ export default function RemoveBrandAlertDialog({
     toast('Бренд был успешно удален.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
     if (selectedValue === id && setSelectedValue) {

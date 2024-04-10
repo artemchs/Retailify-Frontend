@@ -50,7 +50,9 @@ export default function EditCharacteristicForm({
     toast('Характеристика была успешно отредактирована.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
 

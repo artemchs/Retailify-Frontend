@@ -59,7 +59,9 @@ export default function EditCategoryForm({
       icon: <LibraryBig className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

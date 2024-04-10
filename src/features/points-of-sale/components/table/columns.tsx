@@ -23,6 +23,7 @@ export const columns: ColumnDef<PointOfSale>[] = [
           search={{
             page: 1,
             rowsPerPage: 20,
+            posId: row.original.id,
           }}
         >
           {row.original.name}

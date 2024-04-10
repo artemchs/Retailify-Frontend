@@ -35,7 +35,9 @@ export default function CreateProductTagForm({ setIsOpened }: Props) {
     toast('Новый тег был успешно добавлен.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

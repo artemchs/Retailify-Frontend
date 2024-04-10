@@ -52,6 +52,8 @@ export default function MyPointsOfSale() {
                       ? cashierShifts?.[0]?.id
                       : undefined,
                     posId: id,
+                    page: 1,
+                    rowsPerPage: 20,
                   }}
                 >
                   <FaCashRegister className='h-4 w-4 mr-2' />

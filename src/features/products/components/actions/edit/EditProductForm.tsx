@@ -82,7 +82,9 @@ export default function EditProductForm({ productId, product }: Props) {
       icon: <Tags className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

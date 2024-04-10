@@ -31,7 +31,9 @@ export default function DeleteCharacteristicValueAlertDialog({
     toast('Значение характеристики было успешно удалено.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
     if (selectedValue === id && setSelectedValue) {

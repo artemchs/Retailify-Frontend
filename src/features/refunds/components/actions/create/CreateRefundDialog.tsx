@@ -58,7 +58,9 @@ export default function CreateRefundDialog({ id, data, shiftId }: Props) {
     toast('Возврат товара успешно создан.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

@@ -50,7 +50,9 @@ export default function EditColorForm({
     toast('Цвет был успешно отредактирован.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
 

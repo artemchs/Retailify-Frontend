@@ -43,7 +43,9 @@ export default function CreateCashierShiftForm({
       icon: <Plus className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
 

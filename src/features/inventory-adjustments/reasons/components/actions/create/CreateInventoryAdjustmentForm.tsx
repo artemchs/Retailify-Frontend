@@ -22,7 +22,9 @@ type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function CreateInventoryAdjustmentReasonForm({ setIsOpened }: Props) {
+export default function CreateInventoryAdjustmentReasonForm({
+  setIsOpened,
+}: Props) {
   const form = useForm<
     z.infer<typeof createInventoryAdjustmentReasonFormSchema>
   >({
@@ -37,7 +39,9 @@ export default function CreateInventoryAdjustmentReasonForm({ setIsOpened }: Pro
     toast('Новая причина инвентаризации добавлена.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

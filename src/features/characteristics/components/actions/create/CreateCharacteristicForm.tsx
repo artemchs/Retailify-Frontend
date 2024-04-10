@@ -35,7 +35,9 @@ export default function CreateCharacteristicForm({ setIsOpened }: Props) {
     toast('Новая характеристика была успешно добавлена.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
   }

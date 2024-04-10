@@ -40,7 +40,7 @@ export default function EditCharacteristicValueDialog({
           isError={isError}
           isLoading={isLoading}
           setIsOpened={setIsOpened}
-          value={data}
+          value={data ?? undefined}
         />
       </DialogContent>
     </Dialog>

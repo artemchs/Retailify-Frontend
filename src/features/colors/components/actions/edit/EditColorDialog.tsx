@@ -36,7 +36,7 @@ export default function EditColorDialog({
           isError={isError}
           isLoading={isLoading}
           setIsOpened={setIsOpened}
-          color={data}
+          color={data ?? undefined}
           onSuccess={onSuccess}
         />
       </DialogContent>

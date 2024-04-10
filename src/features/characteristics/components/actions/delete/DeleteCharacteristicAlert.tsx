@@ -27,7 +27,9 @@ export default function DeleteCharacteristicAlertDialog({
     toast('Характеристика была успешно удалена.', {
       cancel: {
         label: 'Ок',
-        onClick: toast.dismiss,
+        onClick() {
+          toast.dismiss
+        },
       },
     })
 
