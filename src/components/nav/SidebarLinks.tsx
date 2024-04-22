@@ -38,7 +38,7 @@ export default function SidebarLinks() {
           to='/points-of-sale'
           cashier={false}
           ecommerceManager={false}
-          text='Точки продаж'
+          text='Кассы'
         />
         <SidebarLink
           Icon={Factory}

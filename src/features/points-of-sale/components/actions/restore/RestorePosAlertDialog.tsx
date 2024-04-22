@@ -19,7 +19,7 @@ export default function RestorePosAlertDialog({ id }: { id: string }) {
 
   function onSuccess() {
     setIsOpened(false)
-    toast('Тоска продаж была успешно восстановлена.', {
+    toast('Касса была успешно восстановлена.', {
       icon: <ArchiveRestore className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
@@ -46,10 +46,9 @@ export default function RestorePosAlertDialog({ id }: { id: string }) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Восстановить точку продаж товара</AlertDialogTitle>
+          <AlertDialogTitle>Восстановить кассу</AlertDialogTitle>
           <AlertDialogDescription>
-            Подтверждая это действие, информация о точке продаж товара будет
-            восстановлена.
+            Подтверждая это действие, информация о кассе будет восстановлена.
           </AlertDialogDescription>
         </AlertDialogHeader>
         {errorMessage && errorMessage.length >= 1 && (

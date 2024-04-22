@@ -57,7 +57,7 @@ export default function EditPosForm({
 
   function onSuccess() {
     setIsOpened(false)
-    toast('Точка продаж была успешно отредактирована.', {
+    toast('Касса была успешно отредактирована.', {
       icon: <Edit className='h-4 w-4' />,
       cancel: {
         label: 'Ок',

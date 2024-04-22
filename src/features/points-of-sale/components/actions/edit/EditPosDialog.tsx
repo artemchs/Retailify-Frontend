@@ -24,7 +24,7 @@ export default function EditPosDialog({ id }: { id: string }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Редактировать точку продаж товара</DialogTitle>
+          <DialogTitle>Редактировать кассу</DialogTitle>
         </DialogHeader>
         <EditPosForm
           id={id}

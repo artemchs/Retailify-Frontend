@@ -19,7 +19,7 @@ export default function ArchivePosAlertDialog({ id }: { id: string }) {
 
   function onSuccess() {
     setIsOpened(false)
-    toast('Точка продаж была успешно архивирована.', {
+    toast('Касса была успешно архивирована.', {
       icon: <Archive className='h-4 w-4' />,
       cancel: {
         label: 'Ок',
@@ -46,9 +46,9 @@ export default function ArchivePosAlertDialog({ id }: { id: string }) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Архивировать точку продаж товара</AlertDialogTitle>
+          <AlertDialogTitle>Архивировать кассу</AlertDialogTitle>
           <AlertDialogDescription>
-            Подтверждая это действие, информация о точке продаж товара будет
+            Подтверждая это действие, информация о кассе будет
             архивирована.
           </AlertDialogDescription>
         </AlertDialogHeader>

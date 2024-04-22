@@ -1,2 +1,2 @@
-export const posName = 'Название точки продаж'
-export const posAddress = 'Адрес точки продаж'
+export const posName = 'Название кассы'
+export const posAddress = 'Адрес кассы'

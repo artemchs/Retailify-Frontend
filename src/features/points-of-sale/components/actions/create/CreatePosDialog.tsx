@@ -23,7 +23,7 @@ export default function CreatePosDialog() {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Добавить точку продаж товара</DialogTitle>
+          <DialogTitle>Добавить кассу</DialogTitle>
         </DialogHeader>
         <CreatePosForm setIsOpened={setIsOpened} />
       </DialogContent>

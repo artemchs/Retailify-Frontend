@@ -45,7 +45,7 @@ export default function CreatePosForm({ setIsOpened }: Props) {
 
   function onSuccess() {
     setIsOpened(false)
-    toast('Новая точка продаж была успешно добавлена.', {
+    toast('Касса была успешно добавлена.', {
       icon: <Plus className='h-4 w-4' />,
       cancel: {
         label: 'Ок',

@@ -20,7 +20,7 @@ export default function PointsOfSaleListPage() {
       isLoading={isLoading}
       isError={isError}
       routeId='/layout/points-of-sale'
-      title='Точки продаж товара'
+      title='Кассы'
       topBarElements={
         <>
           <CreatePosDialog />
