@@ -17,12 +17,17 @@ import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredF
 import { Input } from '@/components/ui/input'
 import { brandName } from '../../shared/placeholders'
 import SaveButton from '@/components/forms/SaveButton'
+import { CreateBrandDialogProps } from './CreateBrandDialog'
+import { Brand } from '@/types/entities/Brand'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-}
+} & CreateBrandDialogProps
 
-export default function CreateBrandForm({ setIsOpened }: Props) {
+export default function CreateBrandForm({
+  setIsOpened,
+  setSelectedValue,
+}: Props) {
   const form = useForm<z.infer<typeof createBrandFormSchema>>({
     resolver: zodResolver(createBrandFormSchema),
     defaultValues: {
@@ -30,7 +35,7 @@ export default function CreateBrandForm({ setIsOpened }: Props) {
     },
   })
 
-  function onSuccess() {
+  function onSuccess(data: Brand) {
     setIsOpened(false)
     toast('Новый бренд был успешно добавлен.', {
       cancel: {
@@ -40,6 +45,10 @@ export default function CreateBrandForm({ setIsOpened }: Props) {
         },
       },
     })
+
+    if (setSelectedValue) {
+      setSelectedValue(data.id)
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')
@@ -60,7 +69,10 @@ export default function CreateBrandForm({ setIsOpened }: Props) {
         <AlertDestructive text={errorMessage} />
       )}
       <Form {...form}>
-        <form className='flex flex-col gap-4' onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className='flex flex-col gap-4'
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name='name'

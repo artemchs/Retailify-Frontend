@@ -19,18 +19,18 @@ export default {
     onSuccess,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: Brand) => void
   }) =>
     useMutation({
       mutationKey: ['create-brand'],
       mutationFn: async ({ body }: { body: CreateBrandFormSchema }) => {
         return await client.post('/brands', body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['brands'],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
@@ -67,7 +67,7 @@ export default {
     id,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: Brand) => void
     id: string
   }) =>
     useMutation({
@@ -75,14 +75,14 @@ export default {
       mutationFn: async ({ body }: { body: EditBrandFormSchema }) => {
         return await client.put(`/brands/${id}`, body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['brands'],
         })
         queryClient.invalidateQueries({
           queryKey: ['brand', { id }],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),

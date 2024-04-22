@@ -9,14 +9,15 @@ import { Edit } from 'lucide-react'
 import { useState } from 'react'
 import Colors from '@/api/services/Colors'
 import EditColorForm from './EditColorForm'
+import { CreateColorDialogProps } from '../create/CreateColorDialog'
 
 export default function EditColorDialog({
   id,
-  onSuccess,
+  selectedValues,
+  setSelectedValues,
 }: {
   id: string
-  onSuccess?: (id: string) => void
-}) {
+} & CreateColorDialogProps) {
   const [isOpened, setIsOpened] = useState(false)
   const { data, isLoading, isError } = Colors.useFindOne({ id })
 
@@ -37,7 +38,8 @@ export default function EditColorDialog({
           isLoading={isLoading}
           setIsOpened={setIsOpened}
           color={data ?? undefined}
-          onSuccess={onSuccess}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
         />
       </DialogContent>
     </Dialog>

@@ -9,8 +9,17 @@ import {
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import CreateColorForm from './CreateColorForm'
+import { ColorsComboboxColor } from '../../shared/ColorsCombobox'
 
-export default function CreateColorDialog() {
+export type CreateColorDialogProps = {
+  selectedValues?: ColorsComboboxColor[]
+  setSelectedValues?: (newValues: ColorsComboboxColor[]) => void
+}
+
+export default function CreateColorDialog({
+  selectedValues,
+  setSelectedValues,
+}: CreateColorDialogProps) {
   const [isOpened, setIsOpened] = useState(false)
 
   return (
@@ -25,7 +34,11 @@ export default function CreateColorDialog() {
         <DialogHeader>
           <DialogTitle>Добавить цвет</DialogTitle>
         </DialogHeader>
-        <CreateColorForm setIsOpened={setIsOpened} />
+        <CreateColorForm
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+          setIsOpened={setIsOpened}
+        />
       </DialogContent>
     </Dialog>
   )

@@ -19,6 +19,7 @@ import { Color } from '@/types/entities/Color'
 import { editColorFormSchema } from '@/features/colors/types/edit-color-form-schema'
 import Colors from '@/api/services/Colors'
 import { colorName, color as colorPlaceholder } from '../../shared/placeholders'
+import { CreateColorDialogProps } from '../create/CreateColorDialog'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -26,8 +27,7 @@ type Props = {
   id: string
   isLoading: boolean
   isError: boolean
-  onSuccess?: (id: string) => void
-}
+} & CreateColorDialogProps
 
 export default function EditColorForm({
   setIsOpened,
@@ -35,7 +35,8 @@ export default function EditColorForm({
   isError,
   isLoading,
   color,
-  onSuccess,
+  selectedValues,
+  setSelectedValues,
 }: Props) {
   const form = useForm<z.infer<typeof editColorFormSchema>>({
     resolver: zodResolver(editColorFormSchema),
@@ -45,7 +46,7 @@ export default function EditColorForm({
     },
   })
 
-  function defaultOnSuccess() {
+  function defaultOnSuccess(data: Color) {
     setIsOpened(false)
     toast('Цвет был успешно отредактирован.', {
       cancel: {
@@ -56,8 +57,15 @@ export default function EditColorForm({
       },
     })
 
-    if (onSuccess) {
-      onSuccess(id)
+    if (setSelectedValues && selectedValues && selectedValues.length >= 1) {
+      const isSelected = selectedValues.find((obj) => obj.id === id)
+      if (isSelected) {
+        console.log('Selected!')
+        const newArray = selectedValues
+        const index = newArray.findIndex((obj) => obj.id === id)
+        newArray[index] = { ...newArray[index], name: data.name }
+        setSelectedValues(newArray)
+      }
     }
   }
 

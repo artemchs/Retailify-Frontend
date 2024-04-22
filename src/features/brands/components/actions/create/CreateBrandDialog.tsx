@@ -10,7 +10,15 @@ import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import CreateBrandForm from './CreateBrandForm'
 
-export default function CreateBrandDialog() {
+export type CreateBrandDialogProps = {
+  selectedValue?: string
+  setSelectedValue?: (newValue: string) => void
+}
+
+export default function CreateBrandDialog({
+  selectedValue,
+  setSelectedValue,
+}: CreateBrandDialogProps) {
   const [isOpened, setIsOpened] = useState(false)
 
   return (
@@ -25,7 +33,11 @@ export default function CreateBrandDialog() {
         <DialogHeader>
           <DialogTitle>Добавить бренд</DialogTitle>
         </DialogHeader>
-        <CreateBrandForm setIsOpened={setIsOpened} />
+        <CreateBrandForm
+          selectedValue={selectedValue}
+          setSelectedValue={setSelectedValue}
+          setIsOpened={setIsOpened}
+        />
       </DialogContent>
     </Dialog>
   )

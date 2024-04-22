@@ -19,18 +19,18 @@ export default {
     onSuccess,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: Color) => void
   }) =>
     useMutation({
       mutationKey: ['create-color'],
       mutationFn: async ({ body }: { body: CreateColorFormSchema }) => {
         return await client.post('/colors', body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['colors'],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
@@ -67,7 +67,7 @@ export default {
     id,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: Color) => void
     id: string
   }) =>
     useMutation({
@@ -75,14 +75,14 @@ export default {
       mutationFn: async ({ body }: { body: EditColorFormSchema }) => {
         return await client.put(`/colors/${id}`, body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['colors'],
         })
         queryClient.invalidateQueries({
           queryKey: ['color', { id }],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),

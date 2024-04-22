@@ -13,7 +13,7 @@ type Props = {
   form: UseFormReturn<any, any, undefined>
 }
 
-type Color = {
+export type ColorsComboboxColor = {
   id: string
   index: number
   name: string
@@ -30,8 +30,8 @@ export default function ColorsCombobox({ field, form }: Props) {
     status,
   } = Colors.useFindAll({ query })
 
-  const selectedValues = field.value as Color[]
-  const setSelectedValues = (newValues: Color[]) => {
+  const selectedValues = field.value as ColorsComboboxColor[]
+  const setSelectedValues = (newValues: ColorsComboboxColor[]) => {
     form.setValue(
       'colors',
       newValues.map((v, i) => ({ ...v, index: i }))
@@ -46,7 +46,7 @@ export default function ColorsCombobox({ field, form }: Props) {
   }
 
   return (
-    <CrudComboboxMultiple<Color, ColorsFindAll>
+    <CrudComboboxMultiple<ColorsComboboxColor, ColorsFindAll>
       placeholder='Выберите цвета'
       data={data}
       fetchNextPage={fetchNextPage}
@@ -58,9 +58,26 @@ export default function ColorsCombobox({ field, form }: Props) {
       idField='id'
       nameField='name'
       itemsField='items'
-      CreateDialog={CreateColorDialog}
-      DeleteAlertDialog={DeleteColorAlertDialog}
-      EditDialog={EditColorDialog}
+      CreateDialog={() => (
+        <CreateColorDialog
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      )}
+      DeleteAlertDialog={({ id }) => (
+        <DeleteColorAlertDialog
+          id={id}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      )}
+      EditDialog={({ id }) => (
+        <EditColorDialog
+          id={id}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      )}
       selectedValues={selectedValues}
       setSelectedValues={setSelectedValues}
       onSuccess={onSuccess}

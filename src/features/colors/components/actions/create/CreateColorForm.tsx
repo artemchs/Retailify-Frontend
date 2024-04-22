@@ -17,12 +17,18 @@ import { Input } from '@/components/ui/input'
 import { createColorFormSchema } from '@/features/colors/types/create-color-form-schema'
 import Colors from '@/api/services/Colors'
 import { color, colorName } from '../../shared/placeholders'
+import { CreateColorDialogProps } from './CreateColorDialog'
+import { Color } from '@/types/entities/Color'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-}
+} & CreateColorDialogProps
 
-export default function CreateColorForm({ setIsOpened }: Props) {
+export default function CreateColorForm({
+  setIsOpened,
+  selectedValues,
+  setSelectedValues,
+}: Props) {
   const form = useForm<z.infer<typeof createColorFormSchema>>({
     resolver: zodResolver(createColorFormSchema),
     defaultValues: {
@@ -31,7 +37,7 @@ export default function CreateColorForm({ setIsOpened }: Props) {
     },
   })
 
-  function onSuccess() {
+  function onSuccess(data: Color) {
     setIsOpened(false)
     toast('Новый цвет был успешно добавлен.', {
       cancel: {
@@ -41,6 +47,16 @@ export default function CreateColorForm({ setIsOpened }: Props) {
         },
       },
     })
+
+    if (setSelectedValues) {
+      const newArray = selectedValues ?? []
+      newArray.push({
+        id: data.id,
+        index: newArray.length,
+        name: data.name,
+      })
+      setSelectedValues(newArray)
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')
