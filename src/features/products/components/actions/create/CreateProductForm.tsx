@@ -29,21 +29,22 @@ import CharacteristicsInput from '../../shared/characteristics/CharacteristicsIn
 import { Input } from '@/components/ui/input'
 import VariantsInput from '../../shared/variants/VariantsInput'
 import ProductTagsCombobox from '@/features/product-tags/components/shared/ProductTagsCombobox'
+import { useNavigate } from '@tanstack/react-router'
 
 export default function CreateProductForm() {
   const form = useForm<z.infer<typeof createProductFormSchema>>({
     resolver: zodResolver(createProductFormSchema),
     defaultValues: {
       title: '',
-      characteristicValues: [],
+      characteristics: [],
       categoryId: '',
       colors: [],
       description: '',
       media: [],
-      packagingHeight: 0,
-      packagingLength: 0,
-      packagingWeight: 0,
-      packagingWidth: 0,
+      packagingHeight: undefined,
+      packagingLength: undefined,
+      packagingWeight: undefined,
+      packagingWidth: undefined,
       gender: 'UNISEX',
       season: 'ALL_SEASON',
       tags: [],
@@ -51,6 +52,8 @@ export default function CreateProductForm() {
       variants: [],
     },
   })
+
+  const navigate = useNavigate()
 
   function onSuccess() {
     toast('Новая модель товара была успешно добавлена.', {
@@ -62,6 +65,7 @@ export default function CreateProductForm() {
         },
       },
     })
+    navigate({ to: '/products', search: { page: 1, rowsPerPage: 20 } })
   }
 
   const [errorMessage, setErrorMessage] = useState('')
@@ -82,7 +86,10 @@ export default function CreateProductForm() {
         <AlertDestructive text={errorMessage} />
       )}
       <Form {...form}>
-        <form className='flex flex-col gap-4'>
+        <form
+          className='flex flex-col gap-4'
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name='media'
@@ -206,7 +213,7 @@ export default function CreateProductForm() {
           />
           <FormField
             control={form.control}
-            name='characteristicValues'
+            name='characteristics'
             render={({ field }) => (
               <FormItem>
                 <Label>Характеристики:</Label>

@@ -17,12 +17,19 @@ import { AlertDestructive } from '@/components/AlertDestructive'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
 import { Input } from '@/components/ui/input'
 import { characteristicName } from '@/features/characteristics/placeholders'
+import { Characteristic } from '@/types/entities/Characteristic'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
+  selectedValues?: Characteristic[]
+  setSelectedValues?: (newValues: Characteristic[]) => void
 }
 
-export default function CreateCharacteristicForm({ setIsOpened }: Props) {
+export default function CreateCharacteristicForm({
+  setIsOpened,
+  selectedValues,
+  setSelectedValues,
+}: Props) {
   const form = useForm<z.infer<typeof createCharacteristicFormSchema>>({
     resolver: zodResolver(createCharacteristicFormSchema),
     defaultValues: {
@@ -30,7 +37,7 @@ export default function CreateCharacteristicForm({ setIsOpened }: Props) {
     },
   })
 
-  function onSuccess() {
+  function onSuccess(data: Characteristic) {
     setIsOpened(false)
     toast('Новая характеристика была успешно добавлена.', {
       cancel: {
@@ -40,6 +47,12 @@ export default function CreateCharacteristicForm({ setIsOpened }: Props) {
         },
       },
     })
+
+    if (setSelectedValues) {
+      const newArray = selectedValues ?? []
+      newArray.push(data)
+      setSelectedValues(newArray)
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')
@@ -60,7 +73,10 @@ export default function CreateCharacteristicForm({ setIsOpened }: Props) {
         <AlertDestructive text={errorMessage} />
       )}
       <Form {...form}>
-        <form className='flex flex-col gap-4'>
+        <form
+          className='flex flex-col gap-4'
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name='name'

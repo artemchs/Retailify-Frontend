@@ -9,13 +9,18 @@ import {
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import CreateCharacteristicValueForm from './CreateCharacteristicValueForm'
+import { CharacteristicValue } from '@/types/entities/Characteristic'
 
 type Props = {
   characteristicId: string
+  selectedValues: CharacteristicValue[]
+  setSelectedValues: (newValues?: CharacteristicValue[]) => void
 }
 
 export default function CreateCharacteristicValueDialog({
   characteristicId,
+  selectedValues,
+  setSelectedValues,
 }: Props) {
   const [isOpened, setIsOpened] = useState(false)
 
@@ -34,6 +39,8 @@ export default function CreateCharacteristicValueDialog({
         <CreateCharacteristicValueForm
           characteristicId={characteristicId}
           setIsOpened={setIsOpened}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
         />
       </DialogContent>
     </Dialog>

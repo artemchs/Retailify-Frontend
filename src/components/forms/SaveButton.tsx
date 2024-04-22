@@ -21,7 +21,6 @@ export default function SaveButton({
 }: Props) {
   return (
     <Button
-      type='button'
       className='mt-4 w-full lg:w-fit ml-auto'
       disabled={isPending}
       onClick={form.handleSubmit(onSubmit)}

@@ -9,16 +9,19 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { Characteristic } from '@/types/entities/Characteristic'
 import { Loader2, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
 export default function DeleteCharacteristicAlertDialog({
   id,
-  onSuccess,
+  selectedValues,
+  setSelectedValues,
 }: {
   id: string
-  onSuccess?: (id: string) => void
+  selectedValues?: Characteristic[]
+  setSelectedValues?: (newValues: Characteristic[]) => void
 }) {
   const [isOpened, setIsOpened] = useState(false)
 
@@ -33,8 +36,11 @@ export default function DeleteCharacteristicAlertDialog({
       },
     })
 
-    if (onSuccess) {
-      onSuccess(id)
+    if (selectedValues && setSelectedValues && selectedValues.length >= 1) {
+      const isSelected = selectedValues.find((obj) => obj.id === id)
+      if (isSelected) {
+        setSelectedValues(selectedValues.filter((obj) => obj.id !== id))
+      }
     }
   }
 

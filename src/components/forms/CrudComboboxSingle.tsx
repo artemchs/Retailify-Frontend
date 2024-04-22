@@ -97,7 +97,7 @@ export default function CrudComboboxSingle<Entity, EntityFindAll>({
           variant='outline'
           role='combobox'
           aria-expanded={isOpened}
-          className='w-full justify-between'
+          className='flex w-full justify-between'
         >
           {selectedValue ? (
             <span>

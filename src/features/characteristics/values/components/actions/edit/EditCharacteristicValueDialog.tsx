@@ -9,13 +9,18 @@ import { Edit } from 'lucide-react'
 import { useState } from 'react'
 import Characteristics from '@/api/services/Characteristics'
 import EditCharacteristicValueForm from './EditCharacteristicValueForm'
+import { CharacteristicValue } from '@/types/entities/Characteristic'
 
 export default function EditCharacteristicValueDialog({
   id,
   characteristicId,
+  selectedValues,
+  setSelectedValues,
 }: {
   id: string
   characteristicId: string
+  selectedValues: CharacteristicValue[]
+  setSelectedValues: (newValues?: CharacteristicValue[]) => void
 }) {
   const [isOpened, setIsOpened] = useState(false)
   const { data, isLoading, isError } = Characteristics.useFindOneValue({
@@ -41,6 +46,8 @@ export default function EditCharacteristicValueDialog({
           isLoading={isLoading}
           setIsOpened={setIsOpened}
           value={data ?? undefined}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
         />
       </DialogContent>
     </Dialog>

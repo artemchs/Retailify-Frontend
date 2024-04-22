@@ -6,7 +6,7 @@ const variantsSchema = z
     z.object({
       id: z.string().optional(),
       size: z.string(),
-      price: z.coerce.number(),
+      price: z.coerce.number().optional(),
       sale: z.coerce.number().optional(),
       isArchived: z.coerce.boolean(),
     })
@@ -34,14 +34,29 @@ const mediaSchema = z
   )
   .optional()
 
-const characteristicValuesSchema = z
-  .array(
-    z.object({
-      characteristicId: z.string(),
-      id: z.string(),
-    })
-  )
-  .optional()
+// const characteristicValuesSchema = z
+//   .array(
+//     z.object({
+//       characteristicId: z.string(),
+//       id: z.string(),
+//       value: z.string(),
+//       characteristicName: z.string(),
+//     })
+//   )
+//   .optional()
+
+const characteristicsSchema = z.array(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    values: z.array(
+      z.object({
+        id: z.string(),
+        value: z.string(),
+      })
+    ),
+  })
+)
 
 const productTagsSchema = z.array(z.object({ id: z.string() })).optional()
 
@@ -63,7 +78,8 @@ export const createProductFormSchema = z.object({
   colors: colorsSchema,
   variants: variantsSchema,
   media: mediaSchema,
-  characteristicValues: characteristicValuesSchema,
+  // characteristicValues: characteristicValuesSchema,
+  characteristics: characteristicsSchema,
   packagingLength: packagingDimensionsSchema,
   packagingWidth: packagingDimensionsSchema,
   packagingHeight: packagingDimensionsSchema,

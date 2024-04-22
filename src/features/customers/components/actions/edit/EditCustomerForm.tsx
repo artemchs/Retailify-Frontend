@@ -85,7 +85,10 @@ export default function EditCustomerForm({
         <AlertDestructive text={errorMessage} />
       )}
       <Form {...form}>
-        <form className='flex flex-col gap-4'>
+        <form
+          className='flex flex-col gap-4'
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <div className='flex flex-col lg:flex-row gap-4'>
             <FormField
               control={form.control}

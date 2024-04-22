@@ -52,7 +52,12 @@ export type Product = {
   characteristicValues:
     | {
         id: string
+        value: string
         characteristicId: string | null
+        characteristic: {
+          id: string
+          name: string
+        } | null
       }[]
     | null
   variants:

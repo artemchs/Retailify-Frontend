@@ -27,6 +27,8 @@ type Props = {
   isLoading: boolean
   isError: boolean
   characteristicId: string
+  selectedValues: CharacteristicValue[]
+  setSelectedValues: (newValues?: CharacteristicValue[]) => void
 }
 
 export default function EditCharacteristicValueForm({
@@ -36,6 +38,8 @@ export default function EditCharacteristicValueForm({
   isLoading,
   characteristicId,
   value,
+  selectedValues,
+  setSelectedValues,
 }: Props) {
   const form = useForm<z.infer<typeof editCharacteristicValueFormSchema>>({
     resolver: zodResolver(editCharacteristicValueFormSchema),
@@ -54,6 +58,17 @@ export default function EditCharacteristicValueForm({
         },
       },
     })
+
+    if (selectedValues && selectedValues.length >= 1) {
+      const isSelected = selectedValues.find((obj) => obj.id === id)
+      if (isSelected) {
+        const newValue = form.getValues('value')
+        const newArray = selectedValues
+        const index = newArray.findIndex((obj) => obj.id === id)
+        newArray[index] = { ...newArray[index], value: newValue }
+        setSelectedValues(newArray)
+      }
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')
@@ -76,7 +91,10 @@ export default function EditCharacteristicValueForm({
         <AlertDestructive text={errorMessage} />
       )}
       <Form {...form}>
-        <form className='flex flex-col gap-4'>
+        <form
+          className='flex flex-col gap-4'
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name='value'

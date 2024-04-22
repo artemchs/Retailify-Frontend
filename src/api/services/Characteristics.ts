@@ -29,7 +29,7 @@ export default {
     onSuccess,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: Characteristic) => void
   }) =>
     useMutation({
       mutationKey: ['create-characteristic'],
@@ -40,11 +40,11 @@ export default {
       }) => {
         return await client.post('/characteristics', body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['characteristics'],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
@@ -96,7 +96,7 @@ export default {
     id,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: Characteristic) => void
     id: string
   }) =>
     useMutation({
@@ -104,14 +104,14 @@ export default {
       mutationFn: async ({ body }: { body: EditCharacteristicFormSchema }) => {
         return await client.put(`/characteristics/${id}`, body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['characteristics'],
         })
         queryClient.invalidateQueries({
           queryKey: ['characteristic', { id }],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
@@ -150,7 +150,7 @@ export default {
     characteristicId,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: CharacteristicValue) => void
     characteristicId: string
   }) =>
     useMutation({
@@ -165,7 +165,7 @@ export default {
           body
         )
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['characteristic-values'],
         })
@@ -175,7 +175,7 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['characteristic', { id: characteristicId }],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),

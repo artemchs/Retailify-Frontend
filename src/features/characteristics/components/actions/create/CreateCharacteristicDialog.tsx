@@ -9,8 +9,17 @@ import {
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import CreateCharacteristicForm from './CreateCharacteristicForm'
+import { Characteristic } from '@/types/entities/Characteristic'
 
-export default function CreateCharacteristicDialog() {
+type Props = {
+  selectedValues?: Characteristic[]
+  setSelectedValues?: (newValues: Characteristic[]) => void
+}
+
+export default function CreateCharacteristicDialog({
+  selectedValues,
+  setSelectedValues,
+}: Props) {
   const [isOpened, setIsOpened] = useState(false)
 
   return (
@@ -25,7 +34,11 @@ export default function CreateCharacteristicDialog() {
         <DialogHeader>
           <DialogTitle>Добавить характеристику</DialogTitle>
         </DialogHeader>
-        <CreateCharacteristicForm setIsOpened={setIsOpened} />
+        <CreateCharacteristicForm
+          setIsOpened={setIsOpened}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
       </DialogContent>
     </Dialog>
   )

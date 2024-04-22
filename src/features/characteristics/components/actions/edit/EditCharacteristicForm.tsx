@@ -27,7 +27,8 @@ type Props = {
   id: string
   isLoading: boolean
   isError: boolean
-  onSuccess?: (id: string) => void
+  selectedValues?: Characteristic[]
+  setSelectedValues?: (newValues?: Characteristic[]) => void
 }
 
 export default function EditCharacteristicForm({
@@ -36,7 +37,8 @@ export default function EditCharacteristicForm({
   isError,
   isLoading,
   characteristic,
-  onSuccess,
+  selectedValues,
+  setSelectedValues,
 }: Props) {
   const form = useForm<z.infer<typeof editCharacteristicFormSchema>>({
     resolver: zodResolver(editCharacteristicFormSchema),
@@ -45,7 +47,7 @@ export default function EditCharacteristicForm({
     },
   })
 
-  function defaultOnSuccess() {
+  function defaultOnSuccess(data: Characteristic) {
     setIsOpened(false)
     toast('Характеристика была успешно отредактирована.', {
       cancel: {
@@ -56,8 +58,14 @@ export default function EditCharacteristicForm({
       },
     })
 
-    if (onSuccess) {
-      onSuccess(id)
+    if (setSelectedValues && selectedValues && selectedValues.length >= 1) {
+      const isSelected = selectedValues.find((obj) => obj.id === id)
+      if (isSelected) {
+        const newArray = selectedValues
+        const index = newArray.findIndex((obj) => obj.id === id)
+        newArray[index] = data
+        setSelectedValues(newArray)
+      }
     }
   }
 
@@ -80,7 +88,10 @@ export default function EditCharacteristicForm({
         <AlertDestructive text={errorMessage} />
       )}
       <Form {...form}>
-        <form className='flex flex-col gap-4'>
+        <form
+          className='flex flex-col gap-4'
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name='name'

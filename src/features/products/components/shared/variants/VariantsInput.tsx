@@ -34,12 +34,14 @@ export default function VariantsInput({ field, form, productId }: Props) {
   const [displayArchived, setDisplayArchived] = useState(false)
 
   const addNewVariant = () => {
+    const prevVariant = variants?.at(-1)
+
     setVariants([
       ...(variants ?? []),
       {
         isArchived: false,
-        price: 0,
         size: '',
+        price: prevVariant?.price,
       },
     ])
   }
@@ -51,8 +53,7 @@ export default function VariantsInput({ field, form, productId }: Props) {
           <TableHeader>
             <TableRow>
               <TableHead>Размер</TableHead>
-              <TableHead>Цена продажи</TableHead>
-              <TableHead>Скидка</TableHead>
+              <TableHead>Цена продажи (грн)</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -69,6 +70,7 @@ export default function VariantsInput({ field, form, productId }: Props) {
                           newArray[i].size = e.target.value
                           setVariants(newArray)
                         }}
+                        className='bg-background'
                       />
                     </TableCell>
                     <TableCell>
@@ -79,23 +81,18 @@ export default function VariantsInput({ field, form, productId }: Props) {
                           newArray[i].price = parseFloat(e.target.value)
                           setVariants(newArray)
                         }}
-                        type='number'
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Input
-                        value={v.sale}
                         onKeyDown={(e) => {
-                          if (e.code === 'Enter' && i === variants.length - 1) {
+                          if (
+                            e.key === 'Enter' &&
+                            e.ctrlKey &&
+                            i === variants.length - 1
+                          ) {
                             addNewVariant()
+                            e.preventDefault()
                           }
                         }}
-                        onChange={(e) => {
-                          const newArray = variants
-                          newArray[i].sale = parseFloat(e.target.value)
-                          setVariants(newArray)
-                        }}
                         type='number'
+                        className='bg-background'
                       />
                     </TableCell>
                     <TableCell>
@@ -157,7 +154,7 @@ export default function VariantsInput({ field, form, productId }: Props) {
         </Table>
       </div>
       <div className='flex items-center justify-between'>
-        <Button variant='secondary' type='button' onClick={addNewVariant}>
+        <Button type='button' variant='outline' onClick={addNewVariant}>
           <Plus className='h-4 w-4 mr-2' />
           Добавить размер
         </Button>

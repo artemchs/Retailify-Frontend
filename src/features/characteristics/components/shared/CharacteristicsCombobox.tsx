@@ -28,8 +28,8 @@ export default function CharacteristicsCombobox({ field, form }: Props) {
   } = Characteristics.useFindAll({ query })
 
   const selectedValues = field.value as Characteristic[]
-  const setSelectedValues = (newValues: Characteristic[]) => {
-    form.setValue('characteristics', newValues)
+  const setSelectedValues = (newValues?: Characteristic[]) => {
+    form.setValue('characteristics', newValues ?? [])
   }
 
   function onSuccess(id: string) {
@@ -52,9 +52,26 @@ export default function CharacteristicsCombobox({ field, form }: Props) {
       idField='id'
       nameField='name'
       itemsField='items'
-      CreateDialog={CreateCharacteristicDialog}
-      DeleteAlertDialog={DeleteCharacteristicAlertDialog}
-      EditDialog={EditCharacteristicDialog}
+      CreateDialog={() => (
+        <CreateCharacteristicDialog
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      )}
+      DeleteAlertDialog={({ id }) => (
+        <DeleteCharacteristicAlertDialog
+          id={id}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      )}
+      EditDialog={({ id }) => (
+        <EditCharacteristicDialog
+          id={id}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      )}
       selectedValues={selectedValues}
       setSelectedValues={setSelectedValues}
       onSuccess={onSuccess}

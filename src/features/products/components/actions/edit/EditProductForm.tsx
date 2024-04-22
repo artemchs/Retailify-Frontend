@@ -30,10 +30,52 @@ import UploadMediaInput from '../../shared/media/UploadMediaInput'
 import { Product } from '@/types/entities/Product'
 import VariantsInput from '../../shared/variants/VariantsInput'
 import ProductTagsCombobox from '@/features/product-tags/components/shared/ProductTagsCombobox'
+import { useNavigate } from '@tanstack/react-router'
 
 type Props = {
   productId: string
   product?: Product
+}
+
+type Characteristic = {
+  id: string
+  characteristicId: string | null
+  value: string
+  characteristic: { id: string; name: string } | null
+}
+
+function transformCharacteristicValues(characteristicValues: Characteristic[]) {
+  const characteristics = []
+
+  // Create a map to group values by characteristic
+  const characteristicMap = new Map()
+
+  // Iterate over the input array
+  for (const { id, characteristic, value } of characteristicValues) {
+    if (characteristic) {
+      const { id: characteristicId } = characteristic
+      const values = characteristicMap.get(characteristicId) || []
+      values.push({ id, value })
+      characteristicMap.set(characteristicId, values)
+    }
+  }
+
+  // Create the desired format
+  for (const [characteristicId, values] of characteristicMap) {
+    const characteristic = characteristicValues.find(
+      (cv) => cv.characteristicId === characteristicId && cv.characteristic
+    )?.characteristic
+
+    if (characteristic) {
+      characteristics.push({
+        id: characteristic.id,
+        name: characteristic.name,
+        values,
+      })
+    }
+  }
+
+  return characteristics
 }
 
 export default function EditProductForm({ productId, product }: Props) {
@@ -41,11 +83,8 @@ export default function EditProductForm({ productId, product }: Props) {
     resolver: zodResolver(editProductFormSchema),
     defaultValues: {
       title: product?.title,
-      characteristicValues: product?.characteristicValues
-        ? product?.characteristicValues.map(({ characteristicId, id }) => ({
-            characteristicId: characteristicId ?? undefined,
-            id: id ?? undefined,
-          }))
+      characteristics: product?.characteristicValues
+        ? transformCharacteristicValues(product.characteristicValues)
         : [],
       categoryId: product?.categoryId ?? '',
       colors: product?.colors
@@ -77,6 +116,8 @@ export default function EditProductForm({ productId, product }: Props) {
     },
   })
 
+  const navigate = useNavigate()
+
   function onSuccess() {
     toast('Модель товара была успешно отредактирована.', {
       icon: <Tags className='h-4 w-4' />,
@@ -87,6 +128,8 @@ export default function EditProductForm({ productId, product }: Props) {
         },
       },
     })
+
+    navigate({ to: '/products', search: { page: 1, rowsPerPage: 20 } })
   }
 
   const [errorMessage, setErrorMessage] = useState('')
@@ -108,7 +151,10 @@ export default function EditProductForm({ productId, product }: Props) {
         <AlertDestructive text={errorMessage} />
       )}
       <Form {...form}>
-        <form className='flex flex-col gap-4'>
+        <form
+          className='flex flex-col gap-4'
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name='media'
@@ -232,7 +278,7 @@ export default function EditProductForm({ productId, product }: Props) {
           />
           <FormField
             control={form.control}
-            name='characteristicValues'
+            name='characteristics'
             render={({ field }) => (
               <FormItem>
                 <Label>Характеристики:</Label>
