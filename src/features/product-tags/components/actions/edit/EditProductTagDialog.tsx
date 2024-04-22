@@ -9,14 +9,15 @@ import { Edit } from 'lucide-react'
 import { useState } from 'react'
 import ProductTags from '@/api/services/ProductTags'
 import EditProductTagForm from './EditProductTagForm'
+import { CreateProductTagDialogProps } from '../create/CreateProductTagDialog'
 
 export default function EditProductTagDialog({
   id,
-  onSuccess,
+  selectedValues,
+  setSelectedValues,
 }: {
   id: string
-  onSuccess?: (id: string) => void
-}) {
+} & CreateProductTagDialogProps) {
   const [isOpened, setIsOpened] = useState(false)
   const { data, isLoading, isError } = ProductTags.useFindOne({ id })
 
@@ -37,7 +38,8 @@ export default function EditProductTagDialog({
           isLoading={isLoading}
           setIsOpened={setIsOpened}
           data={data ?? undefined}
-          onSuccess={onSuccess}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
         />
       </DialogContent>
     </Dialog>

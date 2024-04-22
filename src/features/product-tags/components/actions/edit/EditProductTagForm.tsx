@@ -19,6 +19,7 @@ import { ProductTag } from '@/types/entities/ProductTag'
 import { editProductTagFormSchema } from '@/features/product-tags/types/edit-product-tag-form-schema'
 import ProductTags from '@/api/services/ProductTags'
 import { productTagName } from '../../shared/placeholders'
+import { CreateProductTagDialogProps } from '../create/CreateProductTagDialog'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -26,8 +27,7 @@ type Props = {
   id: string
   isLoading: boolean
   isError: boolean
-  onSuccess?: (id: string) => void
-}
+} & CreateProductTagDialogProps
 
 export default function EditProductTagForm({
   setIsOpened,
@@ -35,7 +35,8 @@ export default function EditProductTagForm({
   isError,
   isLoading,
   data,
-  onSuccess,
+  selectedValues,
+  setSelectedValues,
 }: Props) {
   const form = useForm<z.infer<typeof editProductTagFormSchema>>({
     resolver: zodResolver(editProductTagFormSchema),
@@ -44,7 +45,7 @@ export default function EditProductTagForm({
     },
   })
 
-  function defaultOnSuccess() {
+  function defaultOnSuccess(data: ProductTag) {
     setIsOpened(false)
     toast('Тег был успешно отредактирован.', {
       cancel: {
@@ -55,8 +56,14 @@ export default function EditProductTagForm({
       },
     })
 
-    if (onSuccess) {
-      onSuccess(id)
+    if (setSelectedValues && selectedValues && selectedValues.length >= 1) {
+      const isSelected = selectedValues.find((obj) => obj.id === id)
+      if (isSelected) {
+        const newArray = selectedValues
+        const index = newArray.findIndex((obj) => obj.id === id)
+        newArray[index] = data
+        setSelectedValues(newArray)
+      }
     }
   }
 

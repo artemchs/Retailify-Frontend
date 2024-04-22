@@ -17,12 +17,18 @@ import SaveButton from '@/components/forms/SaveButton'
 import { createProductTagFormSchema } from '@/features/product-tags/types/create-product-tag-form-schema'
 import ProductTags from '@/api/services/ProductTags'
 import { productTagName } from '../../shared/placeholders'
+import { ProductTag } from '@/types/entities/ProductTag'
+import { CreateProductTagDialogProps } from './CreateProductTagDialog'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-}
+} & CreateProductTagDialogProps
 
-export default function CreateProductTagForm({ setIsOpened }: Props) {
+export default function CreateProductTagForm({
+  setIsOpened,
+  selectedValues,
+  setSelectedValues,
+}: Props) {
   const form = useForm<z.infer<typeof createProductTagFormSchema>>({
     resolver: zodResolver(createProductTagFormSchema),
     defaultValues: {
@@ -30,7 +36,7 @@ export default function CreateProductTagForm({ setIsOpened }: Props) {
     },
   })
 
-  function onSuccess() {
+  function onSuccess(data: ProductTag) {
     setIsOpened(false)
     toast('Новый тег был успешно добавлен.', {
       cancel: {
@@ -40,6 +46,12 @@ export default function CreateProductTagForm({ setIsOpened }: Props) {
         },
       },
     })
+
+    if (setSelectedValues) {
+      const newArray = selectedValues ?? []
+      newArray.push(data)
+      setSelectedValues(newArray)
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')

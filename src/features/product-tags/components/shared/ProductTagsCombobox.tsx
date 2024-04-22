@@ -1,4 +1,3 @@
-import { Characteristic } from '@/types/entities/Characteristic'
 import { useState } from 'react'
 import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
 import CrudComboboxMultiple from '@/components/forms/CrudComboboxMultiple'
@@ -31,8 +30,8 @@ export default function ProductTagsCombobox({
     status,
   } = ProductTags.useFindAll({ query })
 
-  const selectedValues = field.value as Characteristic[]
-  const setSelectedValues = (newValues: Characteristic[]) => {
+  const selectedValues = field.value as ProductTag[]
+  const setSelectedValues = (newValues: ProductTag[]) => {
     form.setValue(formFieldName ?? 'tags', newValues)
   }
 
@@ -56,9 +55,26 @@ export default function ProductTagsCombobox({
       idField='id'
       nameField='name'
       itemsField='items'
-      CreateDialog={CreateProductTagDialog}
-      DeleteAlertDialog={RemoveProductTagAlertDialog}
-      EditDialog={EditProductTagDialog}
+      CreateDialog={() => (
+        <CreateProductTagDialog
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      )}
+      DeleteAlertDialog={({ id }) => (
+        <RemoveProductTagAlertDialog
+          id={id}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      )}
+      EditDialog={({ id }) => (
+        <EditProductTagDialog
+          id={id}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      )}
       selectedValues={selectedValues}
       setSelectedValues={setSelectedValues}
       onSuccess={onSuccess}

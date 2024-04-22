@@ -12,14 +12,13 @@ import {
 import { Loader2, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { CreateProductTagDialogProps } from '../create/CreateProductTagDialog'
 
 export default function RemoveProductTagAlertDialog({
   id,
-  onSuccess,
-}: {
-  id: string
-  onSuccess?: (id: string) => void
-}) {
+  selectedValues,
+  setSelectedValues,
+}: { id: string } & CreateProductTagDialogProps) {
   const [isOpened, setIsOpened] = useState(false)
 
   function defaultOnSuccess() {
@@ -33,8 +32,11 @@ export default function RemoveProductTagAlertDialog({
       },
     })
 
-    if (onSuccess) {
-      onSuccess(id)
+    if (selectedValues && setSelectedValues && selectedValues.length >= 1) {
+      const isSelected = selectedValues.find((obj) => obj.id === id)
+      if (isSelected) {
+        setSelectedValues(selectedValues.filter((obj) => obj.id !== id))
+      }
     }
   }
 

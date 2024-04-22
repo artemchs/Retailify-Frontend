@@ -19,18 +19,18 @@ export default {
     onSuccess,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: ProductTag) => void
   }) =>
     useMutation({
       mutationKey: ['create-product-tag'],
       mutationFn: async ({ body }: { body: CreateProductTagFormSchema }) => {
         return await client.post('/product-tags', body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['product-tags'],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
@@ -67,7 +67,7 @@ export default {
     id,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: ProductTag) => void
     id: string
   }) =>
     useMutation({
@@ -75,14 +75,14 @@ export default {
       mutationFn: async ({ body }: { body: EditProductTagFormSchema }) => {
         return await client.put(`/product-tags/${id}`, body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['product-tags'],
         })
         queryClient.invalidateQueries({
           queryKey: ['product-tag', { id }],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),

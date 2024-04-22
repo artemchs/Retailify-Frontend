@@ -9,8 +9,17 @@ import {
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import CreateProductTagForm from './CreateProductTagForm'
+import { ProductTag } from '@/types/entities/ProductTag'
 
-export default function CreateProductTagDialog() {
+export type CreateProductTagDialogProps = {
+  selectedValues?: ProductTag[]
+  setSelectedValues?: (newValues: ProductTag[]) => void
+}
+
+export default function CreateProductTagDialog({
+  selectedValues,
+  setSelectedValues,
+}: CreateProductTagDialogProps) {
   const [isOpened, setIsOpened] = useState(false)
 
   return (
@@ -25,7 +34,11 @@ export default function CreateProductTagDialog() {
         <DialogHeader>
           <DialogTitle>Добавить тег</DialogTitle>
         </DialogHeader>
-        <CreateProductTagForm setIsOpened={setIsOpened} />
+        <CreateProductTagForm
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+          setIsOpened={setIsOpened}
+        />
       </DialogContent>
     </Dialog>
   )
