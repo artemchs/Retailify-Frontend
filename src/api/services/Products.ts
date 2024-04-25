@@ -34,7 +34,7 @@ export type VariantsFindAllInfiniteList = {
 }
 
 export type VariantsFindAll = {
-  items: VariantWithProduct[]
+  items: Variant[]
   info: FindAllInfo
 }
 

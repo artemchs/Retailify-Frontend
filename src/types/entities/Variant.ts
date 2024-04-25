@@ -14,20 +14,20 @@ export type Variant = {
   isArchived: boolean
   warehouseStockEntries:
     | {
-        id: string
-        createdAt: Date
-        updatedAt: Date
-        variantId: string | null
-        warehouseId: string | null
-        warehouse: {
-          name: string
-        } | null
+        warehouseId: string
         warehouseQuantity: number
       }[]
     | null
   product: {
+    id: string
     title: string
     sku: string
+    media:
+      | {
+          id: string
+          index: number
+        }[]
+      | null
   } | null
 }
 

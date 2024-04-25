@@ -60,6 +60,19 @@ export default {
       },
     }),
 
+  useGetAll: () =>
+    useQuery({
+      queryKey: ['warehouses-get-all'],
+      queryFn: async () => {
+        const { data } = await client.get('/warehouses/get-all')
+
+        return data as {
+          id: string
+          name: string
+        }[]
+      },
+    }),
+
   useFindAllInfiniteList: (params: { query?: string }) =>
     useInfiniteQuery({
       queryKey: ['warehouses-infinite-list', params],

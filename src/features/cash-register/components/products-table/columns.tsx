@@ -54,7 +54,7 @@ export const columns: ColumnDef<VariantWithProduct>[] = [
       return (
         <span>
           <CurrencyFormatter
-            value={getDiscountedPrice('PERCENTAGE', price, sale)}
+            value={getDiscountedPrice('FIXED-AMOUNT', price, sale)}
           />
         </span>
       )

@@ -67,7 +67,7 @@ export default function CreateProductVariantForm({ setIsOpened }: Props) {
     const discountedPrice = getDiscountedPrice(
       values.saleType,
       values.price,
-      values.sale
+      values.sale ? parseFloat(values.sale) : 0
     )
 
     const sale = values.price - discountedPrice
@@ -76,7 +76,7 @@ export default function CreateProductVariantForm({ setIsOpened }: Props) {
       body: {
         price: values.price,
         size: values.size,
-        sale,
+        sale: sale.toString(),
       },
     })
   }
