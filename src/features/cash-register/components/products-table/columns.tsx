@@ -1,7 +1,7 @@
 import SelectCell from '@/components/data-tables/SelectCell'
 import SelectHeader from '@/components/data-tables/SelectHeader'
 import { CurrencyFormatter } from '@/components/ui/units'
-import { DisplayUploadedFile } from '@/features/products/components/shared/media/DisplayUploadedFile'
+import { DisplayUploadedFile } from '@/features/products/components/shared/form/media/DisplayUploadedFile'
 import { VariantWithProduct } from '@/types/entities/Variant'
 import getDiscountedPrice from '@/utils/getDiscountedPrice'
 import { ColumnDef } from '@tanstack/react-table'

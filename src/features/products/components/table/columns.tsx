@@ -1,7 +1,7 @@
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import { ProductFindAll } from '@/types/entities/Product'
 import { ColumnDef } from '@tanstack/react-table'
-import { DisplayUploadedFile } from '../shared/media/DisplayUploadedFile'
+import { DisplayUploadedFile } from '../shared/form/media/DisplayUploadedFile'
 import ProductActions from './ProductActions'
 import { Button } from '@/components/ui/button'
 import { ChevronDown, ChevronRight } from 'lucide-react'

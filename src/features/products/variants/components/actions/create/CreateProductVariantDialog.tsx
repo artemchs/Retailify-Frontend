@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/dialog'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
-import CreatePosForm from './CreatePosForm'
+import CreateProductVariantForm from './CreateProducVariantForm'
 
-export default function CreatePosDialog() {
+export default function CreateProductVariantDialog() {
   const [isOpened, setIsOpened] = useState(false)
 
   return (
@@ -18,14 +18,14 @@ export default function CreatePosDialog() {
       <DialogTrigger asChild>
         <Button>
           <Plus className='h-4 w-4 mr-2' />
-          Добавить кассу
+          Добавить вариант товара
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Добавить кассу</DialogTitle>
+          <DialogTitle>Добавить вариант товара</DialogTitle>
         </DialogHeader>
-        <CreatePosForm setIsOpened={setIsOpened} />
+        <CreateProductVariantForm setIsOpened={setIsOpened} />
       </DialogContent>
     </Dialog>
   )

@@ -23,7 +23,7 @@ import { InfiniteData } from '@tanstack/react-query'
 import {
   DisplayNoFile,
   DisplayUploadedFile,
-} from '@/features/products/components/shared/media/DisplayUploadedFile'
+} from '@/features/products/components/shared/form/media/DisplayUploadedFile'
 import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Variant } from './ProductVariantsTable'

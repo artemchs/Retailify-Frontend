@@ -16,4 +16,5 @@ export default {
   '/points-of-sale': 'Точки продаж',
   '/points-of-sale/*/shifts': 'Смены на точке продаж',
   '/customers': 'Клиенты',
+  '/product-variants': 'Варианты товара',
 }

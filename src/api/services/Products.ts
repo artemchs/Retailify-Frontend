@@ -11,6 +11,8 @@ import { ProductsSearchParams } from '@/features/products/types/searchParams'
 import { EditProductFormSchema } from '@/features/products/types/edit-product-form-schema'
 import { Variant, VariantWithProduct } from '@/types/entities/Variant'
 import { VariantsSearchParamsSchema } from '@/features/products/variants/types/findAll-variants-search-params'
+import { CreateVariantFormSchema } from '@/features/products/variants/types/create-variant-form-schema'
+import { EditVariantFormSchema } from '@/features/products/variants/types/edit-variant-form-schema'
 
 export type ProductsFindAll = {
   items: ProductFindAll[]
@@ -187,34 +189,38 @@ export default {
         onErrorHandler({ error, setErrorMessage }),
     }),
 
-  // useCreateVariant: ({
-  //   onSuccess,
-  //   productId,
-  // }: {
-  //   onSuccess: OnSuccess
-  //   productId: string
-  // }) =>
-  //   useMutation({
-  //     mutationKey: ['create-product-variant', { productId }],
-  //     mutationFn: async ({ body }: { body: CreateVariantFormSchema }) => {
-  //       return await client.post(`products/${productId}/variants`, body)
-  //     },
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries({
-  //         queryKey: ['products'],
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ['product', { id: productId }],
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ['product-variants', { id: productId }],
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ['products-infinite-list'],
-  //       })
-  //       onSuccess()
-  //     },
-  //   }),
+  useCreateVariant: ({
+    onSuccess,
+    productId,
+    setErrorMessage,
+  }: {
+    onSuccess: OnSuccess
+    setErrorMessage: SetErrorMessage
+    productId: string
+  }) =>
+    useMutation({
+      mutationKey: ['create-product-variant', { productId }],
+      mutationFn: async ({ body }: { body: CreateVariantFormSchema }) => {
+        return await client.post(`products/${productId}/variants`, body)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['products'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['product', { id: productId }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['product-variants', { id: productId }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
 
   useFindAllInfiniteListVariant: (
     params: { query?: string },
@@ -279,43 +285,43 @@ export default {
       },
     }),
 
-  // useEditVariant: ({
-  //   setErrorMessage,
-  //   onSuccess,
-  //   id,
-  //   productId,
-  // }: {
-  //   setErrorMessage: SetErrorMessage
-  //   onSuccess: OnSuccess
-  //   id: string
-  //   productId: string
-  // }) =>
-  //   useMutation({
-  //     mutationKey: ['edit-product-variant'],
-  //     mutationFn: async ({ body }: { body: EditVariantFormSchema }) => {
-  //       return await client.put(`/products/${productId}/variants/${id}`, body)
-  //     },
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries({
-  //         queryKey: ['products'],
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ['product', { id }],
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ['product-variant', { id, productId }],
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ['product-variants-infinite-list', { productId }],
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ['products-infinite-list'],
-  //       })
-  //       onSuccess()
-  //     },
-  //     onError: (error: AxiosError) =>
-  //       onErrorHandler({ error, setErrorMessage }),
-  //   }),
+  useEditVariant: ({
+    setErrorMessage,
+    onSuccess,
+    id,
+    productId,
+  }: {
+    setErrorMessage: SetErrorMessage
+    onSuccess: OnSuccess
+    id: string
+    productId: string
+  }) =>
+    useMutation({
+      mutationKey: ['edit-product-variant'],
+      mutationFn: async ({ body }: { body: EditVariantFormSchema }) => {
+        return await client.put(`/products/${productId}/variants/${id}`, body)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['products'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['product', { id }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['product-variant', { id, productId }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['product-variants-infinite-list', { productId }],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['products-infinite-list'],
+        })
+        onSuccess()
+      },
+      onError: (error: AxiosError) =>
+        onErrorHandler({ error, setErrorMessage }),
+    }),
 
   useArchiveVariant: ({
     setErrorMessage,

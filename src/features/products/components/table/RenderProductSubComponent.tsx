@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/dialog'
 
 import { Badge } from '@/components/ui/badge'
+import getDiscountedPrice from '@/utils/getDiscountedPrice'
 
 type Props = {
   row: Row<ProductFindAll>
@@ -53,10 +54,12 @@ export default function RenderProductSubComponent({ row }: Props) {
                 <TableCell className='text-right'>
                   <CurrencyFormatter value={price} />
                 </TableCell>
-                <TableCell className='text-right'>{sale ? sale : 0}%</TableCell>
+                <TableCell className='text-right'>
+                  <CurrencyFormatter value={sale ? sale : 0} />
+                </TableCell>
                 <TableCell className='text-right'>
                   <CurrencyFormatter
-                    value={price - price * ((sale ?? 0) / 100)}
+                    value={getDiscountedPrice('FIXED-AMOUNT', price, sale)}
                   />
                 </TableCell>
                 <TableCell className='text-right'>

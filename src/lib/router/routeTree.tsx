@@ -43,6 +43,7 @@ import CashRegisterPage from '@/pages/CashRegister'
 import { cashRegisterSearchParams } from '@/features/cash-register/types/cash-register-search-params'
 import CustomersPage from '@/pages/Customers'
 import { findAllCustomerSchema } from '@/features/customers/types/find-all-customer-schema'
+import ProductVariantsPage from '@/pages/ProductVariants'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -250,6 +251,14 @@ export const customerRoute = createRoute({
   beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
+export const productVariantsRoute = createRoute({
+  getParentRoute: () => layout,
+  component: ProductVariantsPage,
+  path: '/product-variants',
+  beforeLoad: ({ context }) =>
+    beforeLoadRole(context, ['ADMIN', 'CASHIER', 'ECOMMERCE_MANAGER']),
+})
+
 export const routeTree = rootRoute.addChildren([
   layout.addChildren([
     homeRoute,
@@ -270,6 +279,7 @@ export const routeTree = rootRoute.addChildren([
     pointOfSaleRoute,
     cashRegisterRoute,
     customerRoute,
+    productVariantsRoute,
   ]),
   authRoute.addChildren([logInRoute, signUpRoute]),
 ])

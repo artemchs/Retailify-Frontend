@@ -4,10 +4,12 @@ import {
   Factory,
   GitCompareArrows,
   Home,
-  LibraryBig,
+  LayoutList,
+  List,
   PackagePlus,
+  Shapes,
   Store,
-  Tags,
+  Triangle,
   User,
   Users,
   Warehouse,
@@ -26,20 +28,40 @@ export default function SidebarLinks() {
           ecommerceManager={true}
           text='Главная'
         />
+      </Section>
+      <Separator />
+      <Section>
         <SidebarLink
-          Icon={Users}
-          to='/employees'
+          Icon={LayoutList}
+          to='/products'
           cashier={false}
           ecommerceManager={false}
-          text='Сотрудники'
+          text='Модели товара'
         />
         <SidebarLink
-          Icon={Store}
-          to='/points-of-sale'
+          Icon={List}
+          to='/product-variants'
           cashier={false}
           ecommerceManager={false}
-          text='Кассы'
+          text='Варианты товара'
         />
+        <SidebarLink
+          Icon={Shapes}
+          to='/category-groups'
+          cashier={false}
+          ecommerceManager={false}
+          text='Группы категорий товара'
+        />
+        <SidebarLink
+          Icon={Triangle}
+          to='/categories'
+          cashier={false}
+          ecommerceManager={false}
+          text='Категории товара'
+        />
+      </Section>
+      <Separator />
+      <Section>
         <SidebarLink
           Icon={Factory}
           to='/suppliers'
@@ -62,25 +84,11 @@ export default function SidebarLinks() {
           text='Приход товара'
         />
         <SidebarLink
-          Icon={LibraryBig}
-          to='/categories'
+          Icon={GitCompareArrows}
+          to='/inventory-transfers'
           cashier={false}
           ecommerceManager={false}
-          text='Категории товара'
-        />
-        <SidebarLink
-          Icon={LibraryBig}
-          to='/category-groups'
-          cashier={false}
-          ecommerceManager={false}
-          text='Группы категорий товара'
-        />
-        <SidebarLink
-          Icon={Tags}
-          to='/products'
-          cashier={false}
-          ecommerceManager={false}
-          text='Модели товара'
+          text='Перемещение товара'
         />
         <SidebarLink
           Icon={BookText}
@@ -89,12 +97,22 @@ export default function SidebarLinks() {
           ecommerceManager={false}
           text='Инвентаризация'
         />
+      </Section>
+      <Separator />
+      <Section>
         <SidebarLink
-          Icon={GitCompareArrows}
-          to='/inventory-transfers'
+          Icon={Store}
+          to='/points-of-sale'
           cashier={false}
           ecommerceManager={false}
-          text='Перемещение товара'
+          text='Кассы'
+        />
+        <SidebarLink
+          Icon={Users}
+          to='/employees'
+          cashier={false}
+          ecommerceManager={false}
+          text='Сотрудники'
         />
       </Section>
       <Separator />
