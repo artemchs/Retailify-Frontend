@@ -211,10 +211,10 @@ export default {
           queryKey: ['product', { id: productId }],
         })
         queryClient.invalidateQueries({
-          queryKey: ['product-variants', { id: productId }],
+          queryKey: ['products-infinite-list'],
         })
         queryClient.invalidateQueries({
-          queryKey: ['products-infinite-list'],
+          queryKey: ['product-variants'],
         })
         onSuccess()
       },
@@ -312,6 +312,9 @@ export default {
           queryKey: ['product-variant', { id, productId }],
         })
         queryClient.invalidateQueries({
+          queryKey: ['product-variants'],
+        })
+        queryClient.invalidateQueries({
           queryKey: ['product-variants-infinite-list', { productId }],
         })
         queryClient.invalidateQueries({
@@ -355,6 +358,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['products-infinite-list'],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['product-variants'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
@@ -392,6 +398,9 @@ export default {
         })
         queryClient.invalidateQueries({
           queryKey: ['products-infinite-list'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['product-variants'],
         })
         onSuccess()
       },

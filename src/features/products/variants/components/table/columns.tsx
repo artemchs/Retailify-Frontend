@@ -5,6 +5,7 @@ import { DisplayUploadedFile } from '@/features/products/components/shared/form/
 import { Variant } from '@/types/entities/Variant'
 import getDiscountedPrice from '@/utils/getDiscountedPrice'
 import { ColumnDef } from '@tanstack/react-table'
+import VariantActions from './VariantActions'
 
 export const columns: ColumnDef<Variant>[] = [
   {
@@ -67,5 +68,21 @@ export const columns: ColumnDef<Variant>[] = [
     cell: ({ row }) => {
       return <span>{row.original.size}</span>
     },
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const { id, isArchived, productId } = row.original
+
+      return productId ? (
+        <VariantActions
+          productId={productId}
+          id={id}
+          isArchived={isArchived}
+        />
+      ) : null
+    },
+    enableSorting: false,
+    enableHiding: false,
   },
 ]

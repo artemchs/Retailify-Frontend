@@ -33,7 +33,13 @@ export default function ProductVariantsPage() {
         })
       )
 
-      setColumns([...baseColumns, ...warehouseColumns])
+      const updatedColumns = [
+        ...baseColumns.slice(0, baseColumns.length - 1),
+        ...warehouseColumns,
+        baseColumns[baseColumns.length - 1],
+      ]
+
+      setColumns(updatedColumns)
     }
   }, [warehousesData])
 

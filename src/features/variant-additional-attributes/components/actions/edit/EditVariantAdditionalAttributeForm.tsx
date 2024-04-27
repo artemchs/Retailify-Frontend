@@ -15,40 +15,38 @@ import { AlertDestructive } from '@/components/AlertDestructive'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
 import { Input } from '@/components/ui/input'
 import AsyncInput from '@/components/forms/AsyncInput'
-import { Variant } from '@/types/entities/Variant'
-import { editVariantFormSchema } from '../../../types/edit-variant-form-schema'
-import Products from '@/api/services/Products'  
-import ProductVariantSaleInput from '../../shared/ProductVariantSaleInput'
+import { ProductTag } from '@/types/entities/ProductTag'
+import { editVariantAdditionalAttributeFormSchema } from '@/features/variant-additional-attributes/types/edit-variant-additional-attribute-form-schema'
+import VariantAdditionalAttributes from '@/api/services/VariantAdditionalAttributes'
+import { variantAdditionalAttributeName } from '../../shared/placeholders'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-  data?: Variant
+  data?: ProductTag
   id: string
   isLoading: boolean
   isError: boolean
-  productId: string
 }
 
-export default function EditProductVariantForm({
+export default function EditVariantAdditionalAttributeForm({
   setIsOpened,
   id,
   isError,
   isLoading,
   data,
-  productId,
 }: Props) {
-  const form = useForm<z.infer<typeof editVariantFormSchema>>({
-    resolver: zodResolver(editVariantFormSchema),
+  const form = useForm<
+    z.infer<typeof editVariantAdditionalAttributeFormSchema>
+  >({
+    resolver: zodResolver(editVariantAdditionalAttributeFormSchema),
     defaultValues: {
-      price: data?.price,
-      sale: data?.sale?.toString() ?? undefined,
-      size: data?.size,
+      name: data?.name,
     },
   })
 
   function defaultOnSuccess() {
     setIsOpened(false)
-    toast('Вариант товара был успешно отредактирован.', {
+    toast('Атрибут варианта был успешно отредактирован.', {
       cancel: {
         label: 'Ок',
         onClick() {
@@ -59,14 +57,15 @@ export default function EditProductVariantForm({
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = Products.useEditVariant({
+  const { mutate, isPending } = VariantAdditionalAttributes().useEdit({
     setErrorMessage,
     onSuccess: defaultOnSuccess,
     id,
-    productId,
   })
 
-  function onSubmit(values: z.infer<typeof editVariantFormSchema>) {
+  function onSubmit(
+    values: z.infer<typeof editVariantAdditionalAttributeFormSchema>
+  ) {
     mutate({
       body: values,
     })
@@ -84,48 +83,24 @@ export default function EditProductVariantForm({
         >
           <FormField
             control={form.control}
-            name='size'
+            name='name'
             render={({ field }) => (
               <FormItem>
-                <FormLabelForRequiredFields text='Размер' />
+                <FormLabelForRequiredFields text='Название' />
                 <FormControl>
                   <AsyncInput
-                    input={<Input {...field} />}
+                    input={
+                      <Input
+                        placeholder={variantAdditionalAttributeName}
+                        {...field}
+                      />
+                    }
                     isError={isError}
                     isLoading={isLoading}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='price'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabelForRequiredFields text='Цена продажи (грн)' />
-                <FormControl>
-                  <AsyncInput
-                    input={<Input type='number' {...field} />}
-                    isError={isError}
-                    isLoading={isLoading}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='sale'
-            render={({ field }) => (
-              <ProductVariantSaleInput
-                field={field}
-                form={form}
-                isError={isError}
-                isLoading={isLoading}
-              />
             )}
           />
           <SaveButton isPending={isPending} form={form} onSubmit={onSubmit} />

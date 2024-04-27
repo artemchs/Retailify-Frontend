@@ -7,38 +7,40 @@ import {
 } from '@/components/ui/dialog'
 import { Edit } from 'lucide-react'
 import { useState } from 'react'
-import Products from '@/api/services/Products'
-import EditProductVariantForm from './EditProductVariantForm'
-import { Button } from '@/components/ui/button'
+import VariantAdditionalAttributes from '@/api/services/VariantAdditionalAttributes'
+import EditVariantAdditionalAttributeForm from './EditVariantAdditionalAttributeForm'
 
-export default function EditProductVariantDialog({
+export default function EditVariantAdditionalAttributeDialog({
   id,
-  productId,
 }: {
   id: string
-  productId: string
 }) {
   const [isOpened, setIsOpened] = useState(false)
-  const { data, isLoading, isError } = Products.useFindOneVariant({ id })
+  const { data, isLoading, isError } = VariantAdditionalAttributes().useFindOne(
+    {
+      id,
+    }
+  )
 
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
       <DialogTrigger asChild>
-        <Button variant='secondary' size='icon'>
+        <button>
           <Edit className='h-4 w-4' />
-        </Button>
+        </button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Редактировать вариант товара</DialogTitle>
+          <DialogTitle>
+            Редактировать дополнительный атрибут варианта
+          </DialogTitle>
         </DialogHeader>
-        <EditProductVariantForm
+        <EditVariantAdditionalAttributeForm
           id={id}
           isError={isError}
           isLoading={isLoading}
-          productId={productId}
           setIsOpened={setIsOpened}
-          data={data}
+          data={data ?? undefined}
         />
       </DialogContent>
     </Dialog>
