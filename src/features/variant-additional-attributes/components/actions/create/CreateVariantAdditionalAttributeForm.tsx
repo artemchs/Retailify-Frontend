@@ -15,14 +15,14 @@ import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredF
 import { Input } from '@/components/ui/input'
 import SaveButton from '@/components/forms/SaveButton'
 import { ProductTag } from '@/types/entities/ProductTag'
-import { CreateVariantAdditionalAttributeDialog } from './CreateVariantAdditionalAttributeDialog'
+import { CreateVariantAdditionalAttributeDialogProps } from './CreateVariantAdditionalAttributeDialog'
 import { createVariantAdditionalAttributeFormSchema } from '@/features/variant-additional-attributes/types/create-variant-additiona-attribute-form-schema'
 import VariantAdditionalAttributes from '@/api/services/VariantAdditionalAttributes'
 import { variantAdditionalAttributeName } from '../../shared/placeholders'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-} & CreateVariantAdditionalAttributeDialog
+} & CreateVariantAdditionalAttributeDialogProps
 
 export default function CreateVariantAdditionalAttributeForm({
   setIsOpened,

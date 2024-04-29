@@ -95,13 +95,21 @@ export default function EditProductForm({ productId, product }: Props) {
           }))
         : [],
       variants: product?.variants
-        ? product.variants.map(({ id, isArchived, price, sale, size }) => ({
-            id,
-            isArchived,
-            price,
-            sale: sale ?? undefined,
-            size,
-          }))
+        ? product.variants.map(
+            ({ id, isArchived, price, sale, size, additionalAttributes }) => ({
+              id,
+              isArchived,
+              price,
+              sale: sale ?? undefined,
+              size,
+              additionalAttributes: additionalAttributes.map(
+                ({ additionalAttribute, value }) => ({
+                  id: additionalAttribute.id,
+                  value,
+                })
+              ),
+            })
+          )
         : [],
       description: product?.description ? product.description : '',
       media: product?.media ?? [],

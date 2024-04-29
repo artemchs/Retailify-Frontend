@@ -1,4 +1,3 @@
-import ProductTags from '@/api/services/ProductTags'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import AlertDialogFooter from '@/components/dialogs/AlertDialogFooter'
 import {
@@ -12,13 +11,14 @@ import {
 import { Loader2, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { CreateVariantAdditionalAttributeDialog } from '../create/CreateVariantAdditionalAttributeDialog'
+import { CreateVariantAdditionalAttributeDialogProps } from '../create/CreateVariantAdditionalAttributeDialog'
+import VariantAdditionalAttributes from '@/api/services/VariantAdditionalAttributes'
 
 export default function RemoveVariantAdditionalAttributeAlertDialog({
   id,
   selectedValue,
   setSelectedValue,
-}: { id: string } & CreateVariantAdditionalAttributeDialog) {
+}: { id: string } & CreateVariantAdditionalAttributeDialogProps) {
   const [isOpened, setIsOpened] = useState(false)
 
   function defaultOnSuccess() {
@@ -38,7 +38,7 @@ export default function RemoveVariantAdditionalAttributeAlertDialog({
   }
 
   const [errorMessage, setErrorMessage] = useState('')
-  const { mutate, isPending } = ProductTags.useRemove({
+  const { mutate, isPending } = VariantAdditionalAttributes().useRemove({
     setErrorMessage,
     onSuccess: defaultOnSuccess,
     id,

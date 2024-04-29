@@ -9,6 +9,14 @@ const variantsSchema = z
       price: z.coerce.number().optional(),
       sale: z.coerce.number().optional(),
       isArchived: z.coerce.boolean(),
+      additionalAttributes: z
+        .array(
+          z.object({
+            id: z.string(),
+            value: z.string(),
+          })
+        )
+        .optional(),
     })
   )
   .optional()

@@ -1,5 +1,3 @@
-import { Variant } from './Variant'
-
 export type ProductSeason = 'WINTER' | 'SPRING_FALL' | 'SUMMER' | 'ALL_SEASON'
 export type ProductGender = 'MALE' | 'FEMALE' | 'UNISEX'
 
@@ -69,6 +67,13 @@ export type Product = {
         price: number
         sale: number | null
         isArchived: boolean
+        additionalAttributes: {
+          value: string
+          additionalAttribute: {
+            id: string
+            name: string
+          }
+        }[]
       }[]
     | null
 }
@@ -133,10 +138,13 @@ export type ProductFindAll = {
             name: string
           } | null
         }[]
+        additionalAttributes: {
+          value: string
+          additionalAttribute: {
+            id: string
+            name: string
+          }
+        }[]
       }[]
     | null
-}
-
-export interface ProductWithVariants extends Product {
-  variants: Variant[]
 }

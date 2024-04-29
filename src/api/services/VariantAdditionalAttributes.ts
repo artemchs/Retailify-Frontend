@@ -22,9 +22,6 @@ export default function VariantAdditionalAttributes() {
     REMOVE: 'remove-variant-additional-attribute',
   }
 
-  const clientWithBaseUrl = structuredClone(client) // Clone the configured axios instance
-  clientWithBaseUrl.defaults.baseURL = `${client.defaults.baseURL}/variant-additional-attributes`
-
   return {
     useCreate: ({
       setErrorMessage,
@@ -40,7 +37,7 @@ export default function VariantAdditionalAttributes() {
         }: {
           body: CreateVariantAdditionalAttributeFormSchema
         }) => {
-          return await client.post('/', body)
+          return await client.post('/variant-additional-attributes', body)
         },
         onSuccess: ({ data }) => {
           queryClient.invalidateQueries({
@@ -56,7 +53,7 @@ export default function VariantAdditionalAttributes() {
       useInfiniteQuery({
         queryKey: [MUTATION_KEYS.FIND_ALL, params],
         queryFn: async ({ pageParam }) => {
-          const { data } = await client.get('/', {
+          const { data } = await client.get('/variant-additional-attributes', {
             params: { ...params, cursor: pageParam },
           })
 
@@ -72,7 +69,9 @@ export default function VariantAdditionalAttributes() {
         queryFn: async () => {
           if (!id) return null
 
-          const { data } = await client.get(`/${id}`)
+          const { data } = await client.get(
+            `/variant-additional-attributes/${id}`
+          )
           return data as VariantAdditionalAttribute
         },
       }),
@@ -93,7 +92,7 @@ export default function VariantAdditionalAttributes() {
         }: {
           body: EditVariantAdditionalAttributeFormSchema
         }) => {
-          return await client.put(`/${id}`, body)
+          return await client.put(`/variant-additional-attributes/${id}`, body)
         },
         onSuccess: ({ data }) => {
           queryClient.invalidateQueries({
@@ -120,7 +119,7 @@ export default function VariantAdditionalAttributes() {
       useMutation({
         mutationKey: [MUTATION_KEYS.REMOVE],
         mutationFn: async () => {
-          return await client.delete(`/${id}`)
+          return await client.delete(`/variant-additional-attributes/${id}`)
         },
         onSuccess: () => {
           queryClient.invalidateQueries({

@@ -4,15 +4,20 @@ import VariantAdditionalAttributes, {
 import CrudComboboxSingle from '@/components/forms/CrudComboboxSingle'
 import { VariantAdditionalAttribute } from '@/types/entities/VariantAdditionalAttribute'
 import { useState } from 'react'
+import CreateVariantAdditionalAttributeDialog from '../actions/create/CreateVariantAdditionalAttributeDialog'
+import EditVariantAdditionalAttributeDialog from '../actions/edit/EditVariantAdditionalAttributeDialog'
+import RemoveVariantAdditionalAttributeAlertDialog from '../actions/remove/RemoveVariantAdditionalAttributeAlertDialog'
 
 type Props = {
   selectedValue?: string
   setSelectedValue(id?: string): void
+  sm?: boolean
 }
 
 export default function SelectVariantAdditionalAttribute({
   selectedValue,
   setSelectedValue,
+  sm,
 }: Props) {
   const [query, setQuery] = useState('')
   const {
@@ -45,8 +50,23 @@ export default function SelectVariantAdditionalAttribute({
       nameField='name'
       idField='id'
       setQuery={setQuery}
-      placeholder='Выберите дополнительный атрибут варианта'
+      placeholder='Выберите атрибут'
       selectedEntity={selectedAttribute}
+      CreateDialog={() => (
+        <CreateVariantAdditionalAttributeDialog
+          selectedValue={selectedValue}
+          setSelectedValue={setSelectedValue}
+        />
+      )}
+      EditDialog={({ id }) => <EditVariantAdditionalAttributeDialog id={id} />}
+      DeleteAlertDialog={({ id }) => (
+        <RemoveVariantAdditionalAttributeAlertDialog
+          id={id}
+          selectedValue={selectedValue}
+          setSelectedValue={setSelectedValue}
+        />
+      )}
+      sm={sm}
     />
   )
 }

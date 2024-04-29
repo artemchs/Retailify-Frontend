@@ -10,7 +10,7 @@ import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import CreateVariantAdditionalAttributeForm from './CreateVariantAdditionalAttributeForm'
 
-export type CreateVariantAdditionalAttributeDialog = {
+export type CreateVariantAdditionalAttributeDialogProps = {
   selectedValue?: string
   setSelectedValue?: (newValue?: string) => void
 }
@@ -18,7 +18,7 @@ export type CreateVariantAdditionalAttributeDialog = {
 export default function CreateVariantAdditionalAttributeDialog({
   selectedValue,
   setSelectedValue,
-}: CreateVariantAdditionalAttributeDialog) {
+}: CreateVariantAdditionalAttributeDialogProps) {
   const [isOpened, setIsOpened] = useState(false)
 
   return (
