@@ -36,14 +36,14 @@ export default function SidebarLinks() {
           to='/products'
           cashier={false}
           ecommerceManager={false}
-          text='Модели товара'
+          text='Справочник товаров'
         />
         <SidebarLink
           Icon={List}
           to='/product-variants'
           cashier={false}
           ecommerceManager={false}
-          text='Варианты товара'
+          text='Список товаров'
         />
         <SidebarLink
           Icon={Shapes}

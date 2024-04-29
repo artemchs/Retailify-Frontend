@@ -51,7 +51,7 @@ export default function ProductVariantsPage() {
         isError={isError || isLoadingWarehouses}
         isLoading={isLoading || isLoadingWarehouses}
         routeId='/layout/product-variants'
-        title='Варианты товара'
+        title='Список товаров'
         topBarElements={<CreateProductVariantDialog />}
       />
     </>

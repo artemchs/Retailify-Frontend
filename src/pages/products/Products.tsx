@@ -21,7 +21,7 @@ export default function ProductsPage() {
       isLoading={isLoading}
       isError={isError}
       routeId='/layout/products'
-      title='Модели товара'
+      title='Справочник товаров'
       topBarElements={
         <>
           <CreateProductLink />

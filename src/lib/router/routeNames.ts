@@ -8,7 +8,7 @@ export default {
   '/goods-receipts/*/edit': 'Редактировать накладную прихода',
   '/categories': 'Категории товара',
   '/category-groups': 'Группы категорий товара',
-  '/products': 'Модели товара',
+  '/products': 'Справочник товаров',
   '/products/create': 'Добавить новую модель',
   '/products/*/edit': 'Редактировать модель',
   '/inventory-adjustments': 'Инвентаризация',
@@ -16,5 +16,5 @@ export default {
   '/points-of-sale': 'Точки продаж',
   '/points-of-sale/*/shifts': 'Смены на точке продаж',
   '/customers': 'Клиенты',
-  '/product-variants': 'Варианты товара',
+  '/product-variants': 'Список товаров',
 }
