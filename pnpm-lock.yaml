@@ -283,7 +283,7 @@ importers:
         specifier: ^0.4.6
         version: 0.4.6(eslint@8.57.0)
       husky:
-        specifier: ^8.0.3
+        specifier: ^8.0.0
         version: 8.0.3
       postcss:
         specifier: ^8.4.38
