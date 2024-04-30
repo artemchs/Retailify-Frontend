@@ -172,7 +172,7 @@ function SidebarLink({
         inactiveProps={{
           className: 'hover:bg-secondary',
         }}
-        className='flex px-3 py-2 gap-2 items-center rounded-lg transition-colors group-data-[state=closed]:w-9 group-data-[state=closed]:p-0 group-data-[state=closed]:h-9 group-data-[state=closed]:justify-center'
+        className='flex px-4 py-2 gap-2 items-center rounded-md transition-colors group-data-[state=closed]:w-9 group-data-[state=closed]:p-0 group-data-[state=closed]:h-9 group-data-[state=closed]:justify-center'
         onClick={handleClose}
       >
         <Icon className='h-4 w-4 shrink-0' />
@@ -185,5 +185,5 @@ function SidebarLink({
 }
 
 function Section({ children }: { children: React.ReactNode }) {
-  return <div className='p-3 flex flex-col gap-3'>{children}</div>
+  return <div className='p-2 flex flex-col gap-2'>{children}</div>
 }

@@ -1,23 +1,14 @@
-import { DialogTrigger } from '@/components/ui/dialog'
 import EditCustomerDialog from '../actions/edit/EditCustomerDialog'
 import RemoveCustomerAlertDialog from '../actions/remove/RemoveCustomerAlertDialog'
 import { Button } from '@/components/ui/button'
-import { Edit, Trash2 } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import { AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import EditButton from '@/components/data-tables/EditButton'
 
 export default function CustomerActions({ id }: { id: string }) {
   return (
     <div className='flex items-center gap-2 justify-end'>
-      <EditCustomerDialog
-        id={id}
-        trigger={
-          <DialogTrigger asChild>
-            <Button variant='secondary' size='icon'>
-              <Edit className='h-4 w-4' />
-            </Button>
-          </DialogTrigger>
-        }
-      />
+      <EditCustomerDialog id={id} trigger={<EditButton />} />
       <RemoveCustomerAlertDialog
         id={id}
         trigger={

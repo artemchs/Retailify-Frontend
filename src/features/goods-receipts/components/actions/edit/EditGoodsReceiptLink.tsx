@@ -4,7 +4,7 @@ import { Edit } from 'lucide-react'
 
 export default function EditGoodsReceiptLink({ id }: { id: string }) {
   return (
-    <Button asChild variant='secondary' size='icon'>
+    <Button asChild variant='ghost' size='icon'>
       <Link
         to='/goods-receipts/$goodsReceiptId/edit'
         params={{ goodsReceiptId: id }}

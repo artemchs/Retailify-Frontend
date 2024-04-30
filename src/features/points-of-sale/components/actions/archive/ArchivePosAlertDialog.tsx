@@ -1,5 +1,6 @@
 import PointsOfSale from '@/api/services/PointsOfSale'
 import { AlertDestructive } from '@/components/AlertDestructive'
+import ArchiveButton from '@/components/data-tables/ArchiveButton'
 import AlertDialogFooter from '@/components/dialogs/AlertDialogFooter'
 import {
   AlertDialog,
@@ -7,9 +8,7 @@ import {
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
 import { Archive, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -39,17 +38,12 @@ export default function ArchivePosAlertDialog({ id }: { id: string }) {
 
   return (
     <AlertDialog open={isOpened} onOpenChange={setIsOpened}>
-      <AlertDialogTrigger asChild>
-        <Button size='icon' variant='secondary'>
-          <Archive className='h-4 w-4' />
-        </Button>
-      </AlertDialogTrigger>
+      <ArchiveButton />
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Архивировать кассу</AlertDialogTitle>
           <AlertDialogDescription>
-            Подтверждая это действие, информация о кассе будет
-            архивирована.
+            Подтверждая это действие, информация о кассе будет архивирована.
           </AlertDialogDescription>
         </AlertDialogHeader>
         {errorMessage && errorMessage.length >= 1 && (

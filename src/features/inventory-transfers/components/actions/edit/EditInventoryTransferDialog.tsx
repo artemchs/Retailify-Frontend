@@ -1,15 +1,16 @@
-import { Button } from '@/components/ui/button'
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+
 } from '@/components/ui/dialog'
 import { useState } from 'react'
-import { Edit } from 'lucide-react'
+
 import InventoryTransfers from '@/api/services/InventoryTransfers'
 import EditInventoryTransferForm from './EditInventoryTransferForm'
+import EditButton from '@/components/data-tables/EditButton'
 
 export default function EditInventoryTransferDialog({ id }: { id: string }) {
   const [isOpened, setIsOpened] = useState(false)
@@ -17,11 +18,7 @@ export default function EditInventoryTransferDialog({ id }: { id: string }) {
 
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
-      <DialogTrigger asChild>
-        <Button variant='secondary' size='icon'>
-          <Edit className='h-4 w-4' />
-        </Button>
-      </DialogTrigger>
+      <EditButton />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Редактировать накладную перемещения товара</DialogTitle>

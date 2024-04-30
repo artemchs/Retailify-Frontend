@@ -6,8 +6,6 @@ import { Button } from '../ui/button'
 import { toggleDesktopSidebar } from '@/utils/desktop-sidebar'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 
-//
-
 export default function Sidebar() {
   return (
     <nav

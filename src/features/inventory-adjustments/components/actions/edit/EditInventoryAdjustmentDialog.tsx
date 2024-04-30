@@ -1,15 +1,13 @@
 import InventoryAdjustments from '@/api/services/InventoryAdjustments'
-import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import { useState } from 'react'
 import EditInventoryAdjustmentForm from './EditInventoryAdjustmentForm'
-import { Edit } from 'lucide-react'
+import EditButton from '@/components/data-tables/EditButton'
 
 export default function EditInventoryAdjustmentDialog({ id }: { id: string }) {
   const [isOpened, setIsOpened] = useState(false)
@@ -17,11 +15,7 @@ export default function EditInventoryAdjustmentDialog({ id }: { id: string }) {
 
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
-      <DialogTrigger asChild>
-        <Button variant='secondary' size='icon'>
-          <Edit className='h-4 w-4' />
-        </Button>
-      </DialogTrigger>
+      <EditButton />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

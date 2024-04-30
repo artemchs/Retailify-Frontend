@@ -17,7 +17,7 @@ export default function UserInfo() {
 
   return (
     <div className='flex items-center space-x-2 lg:space-x-4'>
-      <Avatar className='h-full aspect-square border shadow'>
+      <Avatar className='h-full aspect-square border'>
         <AvatarImage
           className='object-cover'
           src={data?.profilePicture ? data.profilePicture : undefined}
@@ -27,7 +27,7 @@ export default function UserInfo() {
         </AvatarFallback>
       </Avatar>
       <div className='flex flex-col'>
-        <span className='line-clamp-1 text-sm lg:text-base'>
+        <span className='line-clamp-1 text-sm lg:text-base font-medium'>
           {data?.fullName}
         </span>
         {context.user?.role && (

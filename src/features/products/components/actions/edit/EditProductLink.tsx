@@ -4,7 +4,7 @@ import { Edit } from 'lucide-react'
 
 export default function EditProductLink({ id }: { id: string }) {
   return (
-    <Button asChild variant='secondary' size='icon'>
+    <Button asChild variant='ghost' size='icon'>
       <Link to='/products/$productId/edit' params={{ productId: id }}>
         <Edit className='h-4 w-4' />
       </Link>
