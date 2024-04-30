@@ -20,7 +20,7 @@ export default function EditProductPage() {
       ) : isError ? (
         <ErrorPage />
       ) : (
-        <EditProductForm productId={productId} product={data} />
+        <EditProductForm productId={productId} product={data ?? undefined} />
       )}
     </div>
   )

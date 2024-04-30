@@ -19,12 +19,8 @@ export type ProductsFindAll = {
   info: FindAllInfo
 }
 
-interface ProductWithVariants extends Product {
-  variants: Variant[]
-}
-
 export type ProductsFindAllInfiniteList = {
-  items: ProductWithVariants[]
+  items: Product[]
   nextCursor?: string
 }
 
@@ -58,6 +54,9 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['products-infinite-list'],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['products-generate-sku'],
+        })
         onSuccess()
       },
       onError: (error: AxiosError) =>
@@ -76,6 +75,15 @@ export default {
       },
     }),
 
+  useGenerateSku: () =>
+    useQuery({
+      queryKey: ['products-generate-sku'],
+      queryFn: async () => {
+        const { data } = await client.get('/products/generate-sku')
+        return data as string
+      },
+    }),
+
   useFindAllInfiniteList: (params: { query?: string }) =>
     useInfiniteQuery({
       queryKey: ['products-infinite-list', params],
@@ -90,10 +98,12 @@ export default {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }),
 
-  useFindOne: ({ id }: { id: string }) =>
+  useFindOne: ({ id }: { id?: string }) =>
     useQuery({
       queryKey: ['product', { id }],
       queryFn: async () => {
+        if (!id) return null
+
         const { data } = await client.get(`/products/${id}`)
         return data as Product
       },
@@ -122,6 +132,9 @@ export default {
         })
         queryClient.invalidateQueries({
           queryKey: ['products-infinite-list'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['products-generate-sku'],
         })
         onSuccess()
       },

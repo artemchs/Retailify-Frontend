@@ -42,17 +42,6 @@ const mediaSchema = z
   )
   .optional()
 
-// const characteristicValuesSchema = z
-//   .array(
-//     z.object({
-//       characteristicId: z.string(),
-//       id: z.string(),
-//       value: z.string(),
-//       characteristicName: z.string(),
-//     })
-//   )
-//   .optional()
-
 const characteristicsSchema = z.array(
   z.object({
     id: z.string(),
@@ -86,12 +75,12 @@ export const createProductFormSchema = z.object({
   colors: colorsSchema,
   variants: variantsSchema,
   media: mediaSchema,
-  // characteristicValues: characteristicValuesSchema,
   characteristics: characteristicsSchema,
   packagingLength: packagingDimensionsSchema,
   packagingWidth: packagingDimensionsSchema,
   packagingHeight: packagingDimensionsSchema,
   packagingWeight: packagingDimensionsSchema,
+  supplierSku: z.string().optional(),
 })
 
 export type CreateProductFormSchema = z.infer<typeof createProductFormSchema>

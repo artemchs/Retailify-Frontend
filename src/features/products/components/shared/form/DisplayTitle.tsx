@@ -1,4 +1,3 @@
-import { Input } from '@/components/ui/input'
 import { productTitle } from './placeholders'
 import {
   Control,
@@ -9,8 +8,8 @@ import {
 import Brands from '@/api/services/Brands'
 import Categories from '@/api/services/Categories'
 import { useEffect } from 'react'
-import AsyncInput from '@/components/forms/AsyncInput'
 import Colors from '@/api/services/Colors'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +20,7 @@ type Props = {
   control: Control<any, any>
 }
 
-export default function TitleInput({ field, form, control }: Props) {
+export default function DisplayTitle({ field, form, control }: Props) {
   const [genderValue, brandId, categoryId, colors] = useWatch({
     control,
     name: ['gender', 'brandId', 'categoryId', 'colors'],
@@ -54,11 +53,21 @@ export default function TitleInput({ field, form, control }: Props) {
   const isError =
     (brand ? brand.isError : false) || (category ? category.isError : false)
 
+  if (isLoading) {
+    return <Skeleton className='w-72 h-7' />
+  }
+
+  if (isError) {
+    return <span className='text-destructive'>Произошла ошибка :(</span>
+  }
+
   return (
-    <AsyncInput
-      input={<Input placeholder={productTitle} {...field} readOnly />}
-      isLoading={isLoading}
-      isError={isError}
-    />
+    <div className='flex w-full'>
+      {field.value ? (
+        <span className='text-lg font-semibold'>{field.value}</span>
+      ) : (
+        <span className='text-muted-foreground text-lg'>{productTitle}</span>
+      )}
+    </div>
   )
 }

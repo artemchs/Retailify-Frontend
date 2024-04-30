@@ -10,13 +10,21 @@ import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import CreateCategoryForm from './CreateCategoryForm'
 
-export default function CreateCategoryDialog() {
+export type CreateCategoryDialogProps = {
+  selectedValue?: string
+  setSelectedValue?: (newValue: string) => void
+}
+
+export default function CreateCategoryDialog({
+  selectedValue,
+  setSelectedValue,
+}: CreateCategoryDialogProps) {
   const [isOpened, setIsOpened] = useState(false)
 
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
       <DialogTrigger asChild>
-        <Button>
+        <Button size='sm' variant='secondary' className='w-full'>
           <Plus className='h-4 w-4 mr-2' />
           Добавить категорию
         </Button>
@@ -25,7 +33,11 @@ export default function CreateCategoryDialog() {
         <DialogHeader>
           <DialogTitle>Добавить категорию</DialogTitle>
         </DialogHeader>
-        <CreateCategoryForm setIsOpened={setIsOpened} />
+        <CreateCategoryForm
+          selectedValue={selectedValue}
+          setSelectedValue={setSelectedValue}
+          setIsOpened={setIsOpened}
+        />
       </DialogContent>
     </Dialog>
   )

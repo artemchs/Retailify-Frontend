@@ -16,7 +16,6 @@ import {
 } from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
-import TitleInput from '../../shared/form/TitleInput'
 import SelectSeason from '../../shared/form/SelectSeason'
 import SelectGender from '../../shared/form/SelectGender'
 import BrandsCombobox from '@/features/brands/components/shared/BrandsCombobox'
@@ -31,52 +30,15 @@ import { Product } from '@/types/entities/Product'
 import VariantsInput from '../../shared/form/variants/VariantsInput'
 import ProductTagsCombobox from '@/features/product-tags/components/shared/ProductTagsCombobox'
 import { useNavigate } from '@tanstack/react-router'
+import DisplayTitle from '../../shared/form/DisplayTitle'
+import transformCharacteristicValues from '../../shared/transformCharacteristicValues'
 
 type Props = {
   productId: string
   product?: Product
 }
 
-type Characteristic = {
-  id: string
-  characteristicId: string | null
-  value: string
-  characteristic: { id: string; name: string } | null
-}
 
-function transformCharacteristicValues(characteristicValues: Characteristic[]) {
-  const characteristics = []
-
-  // Create a map to group values by characteristic
-  const characteristicMap = new Map()
-
-  // Iterate over the input array
-  for (const { id, characteristic, value } of characteristicValues) {
-    if (characteristic) {
-      const { id: characteristicId } = characteristic
-      const values = characteristicMap.get(characteristicId) || []
-      values.push({ id, value })
-      characteristicMap.set(characteristicId, values)
-    }
-  }
-
-  // Create the desired format
-  for (const [characteristicId, values] of characteristicMap) {
-    const characteristic = characteristicValues.find(
-      (cv) => cv.characteristicId === characteristicId && cv.characteristic
-    )?.characteristic
-
-    if (characteristic) {
-      characteristics.push({
-        id: characteristic.id,
-        name: characteristic.name,
-        values,
-      })
-    }
-  }
-
-  return characteristics
-}
 
 export default function EditProductForm({ productId, product }: Props) {
   const form = useForm<z.infer<typeof editProductFormSchema>>({
@@ -121,6 +83,7 @@ export default function EditProductForm({ productId, product }: Props) {
       season: product?.season,
       brandId: product?.brandId ?? '',
       tags: product?.tags ?? [],
+      supplierSku: product?.supplierSku ?? '',
     },
   })
 
@@ -181,9 +144,8 @@ export default function EditProductForm({ productId, product }: Props) {
             name='title'
             render={({ field }) => (
               <FormItem>
-                <FormLabelForRequiredFields text='Название' />
                 <FormControl>
-                  <TitleInput
+                  <DisplayTitle
                     field={field}
                     form={form}
                     control={form.control}
@@ -195,12 +157,45 @@ export default function EditProductForm({ productId, product }: Props) {
           />
           <FormField
             control={form.control}
-            name='tags'
+            name='categoryId'
             render={({ field }) => (
-              <FormItem>
-                <Label>Теги</Label>
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Категория' />
                 <FormControl>
-                  <ProductTagsCombobox field={field} form={form} />
+                  <CategoriesCombobox field={field} form={form} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='supplierSku'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <Label>Родной артикул:</Label>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormItem className='w-full'>
+            <Label>Артикул для магазина (автоматически создан):</Label>
+            <FormControl>
+              <Input disabled value={product?.sku} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+          <FormField
+            control={form.control}
+            name='colors'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Цвета' />
+                <FormControl>
+                  <ColorsCombobox field={field} form={form} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -219,66 +214,49 @@ export default function EditProductForm({ productId, product }: Props) {
               </FormItem>
             )}
           />
-          <div className='flex flex-col lg:flex-row gap-4'>
-            <FormField
-              control={form.control}
-              name='season'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Сезон' />
-                  <SelectSeason field={field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='gender'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Пол' />
-                  <SelectGender field={field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className='flex flex-col lg:flex-row gap-4'>
-            <FormField
-              control={form.control}
-              name='brandId'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Бренд' />
-                  <FormControl>
-                    <BrandsCombobox field={field} form={form} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='categoryId'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Категория' />
-                  <FormControl>
-                    <CategoriesCombobox field={field} form={form} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
           <FormField
             control={form.control}
-            name='colors'
+            name='season'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabelForRequiredFields text='Цвета' />
+                <FormLabelForRequiredFields text='Сезон' />
+                <SelectSeason field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='gender'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Пол' />
+                <SelectGender field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='brandId'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Бренд' />
                 <FormControl>
-                  <ColorsCombobox field={field} form={form} />
+                  <BrandsCombobox field={field} form={form} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='tags'
+            render={({ field }) => (
+              <FormItem>
+                <Label>Дополнительные теги для модели товара:</Label>
+                <FormControl>
+                  <ProductTagsCombobox field={field} form={form} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -289,7 +267,7 @@ export default function EditProductForm({ productId, product }: Props) {
             name='characteristics'
             render={({ field }) => (
               <FormItem>
-                <Label>Характеристики:</Label>
+                <Label>Характеристики модели товара:</Label>
                 <FormControl>
                   <CharacteristicsInput
                     control={form.control}
@@ -301,60 +279,6 @@ export default function EditProductForm({ productId, product }: Props) {
               </FormItem>
             )}
           />
-          <div className='flex flex-col lg:flex-row gap-4'>
-            <FormField
-              control={form.control}
-              name='packagingHeight'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Высота упаковки' />
-                  <FormControl>
-                    <Input {...field} type='number' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='packagingLength'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Длина упаковки' />
-                  <FormControl>
-                    <Input {...field} type='number' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='packagingWidth'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Ширина упаковки' />
-                  <FormControl>
-                    <Input {...field} type='number' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='packagingWeight'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Вес упаковки' />
-                  <FormControl>
-                    <Input {...field} type='number' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
           <FormField
             control={form.control}
             name='variants'
@@ -362,11 +286,59 @@ export default function EditProductForm({ productId, product }: Props) {
               <FormItem>
                 <Label>Размеры товара:</Label>
                 <FormControl>
-                  <VariantsInput
-                    field={field}
-                    form={form}
-                    productId={productId}
-                  />
+                  <VariantsInput field={field} form={form} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='packagingHeight'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Высота упаковки (см)' />
+                <FormControl>
+                  <Input {...field} type='number' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='packagingLength'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Длина упаковки (см)' />
+                <FormControl>
+                  <Input {...field} type='number' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='packagingWidth'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Ширина упаковки (см)' />
+                <FormControl>
+                  <Input {...field} type='number' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='packagingWeight'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Вес упаковки (кг)' />
+                <FormControl>
+                  <Input {...field} type='number' />
                 </FormControl>
                 <FormMessage />
               </FormItem>

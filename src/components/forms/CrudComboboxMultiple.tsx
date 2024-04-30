@@ -7,10 +7,11 @@ import {
 import { debounce } from 'lodash'
 import { Fragment, useCallback, useMemo, useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { Button } from '../ui/button'
+import { Button, buttonVariants } from '../ui/button'
 import { ChevronsUpDown, Loader2, X } from 'lucide-react'
 import { Command, CommandGroup, CommandInput, CommandItem } from '../ui/command'
 import { Checkbox } from '../ui/checkbox'
+import { cn } from '@/lib/utils'
 
 type Props<Entity, EntityFindAll> = {
   setQuery: React.Dispatch<React.SetStateAction<string>>
@@ -102,11 +103,11 @@ export default function CrudComboboxMultiple<Entity, EntityFindAll>({
         >
           {selectedValues && selectedValues.length >= 1 ? (
             <div className='flex items-center gap-2'>
-              <Button
-                type='button'
-                size='icon'
-                className='h-6 w-6'
-                variant='outline'
+              <div
+                className={cn(
+                  buttonVariants({ variant: 'outline', size: 'icon' }),
+                  'h-6 w-6'
+                )}
                 onClick={(e) => {
                   e.stopPropagation()
 
@@ -114,7 +115,7 @@ export default function CrudComboboxMultiple<Entity, EntityFindAll>({
                 }}
               >
                 <X className='h-4 w-4' />
-              </Button>
+              </div>
               <span className='truncate max-w-64'>
                 {selectedValues.length <= 3
                   ? selectedValues.map((obj) => obj[nameField]).join(', ')

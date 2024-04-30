@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { Tags } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import {
   Form,
@@ -23,15 +23,18 @@ import SelectSeason from '../../shared/form/SelectSeason'
 import SelectGender from '../../shared/form/SelectGender'
 import BrandsCombobox from '@/features/brands/components/shared/BrandsCombobox'
 import CategoriesCombobox from '@/features/categories/components/shared/CategoriesCombobox'
-import TitleInput from '../../shared/form/TitleInput'
+import DisplayTitle from '../../shared/form/DisplayTitle'
 import ColorsCombobox from '@/features/colors/components/shared/ColorsCombobox'
 import CharacteristicsInput from '../../shared/form/characteristics/CharacteristicsInput'
 import { Input } from '@/components/ui/input'
 import VariantsInput from '../../shared/form/variants/VariantsInput'
 import ProductTagsCombobox from '@/features/product-tags/components/shared/ProductTagsCombobox'
 import { useNavigate } from '@tanstack/react-router'
+import AsyncInput from '@/components/forms/AsyncInput'
+import { Product } from '@/types/entities/Product'
+import transformCharacteristicValues from '../../shared/transformCharacteristicValues'
 
-export default function CreateProductForm() {
+export default function CreateProductForm({ product }: { product?: Product }) {
   const form = useForm<z.infer<typeof createProductFormSchema>>({
     resolver: zodResolver(createProductFormSchema),
     defaultValues: {
@@ -50,8 +53,85 @@ export default function CreateProductForm() {
       tags: [],
       brandId: '',
       variants: [],
+      supplierSku: '',
     },
   })
+
+  useEffect(() => {
+    if (product) {
+      form.reset({
+        title: product?.title ?? '',
+        characteristics: product?.characteristicValues
+          ? transformCharacteristicValues(product.characteristicValues)
+          : [],
+        categoryId: product?.categoryId ?? '',
+        colors: product?.colors
+          ? product.colors.map(({ colorId, index, color }) => ({
+              id: colorId,
+              index,
+              name: color?.name ?? '',
+            }))
+          : [],
+        variants: product?.variants
+          ? product.variants.map(
+              ({
+                id,
+                isArchived,
+                price,
+                sale,
+                size,
+                additionalAttributes,
+              }) => ({
+                id,
+                isArchived,
+                price,
+                sale: sale ?? undefined,
+                size,
+                additionalAttributes: additionalAttributes.map(
+                  ({ additionalAttribute, value }) => ({
+                    id: additionalAttribute.id,
+                    value,
+                  })
+                ),
+              })
+            )
+          : [],
+        // description: product?.description ?? '',
+        packagingHeight: product?.packagingHeight ?? 0,
+        packagingLength: product?.packagingLength ?? 0,
+        packagingWeight: product?.packagingWeight ?? 0,
+        packagingWidth: product?.packagingWidth ?? 0,
+        gender: product?.gender ?? 'UNISEX',
+        season: product?.season ?? 'ALL_SEASON',
+        brandId: product?.brandId ?? '',
+        tags: product?.tags ?? [],
+        media: [],
+        supplierSku: '',
+      })
+      form.setValue('description', product?.description ?? '')
+    } else {
+      form.reset({
+        title: '',
+        characteristics: [],
+        categoryId: '',
+        colors: [],
+        description: '',
+        media: [],
+        packagingHeight: undefined,
+        packagingLength: undefined,
+        packagingWeight: undefined,
+        packagingWidth: undefined,
+        gender: 'UNISEX',
+        season: 'ALL_SEASON',
+        tags: [],
+        brandId: '',
+        variants: [],
+        supplierSku: '',
+      })
+    }
+  }, [product, form])
+
+  const sku = Products.useGenerateSku()
 
   const navigate = useNavigate()
 
@@ -108,9 +188,8 @@ export default function CreateProductForm() {
             name='title'
             render={({ field }) => (
               <FormItem>
-                <FormLabelForRequiredFields text='Название' />
                 <FormControl>
-                  <TitleInput
+                  <DisplayTitle
                     field={field}
                     form={form}
                     control={form.control}
@@ -122,12 +201,12 @@ export default function CreateProductForm() {
           />
           <FormField
             control={form.control}
-            name='tags'
+            name='categoryId'
             render={({ field }) => (
-              <FormItem>
-                <Label>Теги:</Label>
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Категория' />
                 <FormControl>
-                  <ProductTagsCombobox field={field} form={form} />
+                  <CategoriesCombobox field={field} form={form} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -135,69 +214,28 @@ export default function CreateProductForm() {
           />
           <FormField
             control={form.control}
-            name='description'
+            name='supplierSku'
             render={({ field }) => (
-              <FormItem>
-                <FormLabelForRequiredFields text='Описание' />
+              <FormItem className='w-full'>
+                <Label>Родной артикул:</Label>
                 <FormControl>
-                  <TextEditor field={field} form={form} />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className='flex flex-col lg:flex-row gap-4'>
-            <FormField
-              control={form.control}
-              name='season'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Сезон' />
-                  <SelectSeason field={field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='gender'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Пол' />
-                  <SelectGender field={field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className='flex flex-col lg:flex-row gap-4'>
-            <FormField
-              control={form.control}
-              name='brandId'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Бренд' />
-                  <FormControl>
-                    <BrandsCombobox field={field} form={form} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='categoryId'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Категория' />
-                  <FormControl>
-                    <CategoriesCombobox field={field} form={form} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormItem className='w-full'>
+            <Label>Артикул для магазина (автоматически создан):</Label>
+            <FormControl>
+              <AsyncInput
+                input={<Input disabled value={sku.data} />}
+                isError={sku.isError}
+                isLoading={sku.isLoading}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
           <FormField
             control={form.control}
             name='colors'
@@ -213,10 +251,76 @@ export default function CreateProductForm() {
           />
           <FormField
             control={form.control}
+            name='description'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabelForRequiredFields text='Описание' />
+                <FormControl>
+                  <TextEditor
+                    content={field.value}
+                    setContent={(newValue) =>
+                      form.setValue('description', newValue)
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='season'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Сезон' />
+                <SelectSeason field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='gender'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Пол' />
+                <SelectGender field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='brandId'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Бренд' />
+                <FormControl>
+                  <BrandsCombobox field={field} form={form} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='tags'
+            render={({ field }) => (
+              <FormItem>
+                <Label>Дополнительные теги для модели товара:</Label>
+                <FormControl>
+                  <ProductTagsCombobox field={field} form={form} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name='characteristics'
             render={({ field }) => (
               <FormItem>
-                <Label>Характеристики:</Label>
+                <Label>Характеристики модели товара:</Label>
                 <FormControl>
                   <CharacteristicsInput
                     control={form.control}
@@ -228,60 +332,6 @@ export default function CreateProductForm() {
               </FormItem>
             )}
           />
-          <div className='flex flex-col lg:flex-row gap-4'>
-            <FormField
-              control={form.control}
-              name='packagingHeight'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Высота упаковки' />
-                  <FormControl>
-                    <Input {...field} type='number' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='packagingLength'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Длина упаковки' />
-                  <FormControl>
-                    <Input {...field} type='number' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='packagingWidth'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Ширина упаковки' />
-                  <FormControl>
-                    <Input {...field} type='number' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='packagingWeight'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Вес упаковки' />
-                  <FormControl>
-                    <Input {...field} type='number' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
           <FormField
             control={form.control}
             name='variants'
@@ -290,6 +340,58 @@ export default function CreateProductForm() {
                 <Label>Размеры товара:</Label>
                 <FormControl>
                   <VariantsInput field={field} form={form} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='packagingHeight'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Высота упаковки (см)' />
+                <FormControl>
+                  <Input {...field} type='number' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='packagingLength'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Длина упаковки (см)' />
+                <FormControl>
+                  <Input {...field} type='number' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='packagingWidth'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Ширина упаковки (см)' />
+                <FormControl>
+                  <Input {...field} type='number' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='packagingWeight'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Вес упаковки (кг)' />
+                <FormControl>
+                  <Input {...field} type='number' />
                 </FormControl>
                 <FormMessage />
               </FormItem>

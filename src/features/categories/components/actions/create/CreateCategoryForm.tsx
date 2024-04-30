@@ -21,12 +21,17 @@ import { createCategoryFormSchema } from '@/features/categories/types/create-cat
 import { categoryName, categoryProductName } from '../../shared/placeholders'
 import CategoryGroupsCombobox from '@/features/category-groups/components/shared/CategoryGroupsCombobox'
 import Categories from '@/api/services/Categories'
+import { CreateCategoryDialogProps } from './CreateCategoryDialog'
+import { Category } from '@/types/entities/Category'
 
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
-}
+} & CreateCategoryDialogProps
 
-export default function CreateCategoryForm({ setIsOpened }: Props) {
+export default function CreateCategoryForm({
+  setIsOpened,
+  setSelectedValue,
+}: Props) {
   const form = useForm<z.infer<typeof createCategoryFormSchema>>({
     resolver: zodResolver(createCategoryFormSchema),
     defaultValues: {
@@ -37,7 +42,7 @@ export default function CreateCategoryForm({ setIsOpened }: Props) {
     },
   })
 
-  function onSuccess() {
+  function onSuccess(data: Category) {
     setIsOpened(false)
     toast('Новая категория была успешно добавлена.', {
       icon: <LibraryBig className='h-4 w-4' />,
@@ -48,6 +53,10 @@ export default function CreateCategoryForm({ setIsOpened }: Props) {
         },
       },
     })
+
+    if (setSelectedValue) {
+      setSelectedValue(data.id)
+    }
   }
 
   const [errorMessage, setErrorMessage] = useState('')

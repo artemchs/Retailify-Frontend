@@ -21,6 +21,7 @@ import {
   UseFormReturn,
   useWatch,
 } from 'react-hook-form'
+import SetDefaultCharacteristics from './SetDefaultCharacteristics'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,6 +66,10 @@ export default function CharacteristicsInput({ control, field, form }: Props) {
       <SelectedCharacteristicsTable
         characteristics={characteristics}
         setCharacteristics={setCharacteristics}
+      />
+      <SetDefaultCharacteristics
+        categoryId={categoryId}
+        setValues={setCharacteristics}
       />
     </div>
   )

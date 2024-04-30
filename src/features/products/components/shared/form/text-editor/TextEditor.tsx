@@ -1,8 +1,6 @@
 import { useEditor, EditorContent, mergeAttributes } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Heading from '@tiptap/extension-heading'
-
-import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
 import Table from '@tiptap/extension-table'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
@@ -10,13 +8,11 @@ import TableRow from '@tiptap/extension-table-row'
 import Toolbar from './Toolbar'
 
 type Props = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field: ControllerRenderProps<any, 'description'>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  form: UseFormReturn<any, any, undefined>
+  content: string
+  setContent: (newValue: string) => void
 }
 
-export default function TextEditor({ field, form }: Props) {
+export default function TextEditor({ content, setContent }: Props) {
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -72,9 +68,9 @@ export default function TextEditor({ field, form }: Props) {
       TableHeader,
       TableCell,
     ],
-    content: field.value,
+    content,
     onUpdate({ editor }) {
-      form.setValue('description', editor.getHTML())
+      setContent(editor.getHTML())
     },
   })
 

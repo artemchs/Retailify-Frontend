@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -22,9 +21,9 @@ export default function EditCategoryDialog({ id }: { id: string }) {
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
       <DialogTrigger asChild>
-        <Button variant='secondary' size='icon'>
+        <button>
           <Edit className='h-4 w-4' />
-        </Button>
+        </button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

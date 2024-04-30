@@ -22,14 +22,14 @@ export default {
     onSuccess,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: Category) => void
   }) =>
     useMutation({
       mutationKey: ['create-category'],
       mutationFn: async ({ body }: { body: CreateCategoryFormSchema }) => {
         return await client.post('/categories', body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['category-groups'],
         })
@@ -45,7 +45,7 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['categories-infinite-list'],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
@@ -97,7 +97,7 @@ export default {
     id,
   }: {
     setErrorMessage: SetErrorMessage
-    onSuccess: OnSuccess
+    onSuccess: (data: Category) => void
     id: string
   }) =>
     useMutation({
@@ -105,7 +105,7 @@ export default {
       mutationFn: async ({ body }: { body: editCategoryFormSchema }) => {
         return await client.put(`/categories/${id}`, body)
       },
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         queryClient.invalidateQueries({
           queryKey: ['category-groups'],
         })
@@ -127,7 +127,7 @@ export default {
         queryClient.invalidateQueries({
           queryKey: ['category-groups-infinite-list'],
         })
-        onSuccess()
+        onSuccess(data)
       },
       onError: (error: AxiosError) =>
         onErrorHandler({ error, setErrorMessage }),
