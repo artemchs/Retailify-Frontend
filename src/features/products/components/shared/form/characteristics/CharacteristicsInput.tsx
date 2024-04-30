@@ -83,7 +83,7 @@ function SelectedCharacteristicsTable({
   setCharacteristics: (values: CharacteristicWithValues[]) => void
 }) {
   return (
-    <div className='rounded-md border border-input shadow-sm'>
+    <div className='rounded-md border border-input'>
       <Table>
         <TableHeader>
           <TableRow>

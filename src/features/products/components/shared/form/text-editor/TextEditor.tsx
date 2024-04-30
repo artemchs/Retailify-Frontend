@@ -17,7 +17,7 @@ export default function TextEditor({ content, setContent }: Props) {
     editorProps: {
       attributes: {
         class:
-          'min-h-[100px] shadow-sm break-all flex-auto rounded-t-none w-full border border-input bg-transparent p-4 rounded-md text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 overflow-auto',
+          'min-h-[100px] break-all flex-auto rounded-t-none w-full border border-input bg-transparent p-4 rounded-md ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 overflow-auto',
       },
     },
     extensions: [

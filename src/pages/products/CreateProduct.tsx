@@ -48,7 +48,9 @@ export default function CreateProductPage() {
       ) : productPreset.isError ? (
         <ErrorPage />
       ) : (
-        <CreateProductForm product={productPreset.data ?? undefined} />
+        <CreateProductForm
+          product={productPreset.data ? { ...productPreset.data } : undefined}
+        />
       )}
     </div>
   )

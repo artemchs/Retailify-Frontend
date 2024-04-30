@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { useState } from 'react'
 import { ChevronsUpDown, X } from 'lucide-react'
 import Products from '@/api/services/Products'
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/data-table-state'
 import { productColumns } from './productsDialogColumns'
 import { RowSelectionState } from '@tanstack/react-table'
+import { cn } from '@/lib/utils'
 
 type Props = {
   selectedValues: {
@@ -74,11 +75,11 @@ export default function SelectProductsDialog({
         >
           {selectedValues && selectedValues.length >= 1 ? (
             <div className='flex items-center gap-2'>
-              <Button
-                type='button'
-                size='icon'
-                className='h-6 w-6'
-                variant='outline'
+              <div
+                className={cn(
+                  buttonVariants({ variant: 'outline', size: 'icon' }),
+                  'h-6 w-6'
+                )}
                 onClick={(e) => {
                   e.stopPropagation()
 
@@ -87,7 +88,7 @@ export default function SelectProductsDialog({
                 }}
               >
                 <X className='h-4 w-4' />
-              </Button>
+              </div>
               <span className='truncate max-w-96'>
                 {selectedValues &&
                   (single

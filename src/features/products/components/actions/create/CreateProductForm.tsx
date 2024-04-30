@@ -38,97 +38,92 @@ export default function CreateProductForm({ product }: { product?: Product }) {
   const form = useForm<z.infer<typeof createProductFormSchema>>({
     resolver: zodResolver(createProductFormSchema),
     defaultValues: {
-      title: '',
-      characteristics: [],
-      categoryId: '',
-      colors: [],
-      description: '',
+      title: product?.title ?? '',
+      characteristics: product?.characteristicValues
+        ? transformCharacteristicValues(product.characteristicValues)
+        : [],
+      categoryId: product?.categoryId ?? '',
+      colors: product?.colors
+        ? product.colors.map(({ colorId, index, color }) => ({
+            id: colorId,
+            index,
+            name: color?.name ?? '',
+          }))
+        : [],
+      variants: product?.variants
+        ? product.variants.map(
+            ({ id, isArchived, price, sale, size, additionalAttributes }) => ({
+              id,
+              isArchived,
+              price,
+              sale: sale ?? undefined,
+              size,
+              additionalAttributes: additionalAttributes.map(
+                ({ additionalAttribute, value }) => ({
+                  id: additionalAttribute.id,
+                  value,
+                })
+              ),
+            })
+          )
+        : [],
+      description: product?.description ?? '',
+      packagingHeight: product?.packagingHeight ?? 0,
+      packagingLength: product?.packagingLength ?? 0,
+      packagingWeight: product?.packagingWeight ?? 0,
+      packagingWidth: product?.packagingWidth ?? 0,
+      gender: product?.gender ?? 'UNISEX',
+      season: product?.season ?? 'ALL_SEASON',
+      brandId: product?.brandId ?? '',
+      tags: product?.tags ?? [],
       media: [],
-      packagingHeight: undefined,
-      packagingLength: undefined,
-      packagingWeight: undefined,
-      packagingWidth: undefined,
-      gender: 'UNISEX',
-      season: 'ALL_SEASON',
-      tags: [],
-      brandId: '',
-      variants: [],
       supplierSku: '',
     },
   })
 
   useEffect(() => {
-    if (product) {
-      form.reset({
-        title: product?.title ?? '',
-        characteristics: product?.characteristicValues
-          ? transformCharacteristicValues(product.characteristicValues)
-          : [],
-        categoryId: product?.categoryId ?? '',
-        colors: product?.colors
-          ? product.colors.map(({ colorId, index, color }) => ({
-              id: colorId,
-              index,
-              name: color?.name ?? '',
-            }))
-          : [],
-        variants: product?.variants
-          ? product.variants.map(
-              ({
-                id,
-                isArchived,
-                price,
-                sale,
-                size,
-                additionalAttributes,
-              }) => ({
-                id,
-                isArchived,
-                price,
-                sale: sale ?? undefined,
-                size,
-                additionalAttributes: additionalAttributes.map(
-                  ({ additionalAttribute, value }) => ({
-                    id: additionalAttribute.id,
-                    value,
-                  })
-                ),
-              })
-            )
-          : [],
-        // description: product?.description ?? '',
-        packagingHeight: product?.packagingHeight ?? 0,
-        packagingLength: product?.packagingLength ?? 0,
-        packagingWeight: product?.packagingWeight ?? 0,
-        packagingWidth: product?.packagingWidth ?? 0,
-        gender: product?.gender ?? 'UNISEX',
-        season: product?.season ?? 'ALL_SEASON',
-        brandId: product?.brandId ?? '',
-        tags: product?.tags ?? [],
-        media: [],
-        supplierSku: '',
-      })
-      form.setValue('description', product?.description ?? '')
-    } else {
-      form.reset({
-        title: '',
-        characteristics: [],
-        categoryId: '',
-        colors: [],
-        description: '',
-        media: [],
-        packagingHeight: undefined,
-        packagingLength: undefined,
-        packagingWeight: undefined,
-        packagingWidth: undefined,
-        gender: 'UNISEX',
-        season: 'ALL_SEASON',
-        tags: [],
-        brandId: '',
-        variants: [],
-        supplierSku: '',
-      })
-    }
+    form.reset({
+      title: product?.title ?? '',
+      characteristics: product?.characteristicValues
+        ? transformCharacteristicValues(product.characteristicValues)
+        : [],
+      categoryId: product?.categoryId ?? '',
+      colors: product?.colors
+        ? product.colors.map(({ colorId, index, color }) => ({
+            id: colorId,
+            index,
+            name: color?.name ?? '',
+          }))
+        : [],
+      variants: product?.variants
+        ? product.variants.map(
+            ({ id, isArchived, price, sale, size, additionalAttributes }) => ({
+              id,
+              isArchived,
+              price,
+              sale: sale ?? undefined,
+              size,
+              additionalAttributes: additionalAttributes.map(
+                ({ additionalAttribute, value }) => ({
+                  id: additionalAttribute.id,
+                  value,
+                })
+              ),
+            })
+          )
+        : [],
+      description: product?.description ?? '',
+      packagingHeight: product?.packagingHeight ?? 0,
+      packagingLength: product?.packagingLength ?? 0,
+      packagingWeight: product?.packagingWeight ?? 0,
+      packagingWidth: product?.packagingWidth ?? 0,
+      gender: product?.gender ?? 'UNISEX',
+      season: product?.season ?? 'ALL_SEASON',
+      brandId: product?.brandId ?? '',
+      tags: product?.tags ?? [],
+      media: [],
+      supplierSku: '',
+    })
   }, [product, form])
 
   const sku = Products.useGenerateSku()
