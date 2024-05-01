@@ -156,7 +156,7 @@ export default function CrudComboboxSingle<Entity, EntityFindAll>({
                               value={id}
                               className='flex items-center justify-between gap-2 cursor-pointer'
                               onSelect={() => {
-                                if (isSelected) {
+                                if (isSelected && selectedValue !== id) {
                                   setSelectedValue(undefined)
                                 } else {
                                   setSelectedValue(id)

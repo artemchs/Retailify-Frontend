@@ -14,11 +14,13 @@ import SaveButton from '@/components/forms/SaveButton'
 import SelectPaymentOption from '../../shared/SelectPaymentOption'
 import SelectPaymentTerm from '../../shared/SelectPaymentTerm'
 import { DatePickerWithPresets } from '@/components/ui/date-picker'
-import SelectProductsVariants from '../../shared/SelectProductVariants'
 import ProductVariantsTable from '../../shared/ProductVariantsTable'
 import DisplayTotalCost from '../../shared/DisplayTotalCost'
 import { GoodsReceipt } from '@/types/entities/GoodsReceipt'
 import { editGoodsReceiptFormSchema } from '@/features/goods-receipts/types/edit-goods-receipt-form-schema'
+import SelectVariantsDialog from '@/features/products/variants/components/shared/selectVariants/SelectVariantsDialog'
+import { RowSelectionState } from '@tanstack/react-table'
+import { Variant } from '@/types/entities/Variant'
 
 type Props = {
   goodsReceiptId: string
@@ -29,6 +31,7 @@ export default function EditGoodsReceiptForm({
   goodsReceiptId,
   goodsReceipt,
 }: Props) {
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const form = useForm<z.infer<typeof editGoodsReceiptFormSchema>>({
     resolver: zodResolver(editGoodsReceiptFormSchema),
     defaultValues: {
@@ -102,54 +105,50 @@ export default function EditGoodsReceiptForm({
               </FormItem>
             )}
           />
-          <div className='flex flex-col lg:flex-row gap-4'>
-            <FormField
-              control={form.control}
-              name='warehouseId'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Склад' />
-                  <SelectWarehouse form={form} field={field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='supplierId'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Поставщик' />
-                  <SelectSupplier field={field} form={form} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className='flex flex-col lg:flex-row gap-4'>
-            <FormField
-              control={form.control}
-              name='paymentOption'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Способ оплаты' />
-                  <SelectPaymentOption field={field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='paymentTerm'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Условия оплаты' />
-                  <SelectPaymentTerm field={field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name='warehouseId'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Склад' />
+                <SelectWarehouse form={form} field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='supplierId'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Поставщик' />
+                <SelectSupplier field={field} form={form} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='paymentOption'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Способ оплаты' />
+                <SelectPaymentOption field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='paymentTerm'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Условия оплаты' />
+                <SelectPaymentTerm field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name='variants'
@@ -157,7 +156,24 @@ export default function EditGoodsReceiptForm({
               <FormItem>
                 <FormLabelForRequiredFields text='Товар' />
                 <div className='flex flex-col gap-2'>
-                  <SelectProductsVariants field={field} form={form} />
+                  <SelectVariantsDialog
+                    selectedRows={rowSelection}
+                    setSelectedRows={setRowSelection}
+                    selectedValues={field.value as unknown as Variant[]}
+                    setSelectedValues={(newValues: Variant[]) =>
+                      form.setValue(
+                        'variants',
+                        newValues.map(({ size, id, productId, product }) => ({
+                          receivedQuantity: 0,
+                          supplierPrice: 0,
+                          size: size,
+                          variantId: id,
+                          productId: productId ?? '',
+                          productName: product?.title ?? '',
+                        })) ?? []
+                      )
+                    }
+                  />
                   <ProductVariantsTable field={field} form={form} />
                   <div className='mt-2'>
                     <DisplayTotalCost field={field} />

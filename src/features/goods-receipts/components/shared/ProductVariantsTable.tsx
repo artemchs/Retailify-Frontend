@@ -41,7 +41,7 @@ export default function ProductVariantsTable({ field, form }: Props) {
   }
 
   return (
-    <div className='border rounded-md shadow-sm border-input'>
+    <div className='border rounded-md border-input'>
       <Table>
         <TableHeader>
           <TableRow>
