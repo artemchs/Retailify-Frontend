@@ -38,8 +38,6 @@ type Props = {
   product?: Product
 }
 
-
-
 export default function EditProductForm({ productId, product }: Props) {
   const form = useForm<z.infer<typeof editProductFormSchema>>({
     resolver: zodResolver(editProductFormSchema),
@@ -208,7 +206,12 @@ export default function EditProductForm({ productId, product }: Props) {
               <FormItem>
                 <FormLabelForRequiredFields text='Описание' />
                 <FormControl>
-                  <TextEditor field={field} form={form} />
+                  <TextEditor
+                    content={field.value}
+                    setContent={(newValue) =>
+                      form.setValue('description', newValue)
+                    }
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

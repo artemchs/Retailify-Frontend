@@ -155,9 +155,14 @@ export default function CrudComboboxSingle<Entity, EntityFindAll>({
                               key={id}
                               value={id}
                               className='flex items-center justify-between gap-2 cursor-pointer'
-                              onSelect={() =>
-                                setSelectedValue(isSelected ? undefined : id)
-                              }
+                              onSelect={() => {
+                                if (isSelected) {
+                                  setSelectedValue(undefined)
+                                } else {
+                                  setSelectedValue(id)
+                                  setIsOpened(false)
+                                }
+                              }}
                             >
                               <div className='flex items-center gap-2'>
                                 <Checkbox checked={isSelected} />
