@@ -21,7 +21,7 @@ export default function CreateInventoryAdjustmentDialog() {
           Добавить
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить накладную инвентаризации товара</DialogTitle>
         </DialogHeader>

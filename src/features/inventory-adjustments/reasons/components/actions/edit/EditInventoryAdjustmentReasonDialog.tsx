@@ -27,7 +27,7 @@ export default function EditInventoryAdjustmentReasonDialog({
           <Edit className='h-4 w-4' />
         </button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Редактировать причину инвентаризации товара</DialogTitle>
         </DialogHeader>

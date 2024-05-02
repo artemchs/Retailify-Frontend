@@ -29,7 +29,7 @@ export default function CreateCategoryDialog({
           Добавить категорию
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить категорию</DialogTitle>
         </DialogHeader>

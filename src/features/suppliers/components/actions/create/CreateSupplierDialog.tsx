@@ -21,7 +21,7 @@ export default function CreateSupplierDialog() {
           Добавить поставщика
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить поставщика</DialogTitle>
         </DialogHeader>

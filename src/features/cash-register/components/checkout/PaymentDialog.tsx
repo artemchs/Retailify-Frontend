@@ -100,7 +100,7 @@ export default function PaymentDialog({
           Перейти к оплате
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Оплата</DialogTitle>
         </DialogHeader>

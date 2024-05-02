@@ -21,7 +21,7 @@ export default function CreateEmployeeDialog() {
           Добавить сотрудника
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить сотрудника</DialogTitle>
         </DialogHeader>

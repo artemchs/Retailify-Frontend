@@ -30,7 +30,7 @@ export default function CreateCharacteristicDialog({
           Добавить характеристику
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить характеристику</DialogTitle>
         </DialogHeader>

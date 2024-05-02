@@ -30,7 +30,7 @@ export default function CreateProductTagDialog({
           Добавить тег
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить тег</DialogTitle>
         </DialogHeader>

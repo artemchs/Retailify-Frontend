@@ -29,7 +29,7 @@ export default function WithdrawalCashierShiftDialog({
       onOpenChange={setIsOpenedCustom ?? setIsOpened}
     >
       {trigger}
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Изъятие средств из кассы</DialogTitle>
         </DialogHeader>

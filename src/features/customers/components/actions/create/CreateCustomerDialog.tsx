@@ -18,7 +18,7 @@ export default function CreateCustomerDialog({
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
       {trigger}
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить клиента</DialogTitle>
         </DialogHeader>

@@ -21,7 +21,7 @@ export default function CreateInventoryTransferReasonDialog() {
           Добавить причину
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить причину перемещения товара</DialogTitle>
         </DialogHeader>

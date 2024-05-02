@@ -29,7 +29,7 @@ export default function CreateVariantAdditionalAttributeDialog({
           Добавить аттрибут
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить дополнительный атрибут варианта</DialogTitle>
         </DialogHeader>

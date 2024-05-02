@@ -25,7 +25,7 @@ export default function EditCategoryDialog({ id }: { id: string }) {
           <Edit className='h-4 w-4' />
         </button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Редактировать категорию</DialogTitle>
         </DialogHeader>

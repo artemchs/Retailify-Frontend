@@ -16,7 +16,7 @@ export default function EditPosDialog({ id }: { id: string }) {
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
       <EditButton />
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Редактировать кассу</DialogTitle>
         </DialogHeader>

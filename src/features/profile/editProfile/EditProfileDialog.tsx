@@ -36,7 +36,7 @@ export default function EditProfileDialog({ isOpened, setIsOpened }: Props) {
 
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Редактировать профиль</DialogTitle>
         </DialogHeader>

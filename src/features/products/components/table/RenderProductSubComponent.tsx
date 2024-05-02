@@ -100,7 +100,7 @@ function ViewWarehouseStockEntries({
           {totalWarehouseQuantity} шт
         </Badge>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Количество товара на разных складах</DialogTitle>
         </DialogHeader>

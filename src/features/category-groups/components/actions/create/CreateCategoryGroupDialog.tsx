@@ -21,7 +21,7 @@ export default function CreateCategoryGroupDialog() {
           Добавить группу категорий
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить группу категорий</DialogTitle>
         </DialogHeader>

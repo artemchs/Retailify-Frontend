@@ -26,7 +26,7 @@ export default function CashierRefundsDialog({
       onOpenChange={setIsOpenedCustom ?? setIsOpened}
     >
       {trigger}
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Возвраты</DialogTitle>
         </DialogHeader>

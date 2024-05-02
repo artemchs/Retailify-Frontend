@@ -84,7 +84,7 @@ export default function CreateRefundDialog({ id, data, shiftId }: Props) {
           Создать возврат
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Создать возврат на "{data.name}"</DialogTitle>
         </DialogHeader>

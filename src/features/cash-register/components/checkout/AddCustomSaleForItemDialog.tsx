@@ -78,7 +78,7 @@ export default function AddCustomSaleForItemDialog({
           Скидка
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить скидку на товар</DialogTitle>
           <DialogDescription>

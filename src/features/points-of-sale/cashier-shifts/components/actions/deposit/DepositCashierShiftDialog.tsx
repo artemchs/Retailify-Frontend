@@ -29,7 +29,7 @@ export default function DepositCashierShiftDialog({
       onOpenChange={setIsOpenedCustom ?? setIsOpened}
     >
       {trigger}
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Внесение средств в кассу</DialogTitle>
         </DialogHeader>

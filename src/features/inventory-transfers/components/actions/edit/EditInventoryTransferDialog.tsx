@@ -1,10 +1,8 @@
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-
 } from '@/components/ui/dialog'
 import { useState } from 'react'
 
@@ -19,7 +17,7 @@ export default function EditInventoryTransferDialog({ id }: { id: string }) {
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
       <EditButton />
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Редактировать накладную перемещения товара</DialogTitle>
         </DialogHeader>

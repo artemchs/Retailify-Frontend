@@ -73,7 +73,7 @@ export default function AddCustomBulkDiscountDialog({ form }: Props) {
           Скидка на чек
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить скидку на чек</DialogTitle>
           <DialogDescription>

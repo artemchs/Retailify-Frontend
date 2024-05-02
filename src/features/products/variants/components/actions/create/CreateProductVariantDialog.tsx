@@ -21,7 +21,7 @@ export default function CreateProductVariantDialog() {
           Добавить вариант товара
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить вариант товара</DialogTitle>
         </DialogHeader>

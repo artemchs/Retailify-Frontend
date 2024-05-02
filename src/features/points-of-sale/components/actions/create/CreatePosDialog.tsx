@@ -21,7 +21,7 @@ export default function CreatePosDialog() {
           Добавить кассу
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить кассу</DialogTitle>
         </DialogHeader>

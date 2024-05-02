@@ -32,7 +32,7 @@ export default function CreateCharacteristicValueDialog({
           Добавить значение
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить значение к характеристике</DialogTitle>
         </DialogHeader>

@@ -21,7 +21,7 @@ export default function CreateWarehouseDialog() {
           Добавить склад
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить склад</DialogTitle>
         </DialogHeader>

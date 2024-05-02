@@ -30,7 +30,7 @@ export default function CreateColorDialog({
           Добавить цвет
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить цвет</DialogTitle>
         </DialogHeader>

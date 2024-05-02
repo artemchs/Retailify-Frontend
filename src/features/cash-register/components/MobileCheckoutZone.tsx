@@ -42,7 +42,7 @@ export default function MobileCheckoutZone({
           Корзина
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Корзина</DialogTitle>
         </DialogHeader>

@@ -23,7 +23,7 @@ export default function CashierOrderDialog({ id, trigger, shiftId }: Props) {
   return (
     <Dialog>
       <DialogTrigger>{trigger}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>
             {isLoading ? (

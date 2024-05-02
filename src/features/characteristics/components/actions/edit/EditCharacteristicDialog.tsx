@@ -30,7 +30,7 @@ export default function EditCharacteristicDialog({
           <Edit className='h-4 w-4' />
         </button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Редактировать характеристику</DialogTitle>
         </DialogHeader>

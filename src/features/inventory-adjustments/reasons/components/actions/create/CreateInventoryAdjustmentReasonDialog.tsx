@@ -21,7 +21,7 @@ export default function CreateInventoryAdjustmentReasonDialog() {
           Добавить причину
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить причину нивентаризации товара</DialogTitle>
         </DialogHeader>

@@ -31,7 +31,7 @@ export default function CreateCashierShiftDialog({
       onOpenChange={setIsCreateCashierShiftDialogOpened ?? setIsOpened}
     >
       {trigger}
-      <DialogContent>
+      <DialogContent className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Открыть смену кассира</DialogTitle>
         </DialogHeader>

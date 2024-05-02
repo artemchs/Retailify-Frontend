@@ -29,7 +29,7 @@ export default function CreateBrandDialog({
           Добавить бренд
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent  className='max-h-[90%] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Добавить бренд</DialogTitle>
         </DialogHeader>
