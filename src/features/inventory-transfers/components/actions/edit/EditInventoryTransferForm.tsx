@@ -41,7 +41,7 @@ export default function EditInventoryTransferForm({
       destinationWarehouseId: data?.destinationWarehouseId ?? undefined,
       transferItems: data?.transferItems.map((item) => ({
         quantity: item.quantity,
-        variantId: item.variantId ?? '',
+        id: item.variantId ?? '',
         size: item.variant?.size,
         title: item.variant?.product?.title,
         warehouseQuantity:
@@ -56,7 +56,7 @@ export default function EditInventoryTransferForm({
         'transferItems',
         data.transferItems.map((item) => ({
           quantity: item.quantity,
-          variantId: item.variantId ?? '',
+          id: item.variantId ?? '',
           size: item.variant?.size,
           title: item.variant?.product?.title,
           warehouseQuantity:
@@ -88,9 +88,10 @@ export default function EditInventoryTransferForm({
   })
 
   function onSubmit(values: z.infer<typeof editInventoryTransferFormSchema>) {
-    const transferItems = values.transferItems.map(
-      ({ quantity, variantId }) => ({ quantity, variantId })
-    )
+    const transferItems = values.transferItems.map(({ quantity, id }) => ({
+      quantity,
+      id,
+    }))
     mutate({ body: { ...values, transferItems } })
   }
 

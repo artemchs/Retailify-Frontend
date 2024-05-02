@@ -5,22 +5,8 @@ import {
   useWatch,
 } from 'react-hook-form'
 import { InventoryTransferItem } from '../../types/create-inventory-transfer-form-schema'
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { debounce } from 'lodash'
-import Products from '@/api/services/Products'
-import { useScrollToFetchData } from '@/hooks/useScrollToFetchData'
-import { Button } from '@/components/ui/button'
-import { CheckIcon, Search } from 'lucide-react'
-import {
-  CommandDialog,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import { Error, Loading } from '@/components/forms/CrudComboboxMultiple'
+import { useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
 import {
   Table,
   TableBody,
@@ -30,6 +16,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Input } from '@/components/ui/input'
+import SelectVariantsDialog from '@/features/products/variants/components/shared/selectVariants/SelectVariantsDialog'
+import { RowSelectionState } from '@tanstack/react-table'
+import { Variant } from '@/types/entities/Variant'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,142 +71,39 @@ function SelectItemsCommand({
   items: InventoryTransferItem[]
   sourceWarehouseId: string
 }) {
-  const [searchInputValue, setSearchInputValue] = useState('')
-  const [query, setQuery] = useState('')
-  const [isOpened, setIsOpened] = useState(false)
-
-  const setQueryValue = useCallback(
-    (value: string) => {
-      setQuery(value)
-    },
-    [setQuery]
-  )
-
-  const debouncedSetQueryValue = useMemo(() => {
-    return debounce(setQueryValue, 300)
-  }, [setQueryValue])
-
-  const [observerTarget, setObserverTarget] = useState<HTMLDivElement | null>(
-    null
-  )
-
-  const {
-    data,
-    isFetching,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    status,
-  } = Products.useFindAllInfiniteListVariantForWarehouse({
-    query,
-    warehouseId: sourceWarehouseId,
-  })
-
-  useScrollToFetchData(
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    observerTarget
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>(
+    items.reduce((obj, item) => {
+      obj[item.id.toString()] = true
+      return obj
+    }, {} as { [key: string]: boolean })
   )
 
   return (
     <div className='flex flex-col gap-2'>
-      <Button
-        variant='outline'
-        role='combobox'
-        aria-expanded={isOpened}
-        type='button'
-        className='w-full justify-between'
-        onClick={() => setIsOpened(true)}
-      >
-        <div className='flex items-center gap-2 text-muted-foreground '>
-          <Search className='h-4 w-4' />
-          <span className='font-normal'>Поиск товаров...</span>
-        </div>
-      </Button>
-      <CommandDialog
-        shouldFilter={false}
-        open={isOpened}
-        onOpenChange={setIsOpened}
-      >
-        <CommandInput
-          value={searchInputValue}
-          onValueChange={(value) => {
-            setSearchInputValue(value)
-            debouncedSetQueryValue(value)
-          }}
-          placeholder='Поиск товаров по названию или артикулу...'
-        />
-        <CommandList>
-          <CommandGroup>
-            {status === 'pending' ? (
-              <Loading />
-            ) : status === 'error' ? (
-              <Error />
-            ) : (
-              <>
-                {data.pages.map((group, i) => {
-                  const itemIds = items.map(({ variantId }) => variantId)
+      <SelectVariantsDialog
+        selectedRows={rowSelection}
+        setSelectedRows={setRowSelection}
+        setSelectedValues={(newValues) =>
+          setItems(
+            newValues.map(({ warehouseStockEntries, id, size, product }) => {
+              const existingObj = items.find((obj) => obj.id === id)
 
-                  return (
-                    <Fragment key={i}>
-                      {group.items.map((item) => {
-                        const vtw = item.warehouseStockEntries?.[0]
-                        const isSelected = vtw?.id
-                          ? itemIds.includes(vtw.variantId ?? '')
-                          : false
-
-                        return (
-                          <CommandItem
-                            key={item.id}
-                            defaultValue={item.id}
-                            onSelect={() => {
-                              if (isSelected) {
-                                setItems(
-                                  items.filter(
-                                    (obj) => obj.variantId !== item.id
-                                  )
-                                )
-                              } else if (vtw?.id) {
-                                const newVtw: InventoryTransferItem = {
-                                  quantity: vtw.warehouseQuantity ?? 0,
-                                  variantId: vtw.variantId ?? '',
-                                  warehouseQuantity: vtw.warehouseQuantity ?? 0,
-                                  size: item.size,
-                                  title: item.product?.title,
-                                }
-                                const newArray = items
-                                newArray.push(newVtw)
-                                setItems(newArray)
-                              }
-                            }}
-                          >
-                            <div className='flex gap-2 items-center'>
-                              <span>{item.product?.title}</span>
-                              <Badge className='w-fit' variant='outline'>
-                                {item.size}
-                              </Badge>
-                              <span>{vtw?.warehouseQuantity} шт</span>
-                            </div>
-                            <CheckIcon
-                              className={cn(
-                                'ml-auto h-4 w-4 shrink-0',
-                                isSelected ? 'opacity-100' : 'opacity-0'
-                              )}
-                            />
-                          </CommandItem>
-                        )
-                      })}
-                    </Fragment>
-                  )
-                })}
-                <div ref={(element) => setObserverTarget(element)}></div>
-                {(isFetching || isFetchingNextPage) && <Loading />}
-              </>
-            )}
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
+              return {
+                quantity: existingObj?.quantity ?? 0,
+                id,
+                size,
+                title: product?.title ?? '',
+                warehouseQuantity:
+                  existingObj?.warehouseQuantity ??
+                  warehouseStockEntries?.find(
+                    (obj) => obj.warehouseId === sourceWarehouseId
+                  )?.warehouseQuantity,
+              }
+            })
+          )
+        }
+        selectedValues={items as unknown as Variant[]}
+      />
       <Table>
         <TableHeader>
           <TableRow>
@@ -229,7 +115,7 @@ function SelectItemsCommand({
         <TableBody>
           {items.map((item, i) => (
             <TableItem
-              key={item.variantId}
+              key={item.id}
               i={i}
               item={item}
               items={items}

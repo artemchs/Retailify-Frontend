@@ -2,7 +2,7 @@ import { requiredField } from '@/utils/zodErrorMessages'
 import { z } from 'zod'
 
 const item = z.object({
-  variantId: z.string(),
+  id: z.string(),
   quantity: z.coerce.number(),
   warehouseQuantity: z.number().optional(),
   size: z.string().optional(),

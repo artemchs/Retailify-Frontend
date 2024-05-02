@@ -21,6 +21,7 @@ import { editGoodsReceiptFormSchema } from '@/features/goods-receipts/types/edit
 import SelectVariantsDialog from '@/features/products/variants/components/shared/selectVariants/SelectVariantsDialog'
 import { RowSelectionState } from '@tanstack/react-table'
 import { Variant } from '@/types/entities/Variant'
+import arrayToIdObject from '@/utils/arrayToIdObject'
 
 type Props = {
   goodsReceiptId: string
@@ -31,7 +32,17 @@ export default function EditGoodsReceiptForm({
   goodsReceiptId,
   goodsReceipt,
 }: Props) {
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>(
+    goodsReceipt?.productVariants
+      ? arrayToIdObject(
+          goodsReceipt.productVariants.map(
+            ({ variant }) => variant
+          ) as unknown as {
+            id: string
+          }[]
+        )
+      : {}
+  )
   const form = useForm<z.infer<typeof editGoodsReceiptFormSchema>>({
     resolver: zodResolver(editGoodsReceiptFormSchema),
     defaultValues: {
@@ -163,14 +174,21 @@ export default function EditGoodsReceiptForm({
                     setSelectedValues={(newValues: Variant[]) =>
                       form.setValue(
                         'variants',
-                        newValues.map(({ size, id, productId, product }) => ({
-                          receivedQuantity: 0,
-                          supplierPrice: 0,
-                          size: size,
-                          variantId: id,
-                          productId: productId ?? '',
-                          productName: product?.title ?? '',
-                        })) ?? []
+                        newValues.map(({ size, id, productId, product }) => {
+                          const existingObj = field.value.find(
+                            (obj) => obj.variantId === id
+                          )
+
+                          return {
+                            receivedQuantity:
+                              existingObj?.receivedQuantity ?? 0,
+                            supplierPrice: existingObj?.supplierPrice ?? 0,
+                            size: size,
+                            variantId: id,
+                            productId: productId ?? '',
+                            productName: product?.title ?? '',
+                          }
+                        }) ?? []
                       )
                     }
                   />

@@ -14,7 +14,6 @@ import { createInventoryTransferFormSchema } from '@/features/inventory-transfer
 import InventoryTransfers from '@/api/services/InventoryTransfers'
 import InventoryTransferReasonsCombobox from '@/features/inventory-transfers/reasons/components/shared/InventoryTransferReasonsCombobox'
 import SelectTransferItems from '../../shared/SelectTransferItems'
-
 type Props = {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -51,9 +50,10 @@ export default function CreateInventoryTransferForm({ setIsOpened }: Props) {
   })
 
   function onSubmit(values: z.infer<typeof createInventoryTransferFormSchema>) {
-    const transferItems = values.transferItems.map(
-      ({ quantity, variantId }) => ({ quantity, variantId })
-    )
+    const transferItems = values.transferItems.map(({ quantity, id }) => ({
+      quantity,
+      id,
+    }))
     mutate({ body: { ...values, transferItems } })
   }
 
