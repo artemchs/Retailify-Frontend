@@ -93,33 +93,28 @@ export default function CreateInventoryAdjustmentForm({ setIsOpened }: Props) {
               </FormItem>
             )}
           />
-          <div className='flex flex-col lg:flex-row gap-4'>
-            <FormField
-              control={form.control}
-              name='warehouseId'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Склад' />
-                  <SelectWarehouse form={form} field={field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='reasonId'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabelForRequiredFields text='Причина' />
-                  <InventoryAdjustmentReasonsCombobox
-                    form={form}
-                    field={field}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name='warehouseId'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Склад' />
+                <SelectWarehouse form={form} field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='reasonId'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabelForRequiredFields text='Причина' />
+                <InventoryAdjustmentReasonsCombobox form={form} field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name='variants'

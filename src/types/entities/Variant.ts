@@ -14,6 +14,7 @@ export type Variant = {
   isArchived: boolean
   warehouseStockEntries:
     | {
+        id: string
         warehouseId: string
         warehouseQuantity: number
       }[]

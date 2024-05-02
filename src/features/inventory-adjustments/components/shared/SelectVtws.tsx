@@ -4,23 +4,9 @@ import {
   UseFormReturn,
   useWatch,
 } from 'react-hook-form'
-import {
-  CommandDialog,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { CheckIcon, Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { InventoryAdjustmentVariant } from '../../types/create-inventory-adjustment-form-schema'
-import { debounce } from 'lodash'
-import Products from '@/api/services/Products'
-import { Error, Loading } from '@/components/forms/CrudComboboxMultiple'
-import { useScrollToFetchData } from '@/hooks/useScrollToFetchData'
 import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
 import {
   Table,
   TableBody,
@@ -30,6 +16,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Input } from '@/components/ui/input'
+import { RowSelectionState } from '@tanstack/react-table'
+import SelectVariantsDialog from '@/features/products/variants/components/shared/selectVariants/SelectVariantsDialog'
+import { Variant } from '@/types/entities/Variant'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,143 +71,50 @@ function SelectVtwsCommand({
   vtws: InventoryAdjustmentVariant[]
   warehouseId: string
 }) {
-  const [searchInputValue, setSearchInputValue] = useState('')
-  const [query, setQuery] = useState('')
-  const [isOpened, setIsOpened] = useState(false)
-
-  const setQueryValue = useCallback(
-    (value: string) => {
-      setQuery(value)
-    },
-    [setQuery]
-  )
-
-  const debouncedSetQueryValue = useMemo(() => {
-    return debounce(setQueryValue, 300)
-  }, [setQueryValue])
-
-  const [observerTarget, setObserverTarget] = useState<HTMLDivElement | null>(
-    null
-  )
-
-  const {
-    data,
-    isFetching,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    status,
-  } = Products.useFindAllInfiniteListVariantForWarehouse({ query, warehouseId })
-
-  useScrollToFetchData(
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    observerTarget
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>(
+    vtws.reduce((obj, item) => {
+      obj[item.variantId.toString()] = true
+      return obj
+    }, {} as { [key: string]: boolean })
   )
 
   return (
     <div className='flex flex-col gap-2'>
-      <Button
-        variant='outline'
-        role='combobox'
-        aria-expanded={isOpened}
-        type='button'
-        className='w-full justify-between'
-        onClick={() => setIsOpened(true)}
-      >
-        <div className='flex items-center gap-2 text-muted-foreground '>
-          <Search className='h-4 w-4' />
-          <span className='font-normal'>Поиск товаров...</span>
-        </div>
-      </Button>
-      <CommandDialog
-        shouldFilter={false}
-        open={isOpened}
-        onOpenChange={setIsOpened}
-      >
-        <CommandInput
-          value={searchInputValue}
-          onValueChange={(value) => {
-            setSearchInputValue(value)
-            debouncedSetQueryValue(value)
-          }}
-          placeholder='Поиск товаров по названию или артикулу...'
-        />
-        <CommandList>
-          <CommandGroup>
-            {status === 'pending' ? (
-              <Loading />
-            ) : status === 'error' ? (
-              <Error />
-            ) : (
-              <>
-                {data.pages.map((group, i) => {
-                  const vtwIds = vtws.map(
-                    ({ variantToWarehouseId }) => variantToWarehouseId
-                  )
+      <SelectVariantsDialog
+        selectedRows={rowSelection}
+        setSelectedRows={setRowSelection}
+        setSelectedValues={(newValues) =>
+          setVtws(
+            newValues.map(({ warehouseStockEntries, id, product, size }) => {
+              const thisWarehouseStockEntry = warehouseStockEntries?.find(
+                (obj) => obj.warehouseId === warehouseId
+              )
+              const existingObj = vtws.find(
+                (obj) =>
+                  obj.variantToWarehouseId ===
+                  thisWarehouseStockEntry?.warehouseId
+              )
 
-                  return (
-                    <Fragment key={i}>
-                      {group.items.map((item) => {
-                        const vtw = item.warehouseStockEntries?.[0]
-                        const isSelected = vtw?.id
-                          ? vtwIds.includes(vtw.id)
-                          : false
+              const warehouseStockEntryQuantity =
+                thisWarehouseStockEntry?.warehouseQuantity ?? 0
+              const wseId = thisWarehouseStockEntry?.id ?? ''
 
-                        return (
-                          <CommandItem
-                            key={item.id}
-                            defaultValue={item.id}
-                            onSelect={() => {
-                              if (isSelected) {
-                                setVtws(
-                                  vtws.filter(
-                                    (obj) => obj.variantId !== item.id
-                                  )
-                                )
-                              } else if (vtw?.id) {
-                                const newVtw: InventoryAdjustmentVariant = {
-                                  quantityChange: 0,
-                                  variantId: item.id,
-                                  variantToWarehouseId: vtw.id,
-                                  productTitle: item.product?.title,
-                                  size: item.size,
-                                  oldQuantity: vtw.warehouseQuantity,
-                                  newQuantity: vtw.warehouseQuantity,
-                                }
-                                const newArray = vtws
-                                newArray.push(newVtw)
-                                setVtws(newArray)
-                              }
-                            }}
-                          >
-                            <div className='flex gap-2 items-center'>
-                              <span>{item.product?.title}</span>
-                              <Badge className='w-fit' variant='outline'>
-                                {item.size}
-                              </Badge>
-                              <span>{vtw?.warehouseQuantity} шт</span>
-                            </div>
-                            <CheckIcon
-                              className={cn(
-                                'ml-auto h-4 w-4 shrink-0',
-                                isSelected ? 'opacity-100' : 'opacity-0'
-                              )}
-                            />
-                          </CommandItem>
-                        )
-                      })}
-                    </Fragment>
-                  )
-                })}
-                <div ref={(element) => setObserverTarget(element)}></div>
-                {(isFetching || isFetchingNextPage) && <Loading />}
-              </>
-            )}
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
+              return {
+                newQuantity:
+                  existingObj?.newQuantity ?? warehouseStockEntryQuantity,
+                oldQuantity:
+                  existingObj?.oldQuantity ?? warehouseStockEntryQuantity,
+                quantityChange: existingObj?.quantityChange ?? 0,
+                variantId: id,
+                variantToWarehouseId: wseId,
+                productTitle: product?.title,
+                size,
+              }
+            })
+          )
+        }
+        selectedValues={vtws as unknown as Variant[]}
+      />
       <Table>
         <TableHeader>
           <TableRow>
