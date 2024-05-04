@@ -3,12 +3,12 @@ import { Button } from '@/components/ui/button'
 import CashRegisterForm from '@/features/cash-register/components/CashRegisterForm'
 import CurrentShiftDropdown from '@/features/cash-register/components/CurrentShiftDropdown'
 import { cashRegisterRoute } from '@/lib/router/routeTree'
-import { VariantWithProduct } from '@/types/entities/Variant'
+import { Variant } from '@/types/entities/Variant'
 import { Link, useSearch } from '@tanstack/react-router'
 import { RowSelectionState } from '@tanstack/react-table'
 import { Home } from 'lucide-react'
 
-export interface VariantWithProductWithQuantity extends VariantWithProduct {
+export interface VariantWithProductWithQuantity extends Variant {
   quantity?: number
 }
 

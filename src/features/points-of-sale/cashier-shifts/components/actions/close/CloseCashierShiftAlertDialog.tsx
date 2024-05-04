@@ -57,12 +57,16 @@ export default function CloseCashierShiftAlertDialog({
 
   return (
     <AlertDialog
-      open={isCloseCashierShiftDialogOpened ?? isOpened}
+      open={
+        isCloseCashierShiftDialogOpened
+          ? isCloseCashierShiftDialogOpened
+          : isOpened
+      }
       onOpenChange={() => {
         if (setIsCloseCashierShiftDialogOpened) {
-          setIsCloseCashierShiftDialogOpened(false)
+          setIsCloseCashierShiftDialogOpened(!isCloseCashierShiftDialogOpened)
         } else {
-          setIsOpened(false)
+          setIsOpened(!isOpened)
         }
       }}
     >

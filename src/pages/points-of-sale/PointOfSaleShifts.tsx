@@ -5,6 +5,7 @@ import { DialogTrigger } from '@/components/ui/dialog'
 import CreateCashierShiftDialog from '@/features/points-of-sale/cashier-shifts/components/actions/create/CreateCashierShiftDialog'
 import FilterCashierShifts from '@/features/points-of-sale/cashier-shifts/components/table/FilterCashierShifts'
 import { columns } from '@/features/points-of-sale/cashier-shifts/components/table/columns'
+import LogInCashRegister from '@/features/points-of-sale/components/shared/LogInCashRegister'
 import CrudLayout from '@/layouts/CrudLayout'
 import { pointOfSaleRoute } from '@/lib/router/routeTree'
 import { useParams, useSearch } from '@tanstack/react-router'
@@ -53,6 +54,7 @@ export default function PointOfSaleShiftsPage() {
               </DialogTrigger>
             }
           />
+          <LogInCashRegister posId={pointOfSaleId} />
           <FilterCashierShifts />
         </>
       }
