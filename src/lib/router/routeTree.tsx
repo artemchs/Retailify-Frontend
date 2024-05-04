@@ -44,6 +44,7 @@ import { cashRegisterSearchParams } from '@/features/cash-register/types/cash-re
 import CustomersPage from '@/pages/Customers'
 import { findAllCustomerSchema } from '@/features/customers/types/find-all-customer-schema'
 import ProductVariantsPage from '@/pages/ProductVariants'
+import { variantsSearchParamsSchema } from '@/features/products/variants/types/findAll-variants-search-params'
 
 interface RouteContext {
   user?: AccessTokenData
@@ -255,6 +256,7 @@ export const productVariantsRoute = createRoute({
   getParentRoute: () => layout,
   component: ProductVariantsPage,
   path: '/product-variants',
+  validateSearch: (search) => variantsSearchParamsSchema.parse(search),
   beforeLoad: ({ context }) =>
     beforeLoadRole(context, ['ADMIN', 'CASHIER', 'ECOMMERCE_MANAGER']),
 })

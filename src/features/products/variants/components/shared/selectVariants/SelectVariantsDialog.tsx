@@ -13,11 +13,18 @@ import {
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { Variant } from '@/types/entities/Variant'
-import { ColumnDef, RowSelectionState } from '@tanstack/react-table'
+import {
+  ColumnDef,
+  ColumnDefTemplate,
+  HeaderContext,
+  RowSelectionState,
+} from '@tanstack/react-table'
 import { ChevronsUpDown, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { columns as baseColumns } from '../../table/columns'
 import Warehouses from '@/api/services/Warehouses'
+import { VariantsSearchParamsOrderBy } from '../../../types/findAll-variants-search-params'
+import DropdownOrderBy from '@/components/orderBy/DropdownOrderBy'
 
 type Props = {
   selectedValues: Variant[]
@@ -38,11 +45,108 @@ export default function SelectVariantsDialog({
       page: 1,
       rowsPerPage: 20,
     })
+
+  const [orderBy, setOrderBy] = useState<VariantsSearchParamsOrderBy>({})
+
+  const replaceHeadersArray: {
+    id: string
+    header: ColumnDefTemplate<HeaderContext<Variant, unknown>>
+  }[] = useMemo(
+    () => [
+      {
+        id: 'Размер',
+        header: () => (
+          <DropdownOrderBy
+            label='Размер'
+            value={orderBy?.size}
+            setValue={(val) => setOrderBy({ ...orderBy, size: val })}
+          />
+        ),
+      },
+      {
+        id: 'Артикул магазин',
+        header: () => (
+          <DropdownOrderBy
+            label='Артикул магазин'
+            value={orderBy?.sku}
+            setValue={(val) => setOrderBy({ ...orderBy, sku: val })}
+          />
+        ),
+      },
+      {
+        id: 'Артикул родной',
+        header: () => (
+          <DropdownOrderBy
+            label='Артикул родной'
+            value={orderBy?.supplierSku}
+            setValue={(val) => setOrderBy({ ...orderBy, supplierSku: val })}
+          />
+        ),
+      },
+      {
+        id: 'Штрих-код',
+        header: () => (
+          <DropdownOrderBy
+            label='Штрих-код'
+            value={orderBy?.barcode}
+            setValue={(val) => setOrderBy({ ...orderBy, barcode: val })}
+          />
+        ),
+      },
+      {
+        id: 'Цена без скидки',
+        header: () => (
+          <DropdownOrderBy
+            label='Цена без скидки'
+            value={orderBy?.price}
+            setValue={(val) => setOrderBy({ ...orderBy, price: val })}
+          />
+        ),
+      },
+      {
+        id: 'Скидка',
+        header: () => (
+          <DropdownOrderBy
+            label='Скидка'
+            value={orderBy?.sale}
+            setValue={(val) => setOrderBy({ ...orderBy, sale: val })}
+          />
+        ),
+      },
+      {
+        id: 'Полученое кол-во',
+        header: () => (
+          <DropdownOrderBy
+            label='Полученое кол-во'
+            value={orderBy?.totalReceivedQuantity}
+            setValue={(val) =>
+              setOrderBy({ ...orderBy, totalReceivedQuantity: val })
+            }
+          />
+        ),
+      },
+      {
+        id: 'Кол-во на складах',
+        header: () => (
+          <DropdownOrderBy
+            label='Кол-во на складах'
+            value={orderBy?.totalWarehouseQuantity}
+            setValue={(val) =>
+              setOrderBy({ ...orderBy, totalWarehouseQuantity: val })
+            }
+          />
+        ),
+      },
+    ],
+    [orderBy]
+  )
+
   const [searchValue, setSearchValue] = useState<string | undefined>('')
 
   const { data, isLoading, isError } = Products.useFindAllVariants({
     ...bottomControlsState,
     query: searchValue,
+    orderBy,
   })
 
   const { data: warehousesData, isLoading: isLoadingWarehouses } =
@@ -67,13 +171,25 @@ export default function SelectVariantsDialog({
       )
 
       const updatedColumns = [
-        ...baseColumns.slice(0, baseColumns.length - 1),
+        ...baseColumns.slice(0, baseColumns.length - 1).map((props) => {
+          const customHeader = replaceHeadersArray?.find(
+            (obj) => obj.id === props.id
+          )
+
+          if (!customHeader?.header) return props
+
+          return {
+            ...props,
+            header: customHeader.header,
+            id: customHeader.id,
+          }
+        }),
         ...warehouseColumns,
       ]
 
       setColumns(updatedColumns)
     }
-  }, [warehousesData])
+  }, [warehousesData, replaceHeadersArray])
 
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>

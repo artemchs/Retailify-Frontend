@@ -1,5 +1,3 @@
-import { ProductFindAll } from './Product'
-
 export type Variant = {
   id: string
   createdAt: Date
@@ -23,6 +21,7 @@ export type Variant = {
     id: string
     title: string
     sku: string
+    supplierSku?: string
     media:
       | {
           id: string
@@ -30,8 +29,4 @@ export type Variant = {
         }[]
       | null
   } | null
-}
-
-export interface VariantWithProduct extends Variant {
-  product: ProductFindAll
 }

@@ -1,17 +1,21 @@
 import Products from '@/api/services/Products'
 import Warehouses from '@/api/services/Warehouses'
 import CreateProductVariantDialog from '@/features/products/variants/components/actions/create/CreateProductVariantDialog'
+import FilterVariants from '@/features/products/variants/components/table/FilterVariants'
 import { columns as baseColumns } from '@/features/products/variants/components/table/columns'
 import CrudLayout from '@/layouts/CrudLayout'
+import { productVariantsRoute } from '@/lib/router/routeTree'
 import { Variant } from '@/types/entities/Variant'
+import { useSearch } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
 
 export default function ProductVariantsPage() {
-  const { data, isLoading, isError } = Products.useFindAllVariants({
-    page: 1,
-    rowsPerPage: 20,
+  const searchParams = useSearch({
+    from: productVariantsRoute.id,
   })
+
+  const { data, isLoading, isError } = Products.useFindAllVariants(searchParams)
   const { data: warehousesData, isLoading: isLoadingWarehouses } =
     Warehouses.useGetAll()
   const [columns, setColumns] = useState<ColumnDef<Variant>[]>(baseColumns)
@@ -21,7 +25,7 @@ export default function ProductVariantsPage() {
       const warehouseColumns: ColumnDef<Variant>[] = warehousesData.map(
         ({ id, name }) => ({
           id: `warehouse-${id}`,
-          header: name,
+          header: () => <div className='w-40 text-right'>{name} (шт)</div>,
           cell: ({ row }) => {
             const quantity =
               row.original.warehouseStockEntries?.find(
@@ -52,7 +56,12 @@ export default function ProductVariantsPage() {
         isLoading={isLoading || isLoadingWarehouses}
         routeId='/layout/product-variants'
         title='Список товаров'
-        topBarElements={<CreateProductVariantDialog />}
+        topBarElements={
+          <>
+            <CreateProductVariantDialog />
+            <FilterVariants />
+          </>
+        }
       />
     </>
   )
