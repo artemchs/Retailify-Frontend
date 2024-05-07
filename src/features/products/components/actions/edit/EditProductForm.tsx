@@ -147,6 +147,7 @@ export default function EditProductForm({ productId, product }: Props) {
                     field={field}
                     form={form}
                     control={form.control}
+                    sku={product?.sku}
                   />
                 </FormControl>
                 <FormMessage />

@@ -18,9 +18,10 @@ type Props = {
   form: UseFormReturn<any, any, undefined>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any, any>
+  sku?: string
 }
 
-export default function DisplayTitle({ field, form, control }: Props) {
+export default function DisplayTitle({ field, form, control, sku }: Props) {
   const [genderValue, brandId, categoryId, colors] = useWatch({
     control,
     name: ['gender', 'brandId', 'categoryId', 'colors'],
@@ -42,7 +43,7 @@ export default function DisplayTitle({ field, form, control }: Props) {
   const brandName = brand?.data?.name ? brand.data?.name : ''
   const primaryColorName = primaryColor.data?.name ? primaryColor.data.name : ''
 
-  const title = [categoryName, gender, brandName, primaryColorName].join(' ')
+  const title = [categoryName, gender, brandName, primaryColorName, sku].join(' ')
 
   useEffect(() => {
     form.setValue('title', title)

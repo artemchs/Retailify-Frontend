@@ -188,6 +188,7 @@ export default function CreateProductForm({ product }: { product?: Product }) {
                     field={field}
                     form={form}
                     control={form.control}
+                    sku={sku.data}
                   />
                 </FormControl>
                 <FormMessage />
