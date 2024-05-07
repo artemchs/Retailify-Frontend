@@ -34,3 +34,19 @@ export function DateFormatter({
 
   return <span className={className}>{formattedDate}</span>
 }
+
+export function PercentageFormatter({
+  value,
+  className,
+}: {
+  value: number
+  className?: string
+}) {
+  const formattedValue = new Intl.NumberFormat('uk-UA', {
+    style: 'percent',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value)
+
+  return <span className={className}>{formattedValue}</span>
+}

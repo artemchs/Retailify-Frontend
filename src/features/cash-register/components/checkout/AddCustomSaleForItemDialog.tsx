@@ -8,34 +8,35 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Coins, Percent, Save } from 'lucide-react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Percent, Save } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { useState } from 'react'
-import { CurrencyFormatter } from '@/components/ui/units'
+import { CurrencyFormatter, PercentageFormatter } from '@/components/ui/units'
 import { UseFormReturn, useWatch } from 'react-hook-form'
 import { CashRegisterItem } from '../../types/cash-register-order-form-schema'
 import getDiscountedPrice from '@/utils/getDiscountedPrice'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { FaMoneyBill } from 'react-icons/fa6'
 
 type Props = {
   priceWithoutCustomSale: number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any, any, undefined>
   id: string
+  quantity: number
 }
 
 export default function AddCustomSaleForItemDialog({
   priceWithoutCustomSale,
   form,
   id,
+  quantity,
 }: Props) {
   const [isOpened, setIsOpened] = useState(false)
-  const [tabsValue, setTabsValue] = useState<'FIXED-AMOUNT' | 'PERCENTAGE'>(
+  const [saleType, setSaleType] = useState<'FIXED-AMOUNT' | 'PERCENTAGE'>(
     'FIXED-AMOUNT'
   )
-  const [fixedAmountInputValue, setFixedAmountInputValue] = useState('')
-  const [percentageInputValue, setPercentageInputValue] = useState('')
+  const [inputValue, setInputValue] = useState(0)
 
   const items: CashRegisterItem[] = useWatch({
     control: form.control,
@@ -46,26 +47,20 @@ export default function AddCustomSaleForItemDialog({
     setIsOpened(false)
     const newArray = [...items]
     const index = newArray.findIndex((obj) => obj.id === id)
-    if (tabsValue === 'FIXED-AMOUNT') {
+    if (saleType === 'FIXED-AMOUNT') {
       newArray[index] = {
         ...newArray[index],
-        customSaleFixedAmount: fixedAmountInputValue
-          ? parseFloat(fixedAmountInputValue)
-          : 0,
+        customSaleFixedAmount: inputValue ?? 0,
         customSalePercentage: 0,
-        customSaleType: tabsValue,
+        customSaleType: saleType,
       }
-      setPercentageInputValue('')
     } else {
       newArray[index] = {
         ...newArray[index],
-        customSalePercentage: percentageInputValue
-          ? parseFloat(percentageInputValue)
-          : 0,
+        customSalePercentage: inputValue ?? 0,
         customSaleFixedAmount: 0,
-        customSaleType: tabsValue,
+        customSaleType: saleType,
       }
-      setFixedAmountInputValue('')
     }
     form.setValue('items', newArray)
   }
@@ -73,9 +68,32 @@ export default function AddCustomSaleForItemDialog({
   return (
     <Dialog open={isOpened} onOpenChange={setIsOpened}>
       <DialogTrigger asChild>
-        <Button className='h-8 text-xs' variant='ghost' type='button'>
-          <Percent className='h-4 w-4 mr-2' />
-          Скидка
+        <Button
+          className='text-xs min-w-36'
+          size='sm'
+          variant='outline'
+          type='button'
+        >
+          {inputValue ? (
+            saleType === 'FIXED-AMOUNT' ? (
+              <div className='flex flex-col text-end'>
+                <CurrencyFormatter value={inputValue * (quantity ?? 1) ?? 0} />
+                {quantity && quantity > 1 && (
+                  <div className='text-muted-foreground'>
+                    <CurrencyFormatter value={inputValue ?? 0} />{' '}
+                    <span>за 1 шт.</span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <PercentageFormatter value={inputValue / 100 ?? 0} />
+            )
+          ) : (
+            <>
+              <Percent className='h-4 w-4 mr-2' />
+              Скидка
+            </>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className='max-h-[90%] overflow-y-auto'>
@@ -85,78 +103,41 @@ export default function AddCustomSaleForItemDialog({
             Эта скидка будет применяться к каждой единице этого товара.
           </DialogDescription>
         </DialogHeader>
-        <Tabs
-          value={tabsValue}
-          onValueChange={(value) => {
-            if (value === 'FIXED-AMOUNT' || value === 'PERCENTAGE') {
-              setTabsValue(value)
+        <div className='flex gap-2 items-center'>
+          <Input
+            type='number'
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.valueAsNumber)}
+          />
+          <ToggleGroup
+            type='single'
+            variant='outline'
+            value={saleType}
+            onValueChange={(value: 'FIXED-AMOUNT' | 'PERCENTAGE') =>
+              setSaleType(value)
             }
-          }}
-        >
-          <TabsList className='w-full'>
-            <TabsTrigger
-              value='FIXED-AMOUNT'
-              className='w-full flex items-center gap-2'
-            >
-              <Coins className='h-4 w-4' />В деньгах
-            </TabsTrigger>
-            <TabsTrigger
-              value='PERCENTAGE'
-              className='w-full flex items-center gap-2'
-            >
-              <Percent className='h-4 w-4' />В процентах
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value='FIXED-AMOUNT'>
-            <div className='space-y-2'>
-              <Label htmlFor='sale-fixed-amount'>Скидка (грн):</Label>
-              <div className='w-full relative'>
-                <Coins className='h-4 w-4 text-muted-foreground absolute top-0 bottom-0 my-auto left-3 pointer-events-none' />
-                <Input
-                  id='sale-fixed-amount'
-                  type='number'
-                  placeholder='Скидка в деньгах'
-                  className='pl-8'
-                  autoFocus={true}
-                  value={fixedAmountInputValue}
-                  onChange={(e) => setFixedAmountInputValue(e.target.value)}
-                />
-              </div>
-            </div>
-          </TabsContent>
-          <TabsContent value='PERCENTAGE'>
-            <div className='space-y-2'>
-              <Label htmlFor='sale-percentage'>Скидка (%):</Label>
-              <div className='w-full relative'>
-                <Percent className='h-4 w-4 text-muted-foreground absolute top-0 bottom-0 my-auto left-3 pointer-events-none' />
-                <Input
-                  id='sale-percentage'
-                  type='number'
-                  placeholder='Скидка в процентах'
-                  className='pl-8'
-                  autoFocus={true}
-                  value={percentageInputValue}
-                  onChange={(e) => setPercentageInputValue(e.target.value)}
-                />
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+          >
+            <ToggleGroupItem value='FIXED-AMOUNT'>
+              <FaMoneyBill className='h-4 w-4' />
+            </ToggleGroupItem>
+            <ToggleGroupItem value='PERCENTAGE'>
+              <Percent className='h-4 w-4' />
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
         <div className='p-4 mt-4 border border-input shadow-sm rounded-md flex items-center justify-between font-medium text-lg'>
           <span>Цена после скидки:</span>
           <span>
             <CurrencyFormatter
-              value={getDiscountedPrice(
-                tabsValue,
-                priceWithoutCustomSale,
-                tabsValue === 'FIXED-AMOUNT'
-                  ? fixedAmountInputValue
-                    ? parseFloat(fixedAmountInputValue)
-                    : 0
-                  : percentageInputValue
-                  ? parseFloat(percentageInputValue)
-                  : 0
-              )}
+              value={
+                inputValue
+                  ? getDiscountedPrice(
+                      saleType,
+                      priceWithoutCustomSale,
+                      inputValue
+                    )
+                  : priceWithoutCustomSale
+              }
             />
           </span>
         </div>

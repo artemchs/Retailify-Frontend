@@ -8,6 +8,7 @@ const item = z.object({
   product: z
     .object({
       title: z.string(),
+      sku: z.string(),
     })
     .optional(),
   size: z.string(),

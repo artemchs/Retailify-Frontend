@@ -87,7 +87,7 @@ export default function CashRegisterForm({
                 )}
               />
             </div>
-            <div className='hidden lg:block lg:w-[65%] max-h-full overflow-y-auto border-l border-input'>
+            <div className='hidden lg:block lg:w-[80%] max-h-full overflow-y-auto border-l border-input'>
               <div className='flex w-full flex-col gap-4 h-full justify-between max-h-full overflow-y-auto p-4'>
                 <CheckoutZone
                   control={form.control}

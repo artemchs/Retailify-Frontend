@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { CurrencyFormatter } from '@/components/ui/units'
+import { CurrencyFormatter, PercentageFormatter } from '@/components/ui/units'
 import { CashRegisterRowSelectionState } from '@/pages/CashRegister'
 import { X } from 'lucide-react'
 import {
@@ -71,11 +71,12 @@ export default function CheckoutZone({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Название</TableHead>
-              <TableHead>Размер</TableHead>
+              <TableHead>Товар</TableHead>
               <TableHead className='text-right'>Количество</TableHead>
-              <TableHead className='text-right'>Цена</TableHead>
-              <TableHead>Скидка</TableHead>
+              <TableHead className='text-right'>Цена до скидки</TableHead>
+              <TableHead className='text-right'>Цена со скидкой</TableHead>
+              <TableHead className='text-right'>Скидка</TableHead>
+              <TableHead className='text-right'>Еквивалент</TableHead>
               <TableHead className='text-right w-8'>Убрать</TableHead>
             </TableRow>
           </TableHeader>
@@ -96,10 +97,9 @@ export default function CheckoutZone({
                 i
               ) => (
                 <TableRow key={id}>
-                  <TableCell className='font-medium'>
-                    {product?.title}
+                  <TableCell className='font-medium min-w-36'>
+                    {product?.title} {product?.sku} {size}
                   </TableCell>
-                  <TableCell>{size}</TableCell>
                   <TableCell>
                     <div className='flex w-full gap-1 items-center justify-center'>
                       <Button
@@ -142,25 +142,69 @@ export default function CheckoutZone({
                   </TableCell>
                   <TableCell className='text-right'>
                     <CurrencyFormatter
-                      value={getDiscountedPrice(
-                        customSaleType,
-                        getDiscountedPrice('PERCENTAGE', price, sale),
-                        customSaleType === 'FIXED-AMOUNT'
-                          ? customSaleFixedAmount
-                          : customSalePercentage
-                      )}
+                      value={getDiscountedPrice('FIXED-AMOUNT', price, sale)}
                     />
                   </TableCell>
-                  <TableCell>
-                    <AddCustomSaleForItemDialog
-                      priceWithoutCustomSale={getDiscountedPrice(
-                        'PERCENTAGE',
-                        price,
-                        sale
+                  <TableCell className='text-right'>
+                    <div className='flex flex-col min-w-36'>
+                      <CurrencyFormatter
+                        value={
+                          getDiscountedPrice(
+                            customSaleType,
+                            getDiscountedPrice('FIXED-AMOUNT', price, sale),
+                            customSaleType === 'FIXED-AMOUNT'
+                              ? customSaleFixedAmount
+                              : customSalePercentage
+                          ) * (quantity ?? 1)
+                        }
+                      />
+                      {quantity && quantity > 1 && (
+                        <div className='text-muted-foreground'>
+                          <CurrencyFormatter
+                            value={getDiscountedPrice(
+                              customSaleType,
+                              getDiscountedPrice('FIXED-AMOUNT', price, sale),
+                              customSaleType === 'FIXED-AMOUNT'
+                                ? customSaleFixedAmount
+                                : customSalePercentage
+                            )}
+                          />{' '}
+                          <span>за 1 шт.</span>
+                        </div>
                       )}
-                      form={form}
-                      id={id}
-                    />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className='text-right'>
+                      <AddCustomSaleForItemDialog
+                        priceWithoutCustomSale={getDiscountedPrice(
+                          'FIXED-AMOUNT',
+                          price,
+                          sale
+                        )}
+                        form={form}
+                        id={id}
+                        quantity={quantity}
+                      />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {customSaleType &&
+                      (customSaleFixedAmount || customSalePercentage) && (
+                        <CalculateSaleEquivalent
+                          originalPrice={getDiscountedPrice(
+                            'FIXED-AMOUNT',
+                            price,
+                            sale
+                          )}
+                          sale={
+                            (customSaleType === 'FIXED-AMOUNT'
+                              ? customSaleFixedAmount
+                              : customSalePercentage) ?? 0
+                          }
+                          saleType={customSaleType}
+                        />
+                      )}
                   </TableCell>
                   <TableCell className='w-8'>
                     <div className='w-full flex items-center justify-end'>
@@ -203,7 +247,7 @@ export default function CheckoutZone({
                       }) =>
                         getDiscountedPrice(
                           customSaleType,
-                          getDiscountedPrice('PERCENTAGE', price, sale),
+                          getDiscountedPrice('FIXED-AMOUNT', price, sale),
                           customSaleType === 'FIXED-AMOUNT'
                             ? customSaleFixedAmount
                             : customSalePercentage
@@ -222,4 +266,26 @@ export default function CheckoutZone({
       </div>
     </div>
   )
+}
+
+function CalculateSaleEquivalent({
+  sale,
+  saleType,
+  originalPrice,
+}: {
+  saleType: 'FIXED-AMOUNT' | 'PERCENTAGE'
+  sale: number
+  originalPrice: number
+}) {
+  if (saleType === 'FIXED-AMOUNT') {
+    const percentageValue = sale / originalPrice
+
+    return <PercentageFormatter value={percentageValue} />
+  } else if (saleType === 'PERCENTAGE') {
+    const fixedAmountValue = (sale / 100) * originalPrice // That's math my boy
+
+    return <CurrencyFormatter value={fixedAmountValue} />
+  } else {
+    return <></>
+  }
 }

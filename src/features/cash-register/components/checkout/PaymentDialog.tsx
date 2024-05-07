@@ -138,12 +138,12 @@ export default function PaymentDialog({
                         customSaleType
                           ? getDiscountedPrice(
                               customSaleType,
-                              getDiscountedPrice('PERCENTAGE', price, sale),
+                              getDiscountedPrice('FIXED-AMOUNT', price, sale),
                               customSaleType === 'FIXED-AMOUNT'
                                 ? customSaleFixedAmount
                                 : customSalePercentage
                             )
-                          : getDiscountedPrice('PERCENTAGE', price, sale)
+                          : getDiscountedPrice('FIXED-AMOUNT', price, sale)
                       }
                     />
                   </TableCell>
@@ -171,7 +171,7 @@ export default function PaymentDialog({
                         }) =>
                           getDiscountedPrice(
                             customSaleType,
-                            getDiscountedPrice('PERCENTAGE', price, sale),
+                            getDiscountedPrice('FIXED-AMOUNT', price, sale),
                             customSaleType === 'FIXED-AMOUNT'
                               ? customSaleFixedAmount
                               : customSalePercentage
@@ -239,7 +239,7 @@ export default function PaymentDialog({
                                     getDiscountedPrice(
                                       customSaleType,
                                       getDiscountedPrice(
-                                        'PERCENTAGE',
+                                        'FIXED-AMOUNT',
                                         price,
                                         sale
                                       ),
@@ -292,7 +292,7 @@ export default function PaymentDialog({
                                       getDiscountedPrice(
                                         customSaleType,
                                         getDiscountedPrice(
-                                          'PERCENTAGE',
+                                          'FIXED-AMOUNT',
                                           price,
                                           sale
                                         ),
@@ -342,7 +342,7 @@ export default function PaymentDialog({
                                       getDiscountedPrice(
                                         customSaleType,
                                         getDiscountedPrice(
-                                          'PERCENTAGE',
+                                          'FIXED-AMOUNT',
                                           price,
                                           sale
                                         ),
