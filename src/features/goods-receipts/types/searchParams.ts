@@ -1,12 +1,8 @@
-import { paymentOptions, paymentTerms } from '@/types/entities/GoodsReceipt'
+import { paymentOptions } from '@/types/entities/GoodsReceipt'
 import { z } from 'zod'
 
 const paymentOptionsSchema = z.enum(
   Object.keys(paymentOptions) as unknown as readonly [string, ...string[]]
-)
-
-const paymentTermsSchema = z.enum(
-  Object.keys(paymentTerms) as unknown as readonly [string, ...string[]]
 )
 
 export const goodsReceiptsSearchParamsSchema = z.object({
@@ -16,7 +12,6 @@ export const goodsReceiptsSearchParamsSchema = z.object({
   warehouseIds: z.array(z.string()).optional(),
   supplierIds: z.array(z.string()).optional(),
   paymentOptions: z.array(paymentOptionsSchema).optional(),
-  paymentTerms: z.array(paymentTermsSchema).optional(),
   goodsReceiptDate: z
     .object({
       from: z

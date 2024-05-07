@@ -6,7 +6,6 @@ import { FilterOptions } from '@/types/FilterOptions'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import {
   paymentOptions as pOptions,
-  paymentTerms as pTerms,
 } from '@/types/entities/GoodsReceipt'
 import { DatePickerWithRange } from '@/components/ui/date-picker'
 import { DateRange } from 'react-day-picker'
@@ -26,19 +25,11 @@ export default function FilterGoodsReceipts() {
     })
   )
 
-  const paymentTermsArray: FilterOptions = Object.entries(pTerms).map(
-    ([value, label]) => ({
-      label,
-      value,
-    })
-  )
-
   const {
     isArchived,
     supplierIds,
     warehouseIds,
     paymentOptions,
-    paymentTerms,
     goodsReceiptDate,
     totalCost,
   } = useSearch({
@@ -62,7 +53,6 @@ export default function FilterGoodsReceipts() {
       warehouseIds,
       supplierIds,
       paymentOptions,
-      paymentTerms,
     ]) {
       if (arr && arr.length >= 1) {
         number += 1
@@ -96,12 +86,6 @@ export default function FilterGoodsReceipts() {
     })
   }
 
-  function setPaymentTerms(values: string[]) {
-    navigate({
-      search: (prev) => ({ ...prev, paymentTerms: values }),
-    })
-  }
-
   function setDateRange(value?: DateRange) {
     navigate({
       search: (prev) => ({ ...prev, goodsReceiptDate: value }),
@@ -121,7 +105,6 @@ export default function FilterGoodsReceipts() {
         isArchived: 0,
         warehouseIds: undefined,
         supplierIds: undefined,
-        paymentTerms: undefined,
         paymentOptions: undefined,
         goodsReceiptDate: undefined,
         totalCost: undefined,
@@ -158,12 +141,6 @@ export default function FilterGoodsReceipts() {
         options={paymentOptionsArray}
         values={paymentOptions ?? []}
         setValues={setPaymentOptions}
-      />
-      <ComboboxSubItemForArrayValues
-        title='Условия оплаты'
-        options={paymentTermsArray}
-        values={paymentTerms ?? []}
-        setValues={setPaymentTerms}
       />
       <DropdownMenuSeparator />
       <IsArchivedSwitch

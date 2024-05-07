@@ -3,7 +3,6 @@ import { CurrencyFormatter, DateFormatter } from '@/components/ui/units'
 import {
   GoodsReceipt,
   paymentOptions,
-  paymentTerms,
 } from '@/types/entities/GoodsReceipt'
 import { ColumnDef } from '@tanstack/react-table'
 import GoodsReceiptActions from './GoodsReceiptActions'
@@ -48,12 +47,6 @@ export const columns: ColumnDef<GoodsReceipt>[] = [
     accessorFn: (row) =>
       row.supplierInvoice?.paymentOption &&
       paymentOptions[row.supplierInvoice?.paymentOption],
-  },
-  {
-    id: 'Условия оплаты',
-    accessorFn: (row) =>
-      row.supplierInvoice?.paymentTerm &&
-      paymentTerms[row.supplierInvoice?.paymentTerm],
   },
   {
     id: 'Общая стоимость',

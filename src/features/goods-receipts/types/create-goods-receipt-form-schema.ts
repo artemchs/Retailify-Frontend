@@ -5,7 +5,6 @@ export const createGoodsReceiptFormSchema = z.object({
   supplierId: z.string().min(1, requiredField),
   warehouseId: z.string().min(1, requiredField),
   goodsReceiptDate: z.date({ required_error: requiredField }),
-  paymentTerm: z.enum(['ON_DELIVERY', 'IN_ADVANCE', 'ON_REALIZATION']),
   paymentOption: z.enum(['PRIVATE_FUNDS', 'CURRENT_ACCOUNT', 'CASH_REGISTER'], {
     required_error: requiredField,
     invalid_type_error: 'Способ оплаты должен быть выбран из списка',

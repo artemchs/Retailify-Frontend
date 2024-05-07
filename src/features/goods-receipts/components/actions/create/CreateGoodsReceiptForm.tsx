@@ -13,7 +13,6 @@ import SelectSupplier from '@/features/suppliers/components/shared/SelectSupplie
 import SelectWarehouse from '@/features/warehouses/components/shared/SelectWarehouse'
 import SaveButton from '@/components/forms/SaveButton'
 import SelectPaymentOption from '../../shared/SelectPaymentOption'
-import SelectPaymentTerm from '../../shared/SelectPaymentTerm'
 import { DatePickerWithPresets } from '@/components/ui/date-picker'
 import ProductVariantsTable from '../../shared/ProductVariantsTable'
 import DisplayTotalCost from '../../shared/DisplayTotalCost'
@@ -31,7 +30,6 @@ export default function CreateGoodsReceiptForm() {
       warehouseId: '',
       variants: [],
       paymentOption: 'CURRENT_ACCOUNT',
-      paymentTerm: 'IN_ADVANCE',
     },
   })
 
@@ -111,17 +109,6 @@ export default function CreateGoodsReceiptForm() {
               <FormItem className='w-full'>
                 <FormLabelForRequiredFields text='Способ оплаты' />
                 <SelectPaymentOption field={field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='paymentTerm'
-            render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabelForRequiredFields text='Условия оплаты' />
-                <SelectPaymentTerm field={field} />
                 <FormMessage />
               </FormItem>
             )}

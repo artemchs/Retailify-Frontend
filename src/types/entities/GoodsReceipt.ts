@@ -4,12 +4,6 @@ export const paymentOptions = {
   CASH_REGISTER: 'Касса',
 }
 
-export const paymentTerms = {
-  ON_DELIVERY: 'При приходе',
-  IN_ADVANCE: 'На перед',
-  ON_REALIZATION: 'На реализацию',
-}
-
 export type GoodsReceipt = {
   id: string
   createdAt: Date
@@ -28,7 +22,6 @@ export type GoodsReceipt = {
   goodsReceiptDate: Date
   supplierInvoice: {
     paymentOption: keyof typeof paymentOptions
-    paymentTerm: keyof typeof paymentTerms
     accountsPayable: string
   } | null
   productVariants:
