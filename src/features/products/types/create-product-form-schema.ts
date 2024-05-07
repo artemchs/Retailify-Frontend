@@ -6,8 +6,6 @@ const variantsSchema = z
     z.object({
       id: z.string().optional(),
       size: z.string(),
-      price: z.coerce.number().optional(),
-      sale: z.coerce.number().optional(),
       isArchived: z.coerce.boolean(),
       additionalAttributes: z
         .array(

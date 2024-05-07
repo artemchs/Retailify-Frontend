@@ -59,14 +59,11 @@ export default function VariantsInput({ field, form, productId }: Props) {
   const [displayArchived, setDisplayArchived] = useState(false)
 
   const addNewVariant = () => {
-    const prevVariant = variants?.at(-1)
-
     setVariants([
       ...(variants ?? []),
       {
         isArchived: false,
         size: '',
-        price: prevVariant?.price,
       },
     ])
   }
@@ -78,7 +75,6 @@ export default function VariantsInput({ field, form, productId }: Props) {
           <TableHeader>
             <TableRow>
               <TableHead className='min-w-48'>Размер</TableHead>
-              <TableHead className='min-w-48'>Цена продажи (грн)</TableHead>
               {additionalAttributeIds.map((additionalAttributeId, i) => (
                 <TableHead>
                   <div className='flex gap-1 items-center w-60'>
@@ -200,18 +196,6 @@ export default function VariantsInput({ field, form, productId }: Props) {
                           newArray[i].size = e.target.value
                           setVariants(newArray)
                         }}
-                        className='bg-background'
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Input
-                        value={v.price}
-                        onChange={(e) => {
-                          const newArray = variants
-                          newArray[i].price = parseFloat(e.target.value)
-                          setVariants(newArray)
-                        }}
-                        type='number'
                         className='bg-background'
                       />
                     </TableCell>
