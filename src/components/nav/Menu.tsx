@@ -27,6 +27,7 @@ import EditProfileDialog from '@/features/profile/editProfile/EditProfileDialog'
 import UpdatePasswordDialog from '@/features/profile/updatePassword/UpdatePasswordDialog'
 import { Command, CommandItem, CommandList } from '../ui/command'
 import { useTheme } from '@/hooks/useTheme'
+import { useRouteContext } from '@tanstack/react-router'
 
 export default function Menu() {
   const [isLogOutDialogOpened, setIsLogOutDialogOpened] = useState(false)
@@ -34,6 +35,7 @@ export default function Menu() {
     useState(false)
   const [isUpdatePasswordDialogOpened, setIsUpdatePasswordDialogOpened] =
     useState(false)
+  const { user } = useRouteContext({ from: '/layout' })
 
   const { setTheme, theme } = useTheme()
 
@@ -47,10 +49,12 @@ export default function Menu() {
         isOpened={isEditProfileDialogOpened}
         setIsOpened={setIsEditProfileDialogOpened}
       />
-      <UpdatePasswordDialog
-        isOpened={isUpdatePasswordDialogOpened}
-        setIsOpened={setIsUpdatePasswordDialogOpened}
-      />
+      {user?.role === 'ADMIN' && (
+        <UpdatePasswordDialog
+          isOpened={isUpdatePasswordDialogOpened}
+          setIsOpened={setIsUpdatePasswordDialogOpened}
+        />
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size='icon' variant='ghost'>
@@ -64,12 +68,14 @@ export default function Menu() {
             <User className='h-4 w-4 mr-2' />
             Редактировать профиль
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => setIsUpdatePasswordDialogOpened(true)}
-          >
-            <KeyRound className='h-4 w-4 mr-2' />
-            Изменить пароль
-          </DropdownMenuItem>
+          {user?.role === 'ADMIN' && (
+            <DropdownMenuItem
+              onClick={() => setIsUpdatePasswordDialogOpened(true)}
+            >
+              <KeyRound className='h-4 w-4 mr-2' />
+              Изменить пароль
+            </DropdownMenuItem>
+          )}
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
               <Palette className='h-4 w-4 mr-2' />
