@@ -21,6 +21,8 @@ export const createGoodsReceiptFormSchema = z.object({
       productName: z.string(),
       productId: z.string(),
       size: z.string(),
+      sellingPrice: z.number().optional(),
+      productSku: z.string().optional(),
     }),
     { required_error: 'Товар не выбран' }
   ),

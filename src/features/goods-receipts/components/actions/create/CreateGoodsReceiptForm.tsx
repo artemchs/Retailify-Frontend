@@ -19,6 +19,7 @@ import DisplayTotalCost from '../../shared/DisplayTotalCost'
 import SelectVariantsDialog from '@/features/products/variants/components/shared/selectVariants/SelectVariantsDialog'
 import { RowSelectionState } from '@tanstack/react-table'
 import { Variant } from '@/types/entities/Variant'
+import { useNavigate } from '@tanstack/react-router'
 
 export default function CreateGoodsReceiptForm() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -33,6 +34,8 @@ export default function CreateGoodsReceiptForm() {
     },
   })
 
+  const navigate = useNavigate()
+
   function onSuccess() {
     toast('Новая накладная прихода была успешно добавлена.', {
       icon: <PackagePlus className='h-4 w-4' />,
@@ -43,6 +46,8 @@ export default function CreateGoodsReceiptForm() {
         },
       },
     })
+
+    navigate({ to: '/goods-receipts', search: { page: 1, rowsPerPage: 20 } })
   }
 
   const [errorMessage, setErrorMessage] = useState('')
@@ -127,14 +132,25 @@ export default function CreateGoodsReceiptForm() {
                     setSelectedValues={(newValues: Variant[]) =>
                       form.setValue(
                         'variants',
-                        newValues.map(({ size, id, productId, product }) => ({
-                          receivedQuantity: 0,
-                          supplierPrice: 0,
-                          size: size,
-                          variantId: id,
-                          productId: productId ?? '',
-                          productName: product?.title ?? '',
-                        })) ?? []
+                        newValues.map(
+                          ({ size, id, productId, product, price }) => {
+                            const existingObj = field.value.find(
+                              (obj) => obj.variantId === id
+                            )
+
+                            return {
+                              receivedQuantity:
+                                existingObj?.receivedQuantity ?? 0,
+                              supplierPrice: existingObj?.supplierPrice ?? 0,
+                              size: size,
+                              variantId: id,
+                              productId: productId ?? '',
+                              productName: product?.title ?? '',
+                              productSku: product?.sku,
+                              sellingPrice: existingObj?.sellingPrice ?? price,
+                            }
+                          }
+                        ) ?? []
                       )
                     }
                   />

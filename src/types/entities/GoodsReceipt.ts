@@ -29,9 +29,11 @@ export type GoodsReceipt = {
         variant: {
           id: string
           size: string
+          price: string
           product: {
             id: string
             title: string
+            sku: string
           } | null
         } | null
         receivedQuantity: number

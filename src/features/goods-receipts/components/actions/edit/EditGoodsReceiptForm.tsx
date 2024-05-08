@@ -21,6 +21,7 @@ import SelectVariantsDialog from '@/features/products/variants/components/shared
 import { RowSelectionState } from '@tanstack/react-table'
 import { Variant } from '@/types/entities/Variant'
 import arrayToIdObject from '@/utils/arrayToIdObject'
+import { useNavigate } from '@tanstack/react-router'
 
 type Props = {
   goodsReceiptId: string
@@ -59,12 +60,16 @@ export default function EditGoodsReceiptForm({
             variantId: variant?.id,
             productId: variant?.product?.id,
             productName: variant?.product?.title,
+            sellingPrice: variant?.price ? parseFloat(variant.price) : 0,
+            productSku: variant?.product?.sku,
           })
         ) ?? [],
       paymentOption:
         goodsReceipt?.supplierInvoice?.paymentOption ?? 'CURRENT_ACCOUNT',
     },
   })
+
+  const navigate = useNavigate()
 
   function onSuccess() {
     toast('Накладная прихода была успешно отредактирована.', {
@@ -76,6 +81,8 @@ export default function EditGoodsReceiptForm({
         },
       },
     })
+
+    navigate({ to: '/goods-receipts', search: { page: 1, rowsPerPage: 20 } })
   }
 
   const [errorMessage, setErrorMessage] = useState('')
@@ -161,21 +168,25 @@ export default function EditGoodsReceiptForm({
                     setSelectedValues={(newValues: Variant[]) =>
                       form.setValue(
                         'variants',
-                        newValues.map(({ size, id, productId, product }) => {
-                          const existingObj = field.value.find(
-                            (obj) => obj.variantId === id
-                          )
+                        newValues.map(
+                          ({ size, id, productId, product, price }) => {
+                            const existingObj = field.value.find(
+                              (obj) => obj.variantId === id
+                            )
 
-                          return {
-                            receivedQuantity:
-                              existingObj?.receivedQuantity ?? 0,
-                            supplierPrice: existingObj?.supplierPrice ?? 0,
-                            size: size,
-                            variantId: id,
-                            productId: productId ?? '',
-                            productName: product?.title ?? '',
+                            return {
+                              receivedQuantity:
+                                existingObj?.receivedQuantity ?? 0,
+                              supplierPrice: existingObj?.supplierPrice ?? 0,
+                              size: size,
+                              variantId: id,
+                              productId: productId ?? '',
+                              productName: product?.title ?? '',
+                              productSku: product?.sku,
+                              sellingPrice: existingObj?.sellingPrice ?? price,
+                            }
                           }
-                        }) ?? []
+                        ) ?? []
                       )
                     }
                   />
