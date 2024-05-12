@@ -64,6 +64,10 @@ export default function VariantsInput({ field, form, productId }: Props) {
       {
         isArchived: false,
         size: '',
+        additionalAttributes: additionalAttributeIds.map((id) => ({
+          id,
+          value: '',
+        })),
       },
     ])
   }

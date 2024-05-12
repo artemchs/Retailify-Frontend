@@ -15,7 +15,6 @@ import {
   Warehouse,
 } from 'lucide-react'
 import React from 'react'
-import { Separator } from '../ui/separator'
 
 export default function SidebarLinks() {
   return (
@@ -29,7 +28,6 @@ export default function SidebarLinks() {
           text='Главная'
         />
       </Section>
-      <Separator />
       <Section>
         <SidebarLink
           Icon={LayoutList}
@@ -60,7 +58,6 @@ export default function SidebarLinks() {
           text='Категории товара'
         />
       </Section>
-      <Separator />
       <Section>
         <SidebarLink
           Icon={Factory}
@@ -98,7 +95,6 @@ export default function SidebarLinks() {
           text='Инвентаризация'
         />
       </Section>
-      <Separator />
       <Section>
         <SidebarLink
           Icon={Store}
@@ -115,7 +111,6 @@ export default function SidebarLinks() {
           text='Сотрудники'
         />
       </Section>
-      <Separator />
       <Section>
         <SidebarLink
           Icon={User}
@@ -172,7 +167,7 @@ function SidebarLink({
         inactiveProps={{
           className: 'hover:bg-secondary',
         }}
-        className='flex px-4 py-2 gap-2 items-center rounded-md transition-colors group-data-[state=closed]:w-9 group-data-[state=closed]:p-0 group-data-[state=closed]:h-9 group-data-[state=closed]:justify-center'
+        className='flex px-4 py-2 gap-2 items-center rounded-md transition-colors group-data-[state=closed]:w-10 group-data-[state=closed]:p-0 group-data-[state=closed]:h-10 group-data-[state=closed]:justify-center'
         onClick={handleClose}
       >
         <Icon className='h-4 w-4 shrink-0' />
@@ -185,5 +180,9 @@ function SidebarLink({
 }
 
 function Section({ children }: { children: React.ReactNode }) {
-  return <div className='p-2 flex flex-col gap-2'>{children}</div>
+  return (
+    <div className='p-2 flex flex-col gap-2 border-b border-input'>
+      {children}
+    </div>
+  )
 }
