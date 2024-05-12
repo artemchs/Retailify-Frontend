@@ -105,7 +105,7 @@ export function DataTableState<TData, TValue>({
   }
 
   const table = useReactTable({
-    enableMultiRowSelection: isSingle ? false : true,
+    enableMultiRowSelection: !isSingle,
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -136,7 +136,7 @@ export function DataTableState<TData, TValue>({
           ? Object.keys(selections).map(
               (key) =>
                 table.getSelectedRowModel().rowsById[key]?.original ||
-                selectedRowsWithData?.find((row) => row.id === key)
+                selectedRowsWithData?.find((row) => row.id === key),
             )
           : []
 
@@ -149,9 +149,9 @@ export function DataTableState<TData, TValue>({
   }, [selectedRows])
 
   return (
-    <div className='h-full max-h-full flex flex-col gap-4'>
-      <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4'>
-        <div className='flex flex-col lg:flex-row flex-grow lg:items-center gap-2'>
+    <div className='h-full max-h-full flex flex-col gap-4 w-full max-w-full'>
+      <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 max-w-full'>
+        <div className='flex flex-col lg:flex-row flex-grow max-w-full lg:items-center gap-2'>
           <SearchBarState
             setSearchValue={setSearchValue}
             searchValue={searchValue}
@@ -185,7 +185,7 @@ export function DataTableState<TData, TValue>({
           <ColumnsVisibilityDropdown table={table} />
         </div>
       </div>
-      <div className='rounded-md border max-h-full overflow-y-auto shrink flex'>
+      <div className='rounded-md border max-h-full max-w-full flex overflow-x-auto'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -197,7 +197,7 @@ export function DataTableState<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   )
@@ -246,7 +246,7 @@ export function DataTableState<TData, TValue>({
                           <TableCell key={cell.id}>
                             {flexRender(
                               cell.column.columnDef.cell,
-                              cell.getContext()
+                              cell.getContext(),
                             )}
                           </TableCell>
                         ))}
@@ -308,7 +308,7 @@ function BottomControls({
   setBottomControlsState,
 }: BottomControlsProps) {
   return (
-    <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4'>
+    <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 max-w-full shrink'>
       <span className='text-sm text-muted-foreground'>
         {selected ?? 0} из {rows ?? 1} строк(и) выбрано.
       </span>

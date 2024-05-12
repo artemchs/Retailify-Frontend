@@ -23,6 +23,7 @@ export const variantsSearchParamsSchema = z.object({
   posId: z.string().optional(),
   orderBy,
   isArchived: z.number().optional(),
+  excludeIds: z.array(z.string()).optional(),
 })
 
 export type VariantsSearchParamsOrderBy = z.infer<typeof orderBy>

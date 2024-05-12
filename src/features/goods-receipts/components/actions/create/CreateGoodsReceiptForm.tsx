@@ -1,6 +1,9 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { createGoodsReceiptFormSchema } from '../../../types/create-goods-receipt-form-schema'
+import {
+  createGoodsReceiptFormSchema,
+  GoodsReceiptVariant,
+} from '../../../types/create-goods-receipt-form-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PackagePlus } from 'lucide-react'
 import { toast } from 'sonner'
@@ -36,7 +39,7 @@ export default function CreateGoodsReceiptForm() {
 
   const navigate = useNavigate()
 
-  function onSuccess() {
+  async function onSuccess() {
     toast('Новая накладная прихода была успешно добавлена.', {
       icon: <PackagePlus className='h-4 w-4' />,
       cancel: {
@@ -47,7 +50,10 @@ export default function CreateGoodsReceiptForm() {
       },
     })
 
-    navigate({ to: '/goods-receipts', search: { page: 1, rowsPerPage: 20 } })
+    await navigate({
+      to: '/goods-receipts',
+      search: { page: 1, rowsPerPage: 20 },
+    })
   }
 
   const [errorMessage, setErrorMessage] = useState('')
@@ -128,33 +134,49 @@ export default function CreateGoodsReceiptForm() {
                   <SelectVariantsDialog
                     selectedRows={rowSelection}
                     setSelectedRows={setRowSelection}
+                    idField='variantId'
                     selectedValues={field.value as unknown as Variant[]}
-                    setSelectedValues={(newValues: Variant[]) =>
-                      form.setValue(
-                        'variants',
-                        newValues.map(
-                          ({ size, id, productId, product, price }) => {
-                            const existingObj = field.value.find(
-                              (obj) => obj.variantId === id
-                            )
+                    selectWithEditing={true}
+                    setSelectedValues={(
+                      type: 'variant' | 'goods-receipt-item',
+                      newValues: Variant[],
+                      prev: any[],
+                    ) =>
+                      type === 'variant'
+                        ? form.setValue('variants', [
+                            ...prev,
+                            ...(newValues.map(
+                              ({ size, id, productId, product, price }) => {
+                                const existingObj = field.value.find(
+                                  (obj) => obj.variantId === id,
+                                )
 
-                            return {
-                              receivedQuantity:
-                                existingObj?.receivedQuantity ?? 0,
-                              supplierPrice: existingObj?.supplierPrice ?? 0,
-                              size: size,
-                              variantId: id,
-                              productId: productId ?? '',
-                              productName: product?.title ?? '',
-                              productSku: product?.sku,
-                              sellingPrice: existingObj?.sellingPrice ?? price,
-                            }
-                          }
-                        ) ?? []
-                      )
+                                return {
+                                  receivedQuantity:
+                                    existingObj?.receivedQuantity ?? 0,
+                                  supplierPrice:
+                                    existingObj?.supplierPrice ?? 0,
+                                  size: size,
+                                  variantId: id,
+                                  productId: productId ?? '',
+                                  productName: product?.title ?? '',
+                                  productSku: product?.sku,
+                                  sellingPrice:
+                                    existingObj?.sellingPrice ?? price,
+                                  id,
+                                }
+                              },
+                            ) ?? []),
+                          ])
+                        : form.setValue('variants', [...prev, ...newValues])
                     }
                   />
-                  <ProductVariantsTable field={field} form={form} />
+                  <ProductVariantsTable
+                    variants={field.value as unknown as GoodsReceiptVariant[]}
+                    setVariants={(newValues: GoodsReceiptVariant[]) =>
+                      form.setValue('variants', [...newValues])
+                    }
+                  />
                   <div className='mt-2'>
                     <DisplayTotalCost field={field} />
                   </div>

@@ -9,7 +9,7 @@ import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { ProductsSearchParams } from '@/features/products/types/searchParams'
 import { EditProductFormSchema } from '@/features/products/types/edit-product-form-schema'
-import { Variant, VariantWithProduct } from '@/types/entities/Variant'
+import { Variant } from '@/types/entities/Variant'
 import { VariantsSearchParamsSchema } from '@/features/products/variants/types/findAll-variants-search-params'
 import { CreateVariantFormSchema } from '@/features/products/variants/types/create-variant-form-schema'
 import { EditVariantFormSchema } from '@/features/products/variants/types/edit-variant-form-schema'
@@ -237,7 +237,7 @@ export default {
 
   useFindAllInfiniteListVariant: (
     params: { query?: string },
-    productId: string
+    productId: string,
   ) =>
     useInfiniteQuery({
       queryKey: ['product-variants-infinite-list', { ...params, productId }],
@@ -246,7 +246,7 @@ export default {
           `products/${productId}/variants/infinite-list`,
           {
             params: { ...params, cursor: pageParam },
-          }
+          },
         )
 
         return data as VariantsFindAllInfiniteList
@@ -268,7 +268,7 @@ export default {
         })
 
         return data as {
-          items: VariantWithProduct[]
+          items: Variant[]
           nextCursor?: string
         }
       },
@@ -281,7 +281,7 @@ export default {
       queryKey: ['product-variant', { id, productId }],
       queryFn: async () => {
         const { data } = await client.get(
-          `/products/${productId}/variants/${id}`
+          `/products/${productId}/variants/${id}`,
         )
         return data as Variant
       },
