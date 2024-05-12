@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { FormInput, Save, X } from 'lucide-react'
+import { FormInput, X } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
@@ -21,31 +21,17 @@ import { GoodsReceiptVariant } from '@/features/goods-receipts/types/create-good
 type Props = {
   variants: GoodsReceiptVariant[]
   setVariants: (newVariants: GoodsReceiptVariant[]) => void
-  onSubmit?: (variants: GoodsReceiptVariant[]) => void
 }
 
-export default function ProductVariantsTable({
-  variants,
-  setVariants,
-  onSubmit,
-}: Props) {
+export default function ProductVariantsTable({ variants, setVariants }: Props) {
   return (
     <div className='flex flex-col gap-4'>
-      {onSubmit && (
-        <Button
-          className='w-fit ml-auto'
-          type='button'
-          onClick={() => onSubmit(variants)}
-        >
-          <Save className='h-4 w-4 mr-2' />
-          Сохранить
-        </Button>
-      )}
       <div className='border rounded-md border-input'>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Товар</TableHead>
+              <TableHead>Размер</TableHead>
               <TableHead className='text-right'>
                 Полученное количество (шт)
               </TableHead>
@@ -60,9 +46,10 @@ export default function ProductVariantsTable({
               <TableRow key={variant.variantId}>
                 <TableCell>
                   <span className='font-medium'>
-                    {variant.productName} {variant.size} {variant.productSku}
+                    {variant.productName} {variant.productSku}
                   </span>
                 </TableCell>
+                <TableCell>{variant.size}</TableCell>
                 <TableCell>
                   <div className='flex items-center gap-2'>
                     <Input
@@ -71,7 +58,7 @@ export default function ProductVariantsTable({
                       onChange={(e) => {
                         const newVariants = variants
                         const index = newVariants.findIndex(
-                          (obj) => obj.variantId === variant.variantId,
+                          (obj) => obj.variantId === variant.variantId
                         )
                         newVariants[index] = {
                           ...newVariants[index],
@@ -80,36 +67,12 @@ export default function ProductVariantsTable({
                         setVariants(newVariants)
                       }}
                     />
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            size='icon'
-                            className='shrink-0'
-                            variant='ghost'
-                            type='button'
-                            onClick={() => {
-                              const newVariants = variants.map((v) => ({
-                                ...v,
-                                receivedQuantity:
-                                  v.productId === variant.productId
-                                    ? variant.receivedQuantity
-                                    : v.receivedQuantity,
-                              }))
-                              setVariants(newVariants)
-                            }}
-                          >
-                            <FormInput className='h-4 w-4' />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>
-                            Заполнить все варианты этого товара с этим
-                            значением.
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <AutocompleteButton
+                      currVariant={variant}
+                      field='receivedQuantity'
+                      setVariants={setVariants}
+                      variants={variants}
+                    />
                   </div>
                 </TableCell>
                 <TableCell>
@@ -120,7 +83,7 @@ export default function ProductVariantsTable({
                       onChange={(e) => {
                         const newVariants = variants
                         const index = newVariants.findIndex(
-                          (obj) => obj.variantId === variant.variantId,
+                          (obj) => obj.variantId === variant.variantId
                         )
                         newVariants[index] = {
                           ...newVariants[index],
@@ -129,54 +92,38 @@ export default function ProductVariantsTable({
                         setVariants(newVariants)
                       }}
                     />
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            size='icon'
-                            className='shrink-0'
-                            variant='ghost'
-                            type='button'
-                            onClick={() => {
-                              const newVariants = variants.map((v) => ({
-                                ...v,
-                                supplierPrice:
-                                  v.productId === variant.productId
-                                    ? variant.supplierPrice
-                                    : v.supplierPrice,
-                              }))
-                              setVariants(newVariants)
-                            }}
-                          >
-                            <FormInput className='h-4 w-4' />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>
-                            Заполнить все варианты этого товара с этим
-                            значением.
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <AutocompleteButton
+                      currVariant={variant}
+                      field='supplierPrice'
+                      setVariants={setVariants}
+                      variants={variants}
+                    />
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Input
-                    value={variant.sellingPrice}
-                    type='number'
-                    onChange={(e) => {
-                      const newVariants = variants
-                      const index = newVariants.findIndex(
-                        (obj) => obj.variantId === variant.variantId,
-                      )
-                      newVariants[index] = {
-                        ...newVariants[index],
-                        sellingPrice: e.target.valueAsNumber,
-                      }
-                      setVariants(newVariants)
-                    }}
-                  />
+                  <div className='flex items-center gap-2'>
+                    <Input
+                      value={variant.sellingPrice}
+                      type='number'
+                      onChange={(e) => {
+                        const newVariants = variants
+                        const index = newVariants.findIndex(
+                          (obj) => obj.variantId === variant.variantId
+                        )
+                        newVariants[index] = {
+                          ...newVariants[index],
+                          sellingPrice: e.target.valueAsNumber,
+                        }
+                        setVariants(newVariants)
+                      }}
+                    />
+                    <AutocompleteButton
+                      currVariant={variant}
+                      field='sellingPrice'
+                      setVariants={setVariants}
+                      variants={variants}
+                    />
+                  </div>
                 </TableCell>
                 <TableCell className='text-right'>
                   <CurrencyFormatter
@@ -195,7 +142,7 @@ export default function ProductVariantsTable({
                     className='h-8 w-8'
                     onClick={() => {
                       const newArray = variants.filter(
-                        (obj) => obj.variantId !== variant.variantId,
+                        (obj) => obj.variantId !== variant.variantId
                       )
                       setVariants(newArray)
                     }}
@@ -218,5 +165,45 @@ export default function ProductVariantsTable({
         </Table>
       </div>
     </div>
+  )
+}
+
+function AutocompleteButton({
+  setVariants,
+  variants,
+  field,
+  currVariant,
+}: Props & {
+  field: keyof GoodsReceiptVariant
+  currVariant: GoodsReceiptVariant
+}) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            size='icon'
+            className='shrink-0'
+            variant='ghost'
+            type='button'
+            onClick={() => {
+              const newVariants = variants.map((v) => ({
+                ...v,
+                [field]:
+                  v.productId === currVariant.productId
+                    ? currVariant[field]
+                    : v[field],
+              }))
+              setVariants(newVariants)
+            }}
+          >
+            <FormInput className='h-4 w-4' />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Использовать для всех товаров модели.</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
