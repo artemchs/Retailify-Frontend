@@ -140,7 +140,8 @@ export default function CreateGoodsReceiptForm() {
                     setSelectedValues={(
                       type: 'variant' | 'goods-receipt-item',
                       newValues: Variant[],
-                      prev: any[],
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      prev: any[]
                     ) =>
                       type === 'variant'
                         ? form.setValue('variants', [
@@ -148,7 +149,7 @@ export default function CreateGoodsReceiptForm() {
                             ...(newValues.map(
                               ({ size, id, productId, product, price }) => {
                                 const existingObj = field.value.find(
-                                  (obj) => obj.variantId === id,
+                                  (obj) => obj.variantId === id
                                 )
 
                                 return {
@@ -164,8 +165,9 @@ export default function CreateGoodsReceiptForm() {
                                   sellingPrice:
                                     existingObj?.sellingPrice ?? price,
                                   id,
+                                  productImgId: product?.media?.[0].id,
                                 }
-                              },
+                              }
                             ) ?? []),
                           ])
                         : form.setValue('variants', [...prev, ...newValues])

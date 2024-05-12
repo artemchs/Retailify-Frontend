@@ -37,12 +37,12 @@ export default function EditGoodsReceiptForm({
     goodsReceipt?.productVariants
       ? arrayToIdObject(
           goodsReceipt.productVariants.map(
-            ({ variant }) => variant,
+            ({ variant }) => variant
           ) as unknown as {
             id: string
-          }[],
+          }[]
         )
-      : {},
+      : {}
   )
   const form = useForm<z.infer<typeof editGoodsReceiptFormSchema>>({
     resolver: zodResolver(editGoodsReceiptFormSchema),
@@ -63,7 +63,8 @@ export default function EditGoodsReceiptForm({
             productName: variant?.product?.title,
             sellingPrice: variant?.price ? parseFloat(variant.price) : 0,
             productSku: variant?.product?.sku,
-          }),
+            productImgId: variant?.product?.media?.[0].id,
+          })
         ) ?? [],
       paymentOption:
         goodsReceipt?.supplierInvoice?.paymentOption ?? 'CURRENT_ACCOUNT',
@@ -171,7 +172,8 @@ export default function EditGoodsReceiptForm({
                     setSelectedValues={(
                       type: 'variant' | 'goods-receipt-item',
                       newValues: Variant[],
-                      prev: any[],
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      prev: any[]
                     ) =>
                       type === 'variant'
                         ? form.setValue('variants', [
@@ -179,7 +181,7 @@ export default function EditGoodsReceiptForm({
                             ...(newValues.map(
                               ({ size, id, productId, product, price }) => {
                                 const existingObj = field.value.find(
-                                  (obj) => obj.variantId === id,
+                                  (obj) => obj.variantId === id
                                 )
 
                                 return {
@@ -194,8 +196,9 @@ export default function EditGoodsReceiptForm({
                                   productSku: product?.sku,
                                   sellingPrice:
                                     existingObj?.sellingPrice ?? price,
+                                  productImgId: product?.media?.[0].id,
                                 }
-                              },
+                              }
                             ) ?? []),
                           ])
                         : form.setValue('variants', [...prev, ...newValues])

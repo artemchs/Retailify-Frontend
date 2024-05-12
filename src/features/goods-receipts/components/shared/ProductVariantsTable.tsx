@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/tooltip'
 import { CurrencyFormatter } from '@/components/ui/units'
 import { GoodsReceiptVariant } from '@/features/goods-receipts/types/create-goods-receipt-form-schema.ts'
+import { DisplayUploadedFile } from '@/features/products/components/shared/form/media/DisplayUploadedFile'
 
 type Props = {
   variants: GoodsReceiptVariant[]
@@ -30,7 +31,7 @@ export default function ProductVariantsTable({ variants, setVariants }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Товар</TableHead>
+              <TableHead>Модель</TableHead>
               <TableHead>Размер</TableHead>
               <TableHead className='text-right'>
                 Полученное количество (шт)
@@ -45,27 +46,26 @@ export default function ProductVariantsTable({ variants, setVariants }: Props) {
             {variants?.map((variant) => (
               <TableRow key={variant.variantId}>
                 <TableCell>
-                  <span className='font-medium'>
-                    {variant.productName} {variant.productSku}
-                  </span>
+                  <div className='flex gap-4 items-center min-w-80'>
+                    {variant.productImgId && (
+                      <div className='w-14 h-14 shrink-0'>
+                        <DisplayUploadedFile
+                          id={variant.productImgId}
+                          className='w-full aspect-square shadow-sm'
+                        />
+                      </div>
+                    )}
+                    <span className='font-medium'>{variant.productName}</span>
+                  </div>
                 </TableCell>
                 <TableCell>{variant.size}</TableCell>
                 <TableCell>
                   <div className='flex items-center gap-2'>
-                    <Input
-                      value={variant.receivedQuantity}
-                      type='number'
-                      onChange={(e) => {
-                        const newVariants = variants
-                        const index = newVariants.findIndex(
-                          (obj) => obj.variantId === variant.variantId
-                        )
-                        newVariants[index] = {
-                          ...newVariants[index],
-                          receivedQuantity: e.target.valueAsNumber,
-                        }
-                        setVariants(newVariants)
-                      }}
+                    <CustomNumberInput
+                      currVariant={variant}
+                      field='receivedQuantity'
+                      setVariants={setVariants}
+                      variants={variants}
                     />
                     <AutocompleteButton
                       currVariant={variant}
@@ -77,20 +77,11 @@ export default function ProductVariantsTable({ variants, setVariants }: Props) {
                 </TableCell>
                 <TableCell>
                   <div className='flex items-center gap-2'>
-                    <Input
-                      value={variant.supplierPrice}
-                      type='number'
-                      onChange={(e) => {
-                        const newVariants = variants
-                        const index = newVariants.findIndex(
-                          (obj) => obj.variantId === variant.variantId
-                        )
-                        newVariants[index] = {
-                          ...newVariants[index],
-                          supplierPrice: e.target.valueAsNumber,
-                        }
-                        setVariants(newVariants)
-                      }}
+                    <CustomNumberInput
+                      currVariant={variant}
+                      field='supplierPrice'
+                      setVariants={setVariants}
+                      variants={variants}
                     />
                     <AutocompleteButton
                       currVariant={variant}
@@ -102,20 +93,11 @@ export default function ProductVariantsTable({ variants, setVariants }: Props) {
                 </TableCell>
                 <TableCell>
                   <div className='flex items-center gap-2'>
-                    <Input
-                      value={variant.sellingPrice}
-                      type='number'
-                      onChange={(e) => {
-                        const newVariants = variants
-                        const index = newVariants.findIndex(
-                          (obj) => obj.variantId === variant.variantId
-                        )
-                        newVariants[index] = {
-                          ...newVariants[index],
-                          sellingPrice: e.target.valueAsNumber,
-                        }
-                        setVariants(newVariants)
-                      }}
+                    <CustomNumberInput
+                      currVariant={variant}
+                      field='sellingPrice'
+                      setVariants={setVariants}
+                      variants={variants}
                     />
                     <AutocompleteButton
                       currVariant={variant}
@@ -205,5 +187,34 @@ function AutocompleteButton({
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
+  )
+}
+
+function CustomNumberInput({
+  setVariants,
+  variants,
+  field,
+  currVariant,
+}: Props & {
+  field: keyof GoodsReceiptVariant
+  currVariant: GoodsReceiptVariant
+}) {
+  return (
+    <Input
+      value={currVariant[field]}
+      type='number'
+      className='min-w-36'
+      onChange={(e) => {
+        const newVariants = variants
+        const index = newVariants.findIndex(
+          (obj) => obj.variantId === currVariant.variantId
+        )
+        newVariants[index] = {
+          ...newVariants[index],
+          [field]: e.target.valueAsNumber,
+        }
+        setVariants(newVariants)
+      }}
+    />
   )
 }

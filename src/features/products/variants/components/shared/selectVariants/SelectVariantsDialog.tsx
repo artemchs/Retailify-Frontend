@@ -35,7 +35,8 @@ type Props = {
   setSelectedValues: (
     type: 'variant' | 'goods-receipt-item',
     newValues: Variant[],
-    prev: any[],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prev: any[]
   ) => void
   idField: string
   selectWithEditing?: boolean
@@ -150,7 +151,7 @@ export default function SelectVariantsDialog({
         ),
       },
     ],
-    [orderBy],
+    [orderBy]
   )
 
   const [searchValue, setSearchValue] = useState<string | undefined>('')
@@ -159,7 +160,7 @@ export default function SelectVariantsDialog({
     ...bottomControlsState,
     query: searchValue,
     orderBy,
-    // @ts-ignore
+    // @ts-expect-error asdfasdf
     excludeIds: selectedValues.map((obj) => obj[idField]),
   })
 
@@ -176,18 +177,18 @@ export default function SelectVariantsDialog({
           cell: ({ row }) => {
             const quantity =
               row.original.warehouseStockEntries?.find(
-                (obj) => obj.warehouseId === id,
+                (obj) => obj.warehouseId === id
               )?.warehouseQuantity ?? 0
 
             return <div className='text-right'>{quantity}</div>
           },
-        }),
+        })
       )
 
       const updatedColumns = [
         ...baseColumns.slice(0, baseColumns.length - 1).map((props) => {
           const customHeader = replaceHeadersArray?.find(
-            (obj) => obj.id === props.id,
+            (obj) => obj.id === props.id
           )
 
           if (!customHeader?.header) return props
@@ -226,7 +227,8 @@ export default function SelectVariantsDialog({
           sellingPrice: price,
           receivedQuantity: 0,
           supplierPrice: 0,
-        })),
+          productImgId: product?.media?.at(0)?.id,
+        }))
       )
     } else {
       setSelectedValues('goods-receipt-item', selectedData, selectedValues)
@@ -248,8 +250,11 @@ export default function SelectVariantsDialog({
           variants={fillOutSelectedVariants}
           setVariants={(variants) => setFillOutSelectedVariants([...variants])}
           onSubmit={(variants) => {
-            // @ts-ignore
-            setSelectedValues('goods-receipt-item', variants, selectedValues)
+            setSelectedValues(
+              'goods-receipt-item',
+              variants as unknown as Variant[],
+              selectedValues
+            )
             handleClose()
             setIsFillOutSelectedVariantsOpened(false)
           }}
@@ -276,7 +281,7 @@ export default function SelectVariantsDialog({
                 <div
                   className={cn(
                     buttonVariants({ variant: 'outline', size: 'icon' }),
-                    'h-6 w-6',
+                    'h-6 w-6'
                   )}
                   onClick={(e) => {
                     e.stopPropagation()

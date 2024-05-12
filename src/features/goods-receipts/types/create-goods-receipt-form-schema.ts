@@ -10,6 +10,7 @@ const variant = z.object({
     required_error: 'Количество не должно быть пустым',
   }),
   productName: z.string(),
+  productImgId: z.string().optional(),
   productId: z.string(),
   size: z.string(),
   sellingPrice: z.coerce.number().optional(),

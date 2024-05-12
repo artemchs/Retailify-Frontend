@@ -34,6 +34,9 @@ export type GoodsReceipt = {
             id: string
             title: string
             sku: string
+            media: {
+              id: string
+            }[] | null
           } | null
         } | null
         receivedQuantity: number
