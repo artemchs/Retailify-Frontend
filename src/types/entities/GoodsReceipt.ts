@@ -23,6 +23,8 @@ export type GoodsReceipt = {
   supplierInvoice: {
     paymentOption: keyof typeof paymentOptions
     accountsPayable: string
+    oustandingBalance: string
+    amountPaid: string
   } | null
   productVariants:
     | {

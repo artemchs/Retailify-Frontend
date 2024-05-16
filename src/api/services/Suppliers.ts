@@ -74,10 +74,12 @@ export default {
         onErrorHandler({ error, setErrorMessage }),
     }),
 
-  useFindOne: ({ id }: { id: string }) =>
+  useFindOne: ({ id }: { id: string | null }) =>
     useQuery({
       queryKey: ['supplier', { id }],
       queryFn: async () => {
+        if (!id) return
+
         const { data } = await client.get(`/suppliers/${id}`)
         return data as Supplier
       },

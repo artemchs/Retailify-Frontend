@@ -26,6 +26,9 @@ export const createGoodsReceiptFormSchema = z.object({
     invalid_type_error: 'Способ оплаты должен быть выбран из списка',
   }),
   variants: z.array(variant, { required_error: 'Товар не выбран' }),
+  amountPaid: z.coerce.number({
+    required_error: requiredField
+  })
 })
 
 export type GoodsReceiptVariant = z.infer<typeof variant>

@@ -5,5 +5,6 @@ export type Supplier = {
   email: string
   phone: string
   address: string
+  totalOutstandingBalance: string
   isArchived: boolean
 }
