@@ -156,17 +156,6 @@ export default function EditGoodsReceiptForm({
                     />
                     <FormField
                         control={form.control}
-                        name='paymentOption'
-                        render={({ field }) => (
-                            <FormItem className='w-full'>
-                                <FormLabelForRequiredFields text='Способ оплаты' />
-                                <SelectPaymentOption field={field} />
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
                         name='variants'
                         render={({ field }) => (
                             <FormItem>
@@ -255,7 +244,23 @@ export default function EditGoodsReceiptForm({
                             </FormItem>
                         )}
                     />
-                    <GoodsReceiptTotalCost form={form} />
+                    <div className='flex flex-col gap-2'>
+                        <h3 className='text-lg font-medium'>
+                            Финансовый итог:
+                        </h3>
+                        <FormField
+                            control={form.control}
+                            name='paymentOption'
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabelForRequiredFields text='Способ оплаты' />
+                                    <SelectPaymentOption field={field} />
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <GoodsReceiptTotalCost form={form} />
+                    </div>
                     <SaveButton
                         isPending={isPending}
                         form={form}

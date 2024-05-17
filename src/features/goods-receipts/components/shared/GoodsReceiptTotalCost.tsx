@@ -56,84 +56,79 @@ export default function GoodsReceiptTotalCost({ form }: Props) {
     }
 
     return (
-        <div className='flex flex-col gap-2'>
-            <h3 className='text-lg font-medium'>Финансовый итог:</h3>
-            <div className='border border-input rounded-md'>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Название</TableHead>
-                            <TableHead className='text-right'>Сумма</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>Сумма товаров</TableCell>
-                            <TableCell className='text-right'>
-                                <CurrencyFormatter
-                                    value={calculateTotalVariants()}
-                                />
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>
-                                Долг поставщику за этот приход
-                            </TableCell>
-                            <TableCell className='text-right'>
-                                <CurrencyFormatter
-                                    value={calculateSupplierOutstandingBalanceForReceipt()}
-                                />
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>Долг поставщику общий</TableCell>
-                            <TableCell className='text-right'>
-                                {supplier &&
-                                    (supplier.isLoading ? (
-                                        <Skeleton className='h-4 w-16' />
-                                    ) : supplier.isError ? (
-                                        <span className='text-destructive'>
-                                            {!supplierId
-                                                ? 'Выберите поставщика для прихода'
-                                                : 'Ошибка'}
-                                        </span>
-                                    ) : (
-                                        supplier.data && (
-                                            <CurrencyFormatter
-                                                value={
-                                                    (supplier.data
-                                                        .totalOutstandingBalance
-                                                        ? parseFloat(
-                                                              supplier.data
-                                                                  .totalOutstandingBalance
-                                                          )
-                                                        : 0) +
-                                                    calculateSupplierOutstandingBalanceForReceipt()
-                                                }
-                                            />
-                                        )
-                                    ))}
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TableCell>Сумма оплаты поставщику</TableCell>
-                            <TableCell>
-                                <Input
-                                    type='number'
-                                    value={amountPaid}
-                                    onChange={(e) =>
-                                        handleAmountPaidInputChange(
-                                            e.target.valueAsNumber ?? 0
-                                        )
-                                    }
-                                />
-                            </TableCell>
-                        </TableRow>
-                    </TableFooter>
-                </Table>
-            </div>
+        <div className='border border-input rounded-md'>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Название</TableHead>
+                        <TableHead className='text-right'>Сумма</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <TableRow>
+                        <TableCell>Сумма товаров</TableCell>
+                        <TableCell className='text-right'>
+                            <CurrencyFormatter
+                                value={calculateTotalVariants()}
+                            />
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Долг поставщику за этот приход</TableCell>
+                        <TableCell className='text-right'>
+                            <CurrencyFormatter
+                                value={calculateSupplierOutstandingBalanceForReceipt()}
+                            />
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Долг поставщику общий</TableCell>
+                        <TableCell className='text-right'>
+                            {supplier &&
+                                (supplier.isLoading ? (
+                                    <Skeleton className='h-4 w-16' />
+                                ) : supplier.isError ? (
+                                    <span className='text-destructive'>
+                                        {!supplierId
+                                            ? 'Выберите поставщика для прихода'
+                                            : 'Ошибка'}
+                                    </span>
+                                ) : (
+                                    supplier.data && (
+                                        <CurrencyFormatter
+                                            value={
+                                                (supplier.data
+                                                    .totalOutstandingBalance
+                                                    ? parseFloat(
+                                                          supplier.data
+                                                              .totalOutstandingBalance
+                                                      )
+                                                    : 0) +
+                                                calculateSupplierOutstandingBalanceForReceipt()
+                                            }
+                                        />
+                                    )
+                                ))}
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TableCell>Сумма оплаты поставщику</TableCell>
+                        <TableCell>
+                            <Input
+                                type='number'
+                                value={amountPaid}
+                                onChange={(e) =>
+                                    handleAmountPaidInputChange(
+                                        e.target.valueAsNumber ?? 0
+                                    )
+                                }
+                            />
+                        </TableCell>
+                    </TableRow>
+                </TableFooter>
+            </Table>
         </div>
     )
 }
