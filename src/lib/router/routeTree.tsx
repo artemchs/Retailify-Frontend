@@ -25,9 +25,9 @@ import { accessToken } from '@/utils/accessToken'
 import { isAuthenticated } from '@/utils/isAuthenticated'
 import setContextUser from '@/utils/setContextUser'
 import {
-  createRootRouteWithContext,
-  createRoute,
-  redirect,
+    createRootRouteWithContext,
+    createRoute,
+    redirect,
 } from '@tanstack/react-router'
 import CreateGoodsReceiptPage from '@/pages/goods-receipts/CreateGoodsReceipt'
 import EditGoodsReceiptPage from '@/pages/goods-receipts/EditGoodsReceipt'
@@ -45,243 +45,251 @@ import CustomersPage from '@/pages/Customers'
 import { findAllCustomerSchema } from '@/features/customers/types/find-all-customer-schema'
 import ProductVariantsPage from '@/pages/ProductVariants'
 import { variantsSearchParamsSchema } from '@/features/products/variants/types/findAll-variants-search-params'
+import { Settings } from '@/pages/Settings'
 
 interface RouteContext {
-  user?: AccessTokenData
+    user?: AccessTokenData
 }
 
 function beforeLoadRole(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: any,
-  requiredRole: ('ADMIN' | 'CASHIER' | 'ECOMMERCE_MANAGER')[]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    context: any,
+    requiredRole: ('ADMIN' | 'CASHIER' | 'ECOMMERCE_MANAGER')[]
 ) {
-  const contextUser: AccessTokenData = context.user
+    const contextUser: AccessTokenData = context.user
 
-  if (!requiredRole.includes(contextUser.role)) {
-    throw redirect({
-      to: '/',
-    })
-  }
+    if (!requiredRole.includes(contextUser.role)) {
+        throw redirect({
+            to: '/',
+        })
+    }
 
-  setContextUser(context)
+    setContextUser(context)
 }
 
 const rootRoute = createRootRouteWithContext<RouteContext>()({
-  beforeLoad: async ({ location, context }) => {
-    const contextUser: AccessTokenData | undefined = context.user
+    beforeLoad: async ({ location, context }) => {
+        const contextUser: AccessTokenData | undefined = context.user
 
-    if (!contextUser) {
-      if (!accessToken.value()) {
-        const { href } = location
-        if (href !== '/auth/log-in' && href !== '/auth/sign-up') {
-          const isAuth = await isAuthenticated()
-          if (!isAuth) {
-            throw redirect({
-              to: '/auth/log-in',
-            })
-          } else {
-            setContextUser(context)
-          }
+        if (!contextUser) {
+            if (!accessToken.value()) {
+                const { href } = location
+                if (href !== '/auth/log-in' && href !== '/auth/sign-up') {
+                    const isAuth = await isAuthenticated()
+                    if (!isAuth) {
+                        throw redirect({
+                            to: '/auth/log-in',
+                        })
+                    } else {
+                        setContextUser(context)
+                    }
+                }
+            } else {
+                setContextUser(context)
+            }
         }
-      } else {
-        setContextUser(context)
-      }
-    }
-  },
-  component: App,
+    },
+    component: App,
 })
 
 const authRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  component: AuthScreen,
-  path: '/auth',
+    getParentRoute: () => rootRoute,
+    component: AuthScreen,
+    path: '/auth',
 })
 
 const logInRoute = createRoute({
-  getParentRoute: () => authRoute,
-  component: LogInPage,
-  path: '/log-in',
+    getParentRoute: () => authRoute,
+    component: LogInPage,
+    path: '/log-in',
 })
 
 const signUpRoute = createRoute({
-  getParentRoute: () => authRoute,
-  component: SignUpPage,
-  path: '/sign-up',
+    getParentRoute: () => authRoute,
+    component: SignUpPage,
+    path: '/sign-up',
 })
 
 const layout = createRoute({
-  getParentRoute: () => rootRoute,
-  component: Layout,
-  id: 'layout',
+    getParentRoute: () => rootRoute,
+    component: Layout,
+    id: 'layout',
 })
 
 const homeRoute = createRoute({
-  getParentRoute: () => layout,
-  component: HomePage,
-  path: '/',
+    getParentRoute: () => layout,
+    component: HomePage,
+    path: '/',
 })
 
 export const employeesRoute = createRoute({
-  getParentRoute: () => layout,
-  component: EmployeesPage,
-  path: '/employees',
-  validateSearch: (search) => employeesSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: EmployeesPage,
+    path: '/employees',
+    validateSearch: (search) => employeesSearchParamsSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const suppliersRoute = createRoute({
-  getParentRoute: () => layout,
-  component: SuppliersPage,
-  path: '/suppliers',
-  validateSearch: (search) => suppliersSearchParamsSchema.parse(search),
+    getParentRoute: () => layout,
+    component: SuppliersPage,
+    path: '/suppliers',
+    validateSearch: (search) => suppliersSearchParamsSchema.parse(search),
 })
 
 export const warehousesRoute = createRoute({
-  getParentRoute: () => layout,
-  component: WarehousesPage,
-  path: '/warehouses',
-  validateSearch: (search) => warehousesSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: WarehousesPage,
+    path: '/warehouses',
+    validateSearch: (search) => warehousesSearchParamsSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const categoryGroupsRoute = createRoute({
-  getParentRoute: () => layout,
-  component: CategoryGroupsPage,
-  path: '/category-groups',
-  validateSearch: (search) => findAllCategoryGroupsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: CategoryGroupsPage,
+    path: '/category-groups',
+    validateSearch: (search) => findAllCategoryGroupsSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const categoriesRoute = createRoute({
-  getParentRoute: () => layout,
-  component: CategoriesPage,
-  path: '/categories',
-  validateSearch: (search) => findAllCategorySchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: CategoriesPage,
+    path: '/categories',
+    validateSearch: (search) => findAllCategorySchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const productsRoute = createRoute({
-  getParentRoute: () => layout,
-  component: ProductsPage,
-  path: '/products',
-  validateSearch: (search) => productsSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: ProductsPage,
+    path: '/products',
+    validateSearch: (search) => productsSearchParamsSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const createProductRoute = createRoute({
-  getParentRoute: () => layout,
-  component: CreateProductPage,
-  path: '/products/create',
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: CreateProductPage,
+    path: '/products/create',
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const editProductRoute = createRoute({
-  getParentRoute: () => layout,
-  component: EditProductPage,
-  path: '/products/$productId/edit',
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: EditProductPage,
+    path: '/products/$productId/edit',
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const inventoryAdjustmentsRoute = createRoute({
-  getParentRoute: () => layout,
-  component: InventoryAdjustmentsPage,
-  path: '/inventory-adjustments',
-  validateSearch: (search) =>
-    inventoryAdjustmentsSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: InventoryAdjustmentsPage,
+    path: '/inventory-adjustments',
+    validateSearch: (search) =>
+        inventoryAdjustmentsSearchParamsSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const goodsReceiptsRoute = createRoute({
-  getParentRoute: () => layout,
-  component: GoodsReceiptsPage,
-  path: '/goods-receipts',
-  validateSearch: (search) => goodsReceiptsSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: GoodsReceiptsPage,
+    path: '/goods-receipts',
+    validateSearch: (search) => goodsReceiptsSearchParamsSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const createGoodsReceiptRoute = createRoute({
-  getParentRoute: () => layout,
-  component: CreateGoodsReceiptPage,
-  path: '/goods-receipts/create',
+    getParentRoute: () => layout,
+    component: CreateGoodsReceiptPage,
+    path: '/goods-receipts/create',
 })
 
 export const editGoodsReceiptRoute = createRoute({
-  getParentRoute: () => layout,
-  component: EditGoodsReceiptPage,
-  path: '/goods-receipts/$goodsReceiptId/edit',
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: EditGoodsReceiptPage,
+    path: '/goods-receipts/$goodsReceiptId/edit',
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const inventoryTransfersRoute = createRoute({
-  getParentRoute: () => layout,
-  component: InventoryTransfersPage,
-  path: '/inventory-transfers',
-  validateSearch: (search) =>
-    inventoryTransfersSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: InventoryTransfersPage,
+    path: '/inventory-transfers',
+    validateSearch: (search) =>
+        inventoryTransfersSearchParamsSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const pointsOfSaleRoute = createRoute({
-  getParentRoute: () => layout,
-  component: PointsOfSaleListPage,
-  path: '/points-of-sale',
-  validateSearch: (search) => posSearchParamsSchema.parse(search),
+    getParentRoute: () => layout,
+    component: PointsOfSaleListPage,
+    path: '/points-of-sale',
+    validateSearch: (search) => posSearchParamsSchema.parse(search),
 })
 
 export const pointOfSaleRoute = createRoute({
-  getParentRoute: () => layout,
-  component: PointOfSaleShiftsPage,
-  path: '/points-of-sale/$pointOfSaleId/shifts',
-  validateSearch: (search) => cashierShiftSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: PointOfSaleShiftsPage,
+    path: '/points-of-sale/$pointOfSaleId/shifts',
+    validateSearch: (search) => cashierShiftSearchParamsSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const cashRegisterRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  component: CashRegisterPage,
-  path: '/cash-register',
-  validateSearch: (search) => cashRegisterSearchParams.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN', 'CASHIER']),
+    getParentRoute: () => rootRoute,
+    component: CashRegisterPage,
+    path: '/cash-register',
+    validateSearch: (search) => cashRegisterSearchParams.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN', 'CASHIER']),
 })
 
 export const customerRoute = createRoute({
-  getParentRoute: () => layout,
-  component: CustomersPage,
-  path: '/customers',
-  validateSearch: (search) => findAllCustomerSchema.parse(search),
-  beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+    getParentRoute: () => layout,
+    component: CustomersPage,
+    path: '/customers',
+    validateSearch: (search) => findAllCustomerSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
 export const productVariantsRoute = createRoute({
-  getParentRoute: () => layout,
-  component: ProductVariantsPage,
-  path: '/product-variants',
-  validateSearch: (search) => variantsSearchParamsSchema.parse(search),
-  beforeLoad: ({ context }) =>
-    beforeLoadRole(context, ['ADMIN', 'CASHIER', 'ECOMMERCE_MANAGER']),
+    getParentRoute: () => layout,
+    component: ProductVariantsPage,
+    path: '/product-variants',
+    validateSearch: (search) => variantsSearchParamsSchema.parse(search),
+    beforeLoad: ({ context }) =>
+        beforeLoadRole(context, ['ADMIN', 'CASHIER', 'ECOMMERCE_MANAGER']),
+})
+
+export const settingsRoute = createRoute({
+    getParentRoute: () => layout,
+    component: Settings,
+    path: '/settings',
 })
 
 export const routeTree = rootRoute.addChildren([
-  layout.addChildren([
-    homeRoute,
-    employeesRoute,
-    suppliersRoute,
-    warehousesRoute,
-    goodsReceiptsRoute,
-    createGoodsReceiptRoute,
-    productsRoute,
-    createProductRoute,
-    categoryGroupsRoute,
-    categoriesRoute,
-    editProductRoute,
-    editGoodsReceiptRoute,
-    inventoryAdjustmentsRoute,
-    inventoryTransfersRoute,
-    pointsOfSaleRoute,
-    pointOfSaleRoute,
-    cashRegisterRoute,
-    customerRoute,
-    productVariantsRoute,
-  ]),
-  authRoute.addChildren([logInRoute, signUpRoute]),
+    layout.addChildren([
+        homeRoute,
+        employeesRoute,
+        suppliersRoute,
+        warehousesRoute,
+        goodsReceiptsRoute,
+        createGoodsReceiptRoute,
+        productsRoute,
+        createProductRoute,
+        categoryGroupsRoute,
+        categoriesRoute,
+        editProductRoute,
+        editGoodsReceiptRoute,
+        inventoryAdjustmentsRoute,
+        inventoryTransfersRoute,
+        pointsOfSaleRoute,
+        pointOfSaleRoute,
+        cashRegisterRoute,
+        customerRoute,
+        productVariantsRoute,
+        settingsRoute,
+    ]),
+    authRoute.addChildren([logInRoute, signUpRoute]),
 ])

@@ -117,6 +117,11 @@
   }
 }
 
+@layer components {
+  .clip-triangle {
+    clip-path: polygon(0% 100%, 100% 0%, 100% 100%);
+  }
+}
 
 @layer base {
   * {
