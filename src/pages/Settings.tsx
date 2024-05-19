@@ -2,6 +2,7 @@ import PageTitle from '@/components/ui/page-title'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import AccountSettingsForm from '@/features/settings/components/account/AccountSettingsForm'
 import GeneralSettingsForm from '@/features/settings/components/general/GeneralSettingsForm'
+import UpdatePasswordForm from '@/features/settings/components/password/UpdatePasswordForm'
 import { useRouteContext } from '@tanstack/react-router'
 import { ReactElement } from 'react'
 
@@ -27,7 +28,7 @@ const tabs: {
         name: 'password',
         label: 'Пароль',
         onlyAdmin: true,
-        component: <></>,
+        component: UpdatePasswordForm(),
     },
     {
         name: 'sole-proprietor-info',

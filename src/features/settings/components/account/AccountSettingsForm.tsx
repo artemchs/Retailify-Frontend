@@ -65,7 +65,7 @@ function ProfileForm() {
     })
 
     function onSuccess() {
-        toast('What do I put here in Russian?', {
+        toast('Данные о профиле успешно отредактированы.', {
             cancel: {
                 label: 'Ок',
                 onClick() {
@@ -91,10 +91,7 @@ function ProfileForm() {
                 <AlertDestructive text={errorMessage} />
             )}
             <Form {...form}>
-                <form
-                    className='flex flex-col gap-4'
-                    onSubmit={form.handleSubmit(onSubmit)}
-                >
+                <form className='flex flex-col gap-4'>
                     <FormField
                         control={form.control}
                         name='fullName'
