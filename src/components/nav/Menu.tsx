@@ -41,10 +41,10 @@ export default function Menu() {
 
   return (
     <>
-      <LogOutAlertDialog
+      {/* <LogOutAlertDialog
         isOpened={isLogOutDialogOpened}
         setIsOpened={setIsLogOutDialogOpened}
-      />
+      /> */}
       <EditProfileDialog
         isOpened={isEditProfileDialogOpened}
         setIsOpened={setIsEditProfileDialogOpened}

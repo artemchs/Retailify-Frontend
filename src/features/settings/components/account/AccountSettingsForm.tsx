@@ -34,6 +34,7 @@ import {
 import ImageCropper from './ImageCropper'
 import { ImageOff } from 'lucide-react'
 import imageCompression from 'browser-image-compression'
+import LogOutAlertDialog from '@/features/auth/log-out/LogOutAlertDialog'
 
 function AccountSettingsForm() {
     return (
@@ -47,6 +48,18 @@ function AccountSettingsForm() {
                 </CardHeader>
                 <CardContent>
                     <ProfileForm />
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Выйти из аккаунта</CardTitle>
+                    <CardDescription>
+                        После успешного выхода из аккаунта вы будете
+                        перенаправлены на страницу входа.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <LogOutAlertDialog />
                 </CardContent>
             </Card>
         </div>
