@@ -1,5 +1,6 @@
 import PageTitle from '@/components/ui/page-title'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import AccountSettingsForm from '@/features/settings/components/account/AccountSettingsForm'
 import GeneralSettingsForm from '@/features/settings/components/general/GeneralSettingsForm'
 import { useRouteContext } from '@tanstack/react-router'
 import { ReactElement } from 'react'
@@ -20,7 +21,7 @@ const tabs: {
         name: 'account',
         label: 'Аккаунт',
         onlyAdmin: false,
-        component: <></>,
+        component: AccountSettingsForm(),
     },
     {
         name: 'password',

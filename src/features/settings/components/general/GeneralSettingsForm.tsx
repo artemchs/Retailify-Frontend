@@ -15,9 +15,11 @@ const GeneralSettingsForm = () => {
         <div className='flex flex-col gap-4'>
             <Card>
                 <CardHeader>
-                    <CardTitle>Внешний вид</CardTitle>
+                    <CardTitle>Цветовая схема</CardTitle>
                     <CardDescription>
-                        Вы можете поменять внешний вид системы учета
+                        Выберите предпочтительную цветовую схему для интерфейса
+                        приложения. Доступные варианты: Светлая, Темная и
+                        Системная (адаптируется к настройкам вашего устройства).
                     </CardDescription>
                 </CardHeader>
                 <CardContent>

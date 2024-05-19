@@ -7,56 +7,56 @@ import { useRouteContext } from '@tanstack/react-router'
 import roleNames from '@/utils/roleNames'
 
 export default function UserInfo() {
-  const { data, isLoading, isError } = Users.useGetMe()
-  const context = useRouteContext({
-    strict: false,
-  })
+    const { data, isLoading, isError } = Users.useGetMe()
+    const context = useRouteContext({
+        strict: false,
+    })
 
-  if (isLoading) return <Loading />
-  if (isError) return <Error />
+    if (isLoading) return <Loading />
+    if (isError) return <Error />
 
-  return (
-    <div className='flex items-center space-x-2 lg:space-x-4'>
-      <Avatar className='h-full aspect-square border'>
-        <AvatarImage
-          className='object-cover'
-          src={data?.profilePicture ? data.profilePicture : undefined}
-        />
-        <AvatarFallback>
-          {getNameShorthand(data?.fullName ? data.fullName : '')}
-        </AvatarFallback>
-      </Avatar>
-      <div className='flex flex-col'>
-        <span className='line-clamp-1 text-sm lg:text-base font-medium'>
-          {data?.fullName}
-        </span>
-        {context.user?.role && (
-          <span className='text-xs text-primary'>
-            {roleNames[context.user?.role]}
-          </span>
-        )}
-      </div>
-    </div>
-  )
+    return (
+        <div className='flex items-center space-x-2 lg:space-x-4'>
+            <Avatar className='h-full aspect-square border'>
+                <AvatarImage
+                    className='object-cover'
+                    src={data?.profilePicture ? data.profilePicture : undefined}
+                />
+                <AvatarFallback>
+                    {getNameShorthand(data?.fullName ? data.fullName : '')}
+                </AvatarFallback>
+            </Avatar>
+            <div className='flex flex-col'>
+                <span className='line-clamp-1 text-sm lg:text-base font-medium'>
+                    {data?.fullName}
+                </span>
+                {context.user?.role && (
+                    <span className='text-xs text-primary'>
+                        {roleNames[context.user?.role]}
+                    </span>
+                )}
+            </div>
+        </div>
+    )
 }
 
 function Loading() {
-  return (
-    <div className='flex items-center space-x-4'>
-      <Skeleton className='h-10 w-10 rounded-full' />
-      <div className='space-y-2'>
-        <Skeleton className='h-4 w-36' />
-        <Skeleton className='h-3 w-20' />
-      </div>
-    </div>
-  )
+    return (
+        <div className='flex items-center space-x-4'>
+            <Skeleton className='h-10 w-10 rounded-full' />
+            <div className='space-y-2'>
+                <Skeleton className='h-4 w-36' />
+                <Skeleton className='h-3 w-20' />
+            </div>
+        </div>
+    )
 }
 
 function Error() {
-  return (
-    <div className='flex text-destructive items-center gap-2 w-fit h-full p-2 rounded border border-destructive'>
-      <XOctagon />
-      Произошла ошибка
-    </div>
-  )
+    return (
+        <div className='flex text-destructive items-center gap-2 w-fit h-full p-2 rounded border border-destructive'>
+            <XOctagon />
+            Произошла ошибка
+        </div>
+    )
 }
