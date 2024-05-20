@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import AccountSettingsForm from '@/features/settings/components/account/AccountSettingsForm'
 import GeneralSettingsForm from '@/features/settings/components/general/GeneralSettingsForm'
 import UpdatePasswordForm from '@/features/settings/components/password/UpdatePasswordForm'
+import SoleProprietorInfoSettingsForm from '@/features/settings/components/sole-proprietor-info/SoleProprietorInfoSettingsForm'
 import { useRouteContext } from '@tanstack/react-router'
 import { ReactElement } from 'react'
 
@@ -34,7 +35,7 @@ const tabs: {
         name: 'sole-proprietor-info',
         label: 'ФОП',
         onlyAdmin: true,
-        component: <></>,
+        component: <SoleProprietorInfoSettingsForm />,
     },
 ]
 

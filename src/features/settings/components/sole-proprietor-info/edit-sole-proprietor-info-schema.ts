@@ -11,6 +11,7 @@ const currentAccount = z.object({
             'Максимальная длина этого поля составляет 34 буквенно-цифровых символа'
         ),
     name: z.string().min(1, requiredField),
+    uuid: z.string().optional(),
 })
 
 export const editSoleProprietorInfoSchema = z.object({

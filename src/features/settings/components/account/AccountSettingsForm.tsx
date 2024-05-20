@@ -242,9 +242,8 @@ const ProfilePictureInput = ({
     const compressImage = async (file: File): Promise<File> => {
         const options = {
             maxSizeMB: 0.1,
-            maxWidthOrHeight: 500,
+            maxWidthOrHeight: 200,
             useWebWorker: true,
-            initialQuality: 0.1,
         }
         try {
             const compressedFile = await imageCompression(file, options)
