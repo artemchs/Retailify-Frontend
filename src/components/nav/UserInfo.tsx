@@ -27,7 +27,7 @@ export default function UserInfo() {
                 </AvatarFallback>
             </Avatar>
             <div className='flex flex-col'>
-                <span className='line-clamp-1 text-sm lg:text-base font-medium'>
+                <span className='truncate max-w-40 2xl:max-w-44 text-sm lg:text-base font-medium'>
                     {data?.fullName}
                 </span>
                 {context.user?.role && (
