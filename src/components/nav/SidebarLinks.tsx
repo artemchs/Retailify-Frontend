@@ -4,6 +4,7 @@ import {
     Factory,
     GitCompareArrows,
     Home,
+    Landmark,
     LayoutList,
     List,
     PackagePlus,
@@ -97,6 +98,13 @@ export default function SidebarLinks() {
                 />
             </Section>
             <Section>
+                <SidebarLink
+                    Icon={Landmark}
+                    to='/financial-transactions'
+                    cashier={false}
+                    ecommerceManager={false}
+                    text='Финансовые операции'
+                />
                 <SidebarLink
                     Icon={Store}
                     to='/points-of-sale'

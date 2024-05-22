@@ -24,43 +24,11 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 import { ArrowDown, ArrowUp } from 'lucide-react'
+import { financialTransactionTypes } from '../../shared/constants'
 
 type Props = {
     setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
-
-const financialTransactionTypes = [
-    {
-        label: 'Снятие денег из кассы',
-        value: 'CASH_REGISTER_WITHDRAWAL',
-        direction: 'CREDIT',
-    },
-    {
-        label: 'Оплата заказа',
-        value: 'ORDER_PAYMENT',
-        direction: 'DEBIT',
-    },
-    {
-        label: 'Возврат заказа',
-        value: 'ORDER_REFUND',
-        direction: 'CREDIT',
-    },
-    {
-        label: 'Оплата поставщику',
-        value: 'SUPPLIER_PAYMENT',
-        direction: 'CREDIT',
-    },
-    {
-        label: 'Выплата зарплаты',
-        value: 'SALARY_PAYMENT',
-        direction: 'CREDIT',
-    },
-    {
-        label: 'Внесение денег в кассу',
-        value: 'CASH_REGISTER_DEPOSIT',
-        direction: 'DEBIT',
-    },
-]
 
 export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
     const form = useForm<z.infer<typeof createFinancialTransactionFormSchema>>({
@@ -148,12 +116,15 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
                                                     key={value}
                                                     value={value}
                                                 >
-                                                    {direction === 'CREDIT' ? (
-                                                        <ArrowUp className='h-4 w-4 mr-2 text-destructive' />
-                                                    ) : (
-                                                        <ArrowDown className='h-4 w-4 mr-2 text-primary' />
-                                                    )}
-                                                    {label}
+                                                    <div className='flex gap-2 items-center justify-between'>
+                                                        <span>{label}</span>
+                                                        {direction ===
+                                                        'CREDIT' ? (
+                                                            <ArrowUp className='h-4 w-4 text-destructive' />
+                                                        ) : (
+                                                            <ArrowDown className='h-4 w-4 text-primary' />
+                                                        )}
+                                                    </div>
                                                 </SelectItem>
                                             )
                                         )}

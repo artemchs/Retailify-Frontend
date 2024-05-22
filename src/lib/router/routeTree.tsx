@@ -46,6 +46,8 @@ import { findAllCustomerSchema } from '@/features/customers/types/find-all-custo
 import ProductVariantsPage from '@/pages/ProductVariants'
 import { variantsSearchParamsSchema } from '@/features/products/variants/types/findAll-variants-search-params'
 import { Settings } from '@/pages/Settings'
+import FinancialTransactionsPage from '@/pages/FinancialTransactions'
+import { financialTransactionsSearchParams } from '@/features/financial-transactions/types/financial-transactions-search-params'
 
 interface RouteContext {
     user?: AccessTokenData
@@ -268,6 +270,14 @@ export const settingsRoute = createRoute({
     path: '/settings',
 })
 
+export const financialTransactionsRoute = createRoute({
+    getParentRoute: () => layout,
+    component: FinancialTransactionsPage,
+    path: '/financial-transactions',
+    validateSearch: (search) => financialTransactionsSearchParams.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+})
+
 export const routeTree = rootRoute.addChildren([
     layout.addChildren([
         homeRoute,
@@ -290,6 +300,7 @@ export const routeTree = rootRoute.addChildren([
         customerRoute,
         productVariantsRoute,
         settingsRoute,
+        financialTransactionsRoute,
     ]),
     authRoute.addChildren([logInRoute, signUpRoute]),
 ])

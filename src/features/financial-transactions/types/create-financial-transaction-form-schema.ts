@@ -12,9 +12,11 @@ export const createFinancialTransactionFormSchema = z.object({
     type: z.enum(financialTransactionType, {
         required_error: requiredField,
     }),
-    direction: z.enum(financialTransactionDirection, {
-        required_error: requiredField,
-    }),
+    direction: z
+        .enum(financialTransactionDirection, {
+            required_error: requiredField,
+        })
+        .optional(),
     shiftId: z.string().optional(),
     orderInvoiceId: z.string().optional(),
     refundId: z.string().optional(),

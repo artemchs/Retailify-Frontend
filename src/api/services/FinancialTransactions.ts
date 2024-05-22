@@ -10,6 +10,7 @@ import { queryClient } from '@/lib/query-client/tanstack-query-client'
 import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { FinancialTransactionsSearchParams } from '@/features/financial-transactions/types/financial-transactions-search-params'
+import { FindAllInfo } from '@/types/FindAllInfo'
 
 const MUTATION_KEYS = {
     CREATE: 'create-financial-transaction',
@@ -19,7 +20,7 @@ const MUTATION_KEYS = {
 
 export type FinancialTransactionsFindAll = {
     items: FinancialTransactionFindAll[]
-    nextCursor?: string
+    info: FindAllInfo
 }
 
 export default {
