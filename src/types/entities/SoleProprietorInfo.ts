@@ -12,6 +12,9 @@ export type SoleProprietorInfo =
           id: string
           createdAt: Date
           updatedAt: Date
-          tin: number | null
+          tin: string | null
+          taxAddress: string | null
+          phoneNumber: string | null
+          taxGroup: string | null
       })
     | null

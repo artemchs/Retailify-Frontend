@@ -15,8 +15,11 @@ const currentAccount = z.object({
 })
 
 export const editSoleProprietorInfoSchema = z.object({
-    tin: z.coerce.number().optional(),
+    tin: z.coerce.number(),
     currentAccounts: z.array(currentAccount).optional(),
+    taxAddress: z.string().optional(),
+    taxGroup: z.string().optional(),
+    phoneNumber: z.string().optional(),
 })
 
 export type EditSoleProprietorInfoCurrentAccountSchema = z.infer<

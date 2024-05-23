@@ -36,9 +36,10 @@ import {
     TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { Plus, X } from 'lucide-react'
 import { v4 as uuidv4 } from 'uuid'
 import { SoleProprietorInfo } from '@/types/entities/SoleProprietorInfo'
+import PhoneNumberInput from '@/components/forms/PhoneNumberInput'
 
 export default function SoleProprietorInfoSettingsForm() {
     const { data, isLoading, isError } = SoleProprietorInformation.useFindOne()
@@ -76,7 +77,10 @@ const SoleProprietorForm = ({ data }: { data?: SoleProprietorInfo }) => {
                 name: obj.name,
                 uuid: uuidv4(),
             })),
-            tin: data?.tin ?? undefined,
+            tin: data?.tin ? parseInt(data.tin) : undefined,
+            phoneNumber: data?.phoneNumber ?? undefined,
+            taxAddress: data?.taxAddress ?? undefined,
+            taxGroup: data?.taxGroup ?? undefined,
         },
     })
 
@@ -136,6 +140,56 @@ const SoleProprietorForm = ({ data }: { data?: SoleProprietorInfo }) => {
                     />
                     <FormField
                         control={form.control}
+                        name='taxAddress'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Адрес регистрации:</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder='Ваш адрес регистрации'
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='taxGroup'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Группа налогообложения:</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder='Выша группа налогообложения'
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='phoneNumber'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Номер телефона:</FormLabel>
+                                <FormControl>
+                                    <PhoneNumberInput
+                                        field={field}
+                                        form={form}
+                                        fieldName='phoneNumber'
+                                        placeholder='Номер телефона'
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
                         name='currentAccounts'
                         render={({ field }) => (
                             <FormItem>
@@ -185,6 +239,11 @@ const CurrentAccountsTable = ({
         setCurrentAccounts(newValues)
     }
 
+    const handleRemoveItem = (index: number) => {
+        const newValues = [...currentAccounts.filter((_, i) => i !== index)]
+        setCurrentAccounts(newValues)
+    }
+
     const handleAddAccount = () => {
         if (
             !currentAccounts ||
@@ -205,6 +264,7 @@ const CurrentAccountsTable = ({
                 <TableRow>
                     <TableHead>Название</TableHead>
                     <TableHead>IBAN</TableHead>
+                    <TableHead className='w-8'></TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -226,12 +286,27 @@ const CurrentAccountsTable = ({
                                 }
                             />
                         </TableCell>
+                        <TableCell>
+                            <div className='flex justify-end items-center'>
+                                <Button
+                                    type='button'
+                                    size='icon'
+                                    className='h-8 w-8'
+                                    variant='secondary'
+                                    onClick={() => {
+                                        handleRemoveItem(i)
+                                    }}
+                                >
+                                    <X className='h-4 w-4' />
+                                </Button>
+                            </div>
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
             <TableFooter>
                 <TableRow>
-                    <TableCell colSpan={2}>
+                    <TableCell colSpan={3}>
                         <div className='flex justify-center items-center'>
                             <Button
                                 variant='outline'
