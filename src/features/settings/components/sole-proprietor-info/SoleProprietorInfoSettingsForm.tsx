@@ -126,6 +126,7 @@ const SoleProprietorForm = ({ data }: { data?: SoleProprietorInfo }) => {
                                 <FormControl>
                                     <Input
                                         {...field}
+                                        type='number'
                                         placeholder='Ваш идентификационный номер налогоплательщика'
                                     />
                                 </FormControl>

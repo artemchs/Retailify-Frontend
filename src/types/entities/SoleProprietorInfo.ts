@@ -12,6 +12,6 @@ export type SoleProprietorInfo =
           id: string
           createdAt: Date
           updatedAt: Date
-          tin: string | null
+          tin: number | null
       })
     | null

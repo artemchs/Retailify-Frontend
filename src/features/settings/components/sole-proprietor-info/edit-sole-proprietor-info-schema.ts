@@ -15,7 +15,7 @@ const currentAccount = z.object({
 })
 
 export const editSoleProprietorInfoSchema = z.object({
-    tin: z.string().optional(),
+    tin: z.coerce.number().optional(),
     currentAccounts: z.array(currentAccount).optional(),
 })
 
