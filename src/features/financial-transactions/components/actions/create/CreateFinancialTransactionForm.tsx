@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/select'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { financialTransactionTypes } from '../../shared/constants'
+import { DatePickerWithPresets } from '@/components/ui/date-picker'
 
 type Props = {
     setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -36,6 +37,7 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
         defaultValues: {
             amount: 0,
             type: 'CASH_REGISTER_WITHDRAWAL',
+            date: new Date(),
         },
     })
 
@@ -81,6 +83,23 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
                     className='flex flex-col gap-4'
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
+                    <FormField
+                        control={form.control}
+                        name='date'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabelForRequiredFields text='Дата' />
+                                <FormControl>
+                                    <DatePickerWithPresets
+                                        fieldName='date'
+                                        field={field}
+                                        form={form}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <FormField
                         control={form.control}
                         name='amount'

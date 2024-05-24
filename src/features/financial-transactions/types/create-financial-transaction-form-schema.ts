@@ -20,6 +20,7 @@ export const createFinancialTransactionFormSchema = z.object({
     shiftId: z.string().optional(),
     orderInvoiceId: z.string().optional(),
     refundId: z.string().optional(),
+    date: z.date({ required_error: requiredField }),
 })
 
 export type CreateFinancialTransactionFormSchema = z.infer<
