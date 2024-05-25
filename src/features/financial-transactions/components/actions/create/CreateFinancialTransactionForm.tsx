@@ -7,6 +7,7 @@ import {
     FormControl,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from '@/components/ui/form'
 import { AlertDestructive } from '@/components/AlertDestructive'
@@ -16,16 +17,10 @@ import { Input } from '@/components/ui/input'
 import SaveButton from '@/components/forms/SaveButton'
 import { createFinancialTransactionFormSchema } from '@/features/financial-transactions/types/create-financial-transaction-form-schema'
 import FinancialTransactions from '@/api/services/FinancialTransactions'
-import {
-    SelectItem,
-    Select,
-    SelectContent,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select'
-import { ArrowDown, ArrowUp } from 'lucide-react'
-import { financialTransactionTypes } from '../../shared/constants'
 import { DatePickerWithPresets } from '@/components/ui/date-picker'
+import SelectOperationType from './SelectOperationType'
+import { Textarea } from '@/components/ui/textarea'
+import SelectPayee from './SelectPayee'
 
 type Props = {
     setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -36,8 +31,8 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
         resolver: zodResolver(createFinancialTransactionFormSchema),
         defaultValues: {
             amount: 0,
-            type: 'CASH_REGISTER_WITHDRAWAL',
             date: new Date(),
+            type: 'SUPPLIER_PAYMENT',
         },
     })
 
@@ -62,15 +57,9 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
     function onSubmit(
         values: z.infer<typeof createFinancialTransactionFormSchema>
     ) {
-        const direction = financialTransactionTypes.find(
-            (obj) => obj.value === values.type
-        )?.direction as 'CREDIT' | 'DEBIT' | undefined
-
-        if (direction) {
-            mutate({
-                body: { ...values, direction },
-            })
-        }
+        mutate({
+            body: values,
+        })
     }
 
     return (
@@ -118,37 +107,24 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
                         name='type'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabelForRequiredFields text='Тип транзакции' />
-                                <Select
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
-                                >
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder='Выберите тип финансовой транзакции' />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {financialTransactionTypes.map(
-                                            ({ direction, label, value }) => (
-                                                <SelectItem
-                                                    key={value}
-                                                    value={value}
-                                                >
-                                                    <div className='flex gap-2 items-center justify-between'>
-                                                        <span>{label}</span>
-                                                        {direction ===
-                                                        'CREDIT' ? (
-                                                            <ArrowUp className='h-4 w-4 text-destructive' />
-                                                        ) : (
-                                                            <ArrowDown className='h-4 w-4 text-primary' />
-                                                        )}
-                                                    </div>
-                                                </SelectItem>
-                                            )
-                                        )}
-                                    </SelectContent>
-                                </Select>
+                                <FormLabelForRequiredFields text='Тип' />
+                                <FormControl>
+                                    <SelectOperationType field={field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <SelectPayee form={form} />
+                    <FormField
+                        control={form.control}
+                        name='comment'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Комментарий:</FormLabel>
+                                <FormControl>
+                                    <Textarea {...field} />
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}

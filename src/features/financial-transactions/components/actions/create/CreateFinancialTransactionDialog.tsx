@@ -18,14 +18,12 @@ export default function CreateFinancialTransactionDialog() {
             <DialogTrigger asChild>
                 <Button className='w-full'>
                     <Plus className='h-4 w-4 mr-2' />
-                    Создать транзакцию
+                    Создать финансовую операцию
                 </Button>
             </DialogTrigger>
             <DialogContent className='max-h-[90%] overflow-y-auto'>
                 <DialogHeader>
-                    <DialogTitle>
-                        Создать новую финансовую транзакцию
-                    </DialogTitle>
+                    <DialogTitle>Создать новую финансовую операцию</DialogTitle>
                 </DialogHeader>
                 <CreateFinancialTransactionForm setIsOpened={setIsOpened} />
             </DialogContent>
