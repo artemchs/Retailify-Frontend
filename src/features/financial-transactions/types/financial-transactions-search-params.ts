@@ -28,7 +28,7 @@ export const financialTransactionsSearchParams = z.object({
     orderBy: z
         .object({
             amount: z.enum(['asc', 'desc']).optional(),
-            createdAt: z.enum(['asc', 'desc']).optional(),
+            date: z.enum(['asc', 'desc']).optional(),
         })
         .optional(),
 })

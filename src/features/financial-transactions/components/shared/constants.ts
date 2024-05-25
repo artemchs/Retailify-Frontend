@@ -29,6 +29,11 @@ export const financialTransactionTypes = [
         value: 'CASH_REGISTER_DEPOSIT',
         direction: 'DEBIT',
     },
+    {
+        label: 'Другое',
+        value: 'OTHER',
+        direction: 'CREDIT',
+    },
 ]
 
 export const financialTransactionDirections = [

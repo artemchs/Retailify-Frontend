@@ -5,6 +5,7 @@ export const financialTransactionType = [
     'SUPPLIER_PAYMENT',
     'SALARY_PAYMENT',
     'CASH_REGISTER_DEPOSIT',
+    'OTHER',
 ] as const
 
 export const financialTransactionDirection = ['DEBIT', 'CREDIT'] as const
@@ -13,15 +14,19 @@ export type FinancialTransaction = {
     id: string
     createdAt: Date
     updatedAt: Date
+    date: Date
     amount: string
     type: (typeof financialTransactionType)[number]
     direction: (typeof financialTransactionDirection)[number]
+    comment: string | null
     shiftId: string | null
     orderInvoiceId: string | null
     refundId: string | null
+    customOperationId: string | null
+    supplierId: string | null
 }
 
-export type FinancialTransactionFindAll = {
+export interface FinancialTransactionFindAll extends FinancialTransaction {
     orderInvoice: {
         id: string
         createdAt: Date
@@ -50,19 +55,10 @@ export type FinancialTransactionFindAll = {
         startingCashBalance: string
         isOpened: boolean
     } | null
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    amount: string
-    type:
-        | 'CASH_REGISTER_WITHDRAWAL'
-        | 'ORDER_PAYMENT'
-        | 'ORDER_REFUND'
-        | 'SUPPLIER_PAYMENT'
-        | 'SALARY_PAYMENT'
-        | 'CASH_REGISTER_DEPOSIT'
-    direction: 'DEBIT' | 'CREDIT'
-    shiftId: string | null
-    orderInvoiceId: string | null
-    refundId: string | null
+    customOperation: {
+        id: string
+        createdAt: Date
+        updatedAt: Date
+        name: string
+    } | null
 }

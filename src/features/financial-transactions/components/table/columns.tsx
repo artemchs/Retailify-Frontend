@@ -3,8 +3,25 @@ import { CurrencyFormatter, DateFormatter } from '@/components/ui/units'
 import { FinancialTransactionFindAll } from '@/types/entities/FinancialTransaction'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowDown, ArrowUp } from 'lucide-react'
+import ViewComment from './ViewComment'
+import { financialTransactionTypes } from '../shared/constants'
 
 export const columns: ColumnDef<FinancialTransactionFindAll>[] = [
+    {
+        id: 'Дата',
+        header: () => (
+            <SortableDataTableHeader
+                label='Дата'
+                orderByProperty='date'
+                routeId='/layout/financial-transactions'
+            />
+        ),
+        cell: ({ row }) => {
+            const { date } = row.original
+
+            return <DateFormatter date={date} withPreciseTime />
+        },
+    },
     {
         id: 'Сумма',
         header: () => (
@@ -17,10 +34,10 @@ export const columns: ColumnDef<FinancialTransactionFindAll>[] = [
         cell: ({ row }) => {
             const amount = parseFloat(row.original.amount)
             const icon =
-                row.original.direction === 'CREDIT' ? (
-                    <ArrowUp className='h-4 w-4 mr-2 text-destructive' />
+                row.original.direction === 'DEBIT' ? (
+                    <ArrowUp className='h-4 w-4 mr-2 text-green-600' />
                 ) : (
-                    <ArrowDown className='h-4 w-4 mr-2 text-primary' />
+                    <ArrowDown className='h-4 w-4 mr-2 text-destructive' />
                 )
 
             return (
@@ -32,18 +49,33 @@ export const columns: ColumnDef<FinancialTransactionFindAll>[] = [
         },
     },
     {
-        id: 'Дата',
-        header: () => (
-            <SortableDataTableHeader
-                label='Дата'
-                orderByProperty='createdAt'
-                routeId='/layout/financial-transactions'
-            />
-        ),
+        id: 'Описание',
+        header: 'Описание',
         cell: ({ row }) => {
-            const { createdAt } = row.original
+            const { type, customOperation } = row.original
 
-            return <DateFormatter date={createdAt} withPreciseTime />
+            if (type !== 'OTHER') {
+                return (
+                    <span>
+                        {
+                            financialTransactionTypes.find(
+                                (obj) => obj.value === type
+                            )?.label
+                        }
+                    </span>
+                )
+            } else {
+                return <span>{customOperation?.name}</span>
+            }
+        },
+    },
+    {
+        id: 'Комметнарий',
+        header: 'Комметнарий',
+        cell: ({ row }) => {
+            const { comment } = row.original
+
+            return <ViewComment comment={comment} />
         },
     },
 ]
