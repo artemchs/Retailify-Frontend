@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import ViewComment from './ViewComment'
 import { financialTransactionTypes } from '../shared/constants'
+import FinancialTransactionActions from './FinancialTransactionActions'
 
 export const columns: ColumnDef<FinancialTransactionFindAll>[] = [
     {
@@ -77,5 +78,15 @@ export const columns: ColumnDef<FinancialTransactionFindAll>[] = [
 
             return <ViewComment comment={comment} />
         },
+    },
+    {
+        id: 'actions',
+        cell: ({ row }) => {
+            const { id, isManual } = row.original
+
+            return <FinancialTransactionActions id={id} isManual={isManual} />
+        },
+        enableSorting: false,
+        enableHiding: false,
     },
 ]

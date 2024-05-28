@@ -11,11 +11,13 @@ import { AxiosError } from 'axios'
 import onErrorHandler from './utils/onErrorHandler'
 import { FinancialTransactionsSearchParams } from '@/features/financial-transactions/types/financial-transactions-search-params'
 import { FindAllInfo } from '@/types/FindAllInfo'
+import { EditFinancialTransactionFormSchema } from '@/features/financial-transactions/types/edit-financial-transaction-form-schema'
 
 const MUTATION_KEYS = {
     CREATE: 'create-financial-transaction',
     FIND_ONE: 'financial-transaction',
     FIND_ALL: 'financial-transactions',
+    EDIT: 'edit-financial-transaction',
 }
 
 export type FinancialTransactionsFindAll = {
@@ -73,5 +75,36 @@ export default {
                 )
                 return data as FinancialTransaction
             },
+        }),
+
+    useEdit: ({
+        setErrorMessage,
+        onSuccess,
+        id,
+    }: {
+        setErrorMessage: SetErrorMessage
+        onSuccess: (data: FinancialTransaction) => void
+        id: string
+    }) =>
+        useMutation({
+            mutationKey: ['edit-product'],
+            mutationFn: async ({
+                body,
+            }: {
+                body: EditFinancialTransactionFormSchema
+            }) => {
+                return await client.put(`/financial-transactions/${id}`, body)
+            },
+            onSuccess: ({ data }) => {
+                queryClient.invalidateQueries({
+                    queryKey: [MUTATION_KEYS.FIND_ALL],
+                })
+                queryClient.invalidateQueries({
+                    queryKey: [MUTATION_KEYS.FIND_ONE, { id }],
+                })
+                onSuccess(data)
+            },
+            onError: (error: AxiosError) =>
+                onErrorHandler({ error, setErrorMessage }),
         }),
 }

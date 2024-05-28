@@ -24,6 +24,7 @@ export type FinancialTransaction = {
     refundId: string | null
     customOperationId: string | null
     supplierId: string | null
+    isManual: boolean
 }
 
 export interface FinancialTransactionFindAll extends FinancialTransaction {

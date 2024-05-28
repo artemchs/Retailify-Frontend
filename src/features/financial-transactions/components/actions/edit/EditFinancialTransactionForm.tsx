@@ -15,24 +15,44 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
 import { Input } from '@/components/ui/input'
 import SaveButton from '@/components/forms/SaveButton'
-import { createFinancialTransactionFormSchema } from '@/features/financial-transactions/types/create-financial-transaction-form-schema'
 import FinancialTransactions from '@/api/services/FinancialTransactions'
 import { DatePickerWithPresets } from '@/components/ui/date-picker'
 import SelectOperationType from '../../shared/SelectOperationType'
 import { Textarea } from '@/components/ui/textarea'
 import SelectPayee from '../../shared/SelectPayee'
+import { editFinancialTransactionFormSchema } from '@/features/financial-transactions/types/edit-financial-transaction-form-schema'
+import { FinancialTransaction } from '@/types/entities/FinancialTransaction'
+import AsyncInput from '@/components/forms/AsyncInput'
 
 type Props = {
     setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
+    data?: FinancialTransaction
+    isLoading: boolean
+    isError: boolean
+    id: string
 }
 
-export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
-    const form = useForm<z.infer<typeof createFinancialTransactionFormSchema>>({
-        resolver: zodResolver(createFinancialTransactionFormSchema),
+export default function EditFinancialTransactionForm({
+    setIsOpened,
+    data,
+    isError,
+    isLoading,
+    id,
+}: Props) {
+    const form = useForm<z.infer<typeof editFinancialTransactionFormSchema>>({
+        resolver: zodResolver(editFinancialTransactionFormSchema),
         defaultValues: {
-            amount: 0,
-            date: new Date(),
-            type: 'SUPPLIER_PAYMENT',
+            amount: data?.amount ? parseFloat(data?.amount) : undefined,
+            comment: data?.comment ?? undefined,
+            customOperationId: data?.customOperationId ?? undefined,
+            date: data?.date ? new Date(data.date) : new Date(),
+            supplierId: data?.supplierId ?? undefined,
+            type:
+                data?.type === 'SUPPLIER_PAYMENT'
+                    ? 'SUPPLIER_PAYMENT'
+                    : data?.type === 'OTHER'
+                    ? 'OTHER'
+                    : undefined,
         },
     })
 
@@ -49,13 +69,14 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
     }
 
     const [errorMessage, setErrorMessage] = useState('')
-    const { mutate, isPending } = FinancialTransactions.useCreate({
+    const { mutate, isPending } = FinancialTransactions.useEdit({
         setErrorMessage,
         onSuccess,
+        id,
     })
 
     function onSubmit(
-        values: z.infer<typeof createFinancialTransactionFormSchema>
+        values: z.infer<typeof editFinancialTransactionFormSchema>
     ) {
         mutate({
             body: values,
@@ -79,10 +100,16 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
                             <FormItem>
                                 <FormLabelForRequiredFields text='Дата' />
                                 <FormControl>
-                                    <DatePickerWithPresets
-                                        fieldName='date'
-                                        field={field}
-                                        form={form}
+                                    <AsyncInput
+                                        input={
+                                            <DatePickerWithPresets
+                                                fieldName='date'
+                                                field={field}
+                                                form={form}
+                                            />
+                                        }
+                                        isError={isError}
+                                        isLoading={isLoading}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -96,7 +123,13 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
                             <FormItem>
                                 <FormLabelForRequiredFields text='Сумма' />
                                 <FormControl>
-                                    <Input type='number' {...field} />
+                                    <AsyncInput
+                                        input={
+                                            <Input type='number' {...field} />
+                                        }
+                                        isError={isError}
+                                        isLoading={isLoading}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -109,7 +142,16 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
                             <FormItem>
                                 <FormLabelForRequiredFields text='Тип' />
                                 <FormControl>
-                                    <SelectOperationType field={field} />
+                                    <AsyncInput
+                                        input={
+                                            <SelectOperationType
+                                                field={field}
+                                            />
+                                        }
+                                        isError={isError}
+                                        isLoading={isLoading}
+                                        heightClassName='h-20'
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -123,7 +165,11 @@ export default function CreateFinancialTransactionForm({ setIsOpened }: Props) {
                             <FormItem>
                                 <FormLabel>Комментарий:</FormLabel>
                                 <FormControl>
-                                    <Textarea {...field} />
+                                    <AsyncInput
+                                        input={<Textarea {...field} />}
+                                        isError={isError}
+                                        isLoading={isLoading}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
