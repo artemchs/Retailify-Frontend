@@ -58,7 +58,7 @@ export default function EditFinancialTransactionForm({
 
     function onSuccess() {
         setIsOpened(false)
-        toast('Новая финансовая транзакция успешно создана.', {
+        toast('Финансовая транзакция успешно отредактирована.', {
             cancel: {
                 label: 'Ок',
                 onClick() {

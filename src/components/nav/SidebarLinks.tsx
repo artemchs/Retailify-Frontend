@@ -1,6 +1,7 @@
 import { Link, useRouteContext } from '@tanstack/react-router'
 import {
     BookText,
+    DollarSign,
     Factory,
     GitCompareArrows,
     Home,
@@ -28,6 +29,15 @@ export default function SidebarLinks() {
                     cashier={true}
                     ecommerceManager={true}
                     text='Главная'
+                />
+            </Section>
+            <Section>
+                <SidebarLink
+                    Icon={DollarSign}
+                    to='/orders'
+                    cashier={false}
+                    ecommerceManager={false}
+                    text='Заказы и продажи'
                 />
             </Section>
             <Section>

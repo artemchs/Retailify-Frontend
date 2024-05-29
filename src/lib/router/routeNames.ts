@@ -19,4 +19,5 @@ export default {
     '/product-variants': 'Список товаров',
     '/settings': 'Настройки',
     '/financial-transactions': 'Финансовые операции',
+    '/orders': 'Заказы и продажи',
 }
