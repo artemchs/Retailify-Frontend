@@ -20,4 +20,5 @@ export default {
     '/settings': 'Настройки',
     '/financial-transactions': 'Финансовые операции',
     '/orders': 'Заказы и продажи',
+    '/refunds': 'Возвраты',
 }

@@ -13,6 +13,7 @@ import {
     Shapes,
     Store,
     Triangle,
+    Undo2,
     User,
     Users,
     Warehouse,
@@ -38,6 +39,13 @@ export default function SidebarLinks() {
                     cashier={false}
                     ecommerceManager={false}
                     text='Заказы и продажи'
+                />
+                <SidebarLink
+                    Icon={Undo2}
+                    to='/refunds'
+                    cashier={false}
+                    ecommerceManager={false}
+                    text='Возвраты'
                 />
             </Section>
             <Section>

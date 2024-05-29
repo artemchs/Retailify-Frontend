@@ -50,6 +50,8 @@ import FinancialTransactionsPage from '@/pages/FinancialTransactions'
 import { financialTransactionsSearchParams } from '@/features/financial-transactions/types/financial-transactions-search-params'
 import OrdersPage from '@/pages/Orders'
 import { findAllCashRegisterOrderSeachParamsSchema } from '@/features/cash-register/types/findAll-cash-register-order-search-params-schema'
+import RefundsPage from '@/pages/Refunds'
+import { findAllRefundSchema } from '@/features/refunds/types/findAll-refund-schema'
 
 interface RouteContext {
     user?: AccessTokenData
@@ -289,6 +291,14 @@ export const ordersRoute = createRoute({
     beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
 })
 
+export const refundsRoute = createRoute({
+    getParentRoute: () => layout,
+    component: RefundsPage,
+    path: '/refunds',
+    validateSearch: (search) => findAllRefundSchema.parse(search),
+    beforeLoad: ({ context }) => beforeLoadRole(context, ['ADMIN']),
+})
+
 export const routeTree = rootRoute.addChildren([
     layout.addChildren([
         homeRoute,
@@ -313,6 +323,7 @@ export const routeTree = rootRoute.addChildren([
         settingsRoute,
         financialTransactionsRoute,
         ordersRoute,
+        refundsRoute,
     ]),
     authRoute.addChildren([logInRoute, signUpRoute]),
 ])
