@@ -30,7 +30,7 @@ import { z } from 'zod'
 type Props = {
   id: string
   data: FullOrder
-  shiftId: string
+  shiftId?: string
 }
 
 export default function CreateRefundDialog({ id, data, shiftId }: Props) {

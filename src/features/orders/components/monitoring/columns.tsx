@@ -1,7 +1,9 @@
+import { Button } from '@/components/ui/button'
 import SortableDataTableHeader from '@/components/ui/sortable-data-table-header'
 import { CurrencyFormatter, DateFormatter } from '@/components/ui/units'
 import { Order } from '@/types/entities/Order'
 import { ColumnDef } from '@tanstack/react-table'
+import CashierOrderDialog from '../cash-register/CashierOrderDialog'
 
 export const columns: ColumnDef<Order>[] = [
     {
@@ -14,7 +16,16 @@ export const columns: ColumnDef<Order>[] = [
             />
         ),
         cell: ({ row }) => {
-            return <span className='font-medium'>{row.original.name}</span>
+            return (
+                <CashierOrderDialog
+                    id={row.original.id}
+                    trigger={
+                        <Button variant='link' className='font-medium'>
+                            {row.original.name}
+                        </Button>
+                    }
+                />
+            )
         },
     },
     {

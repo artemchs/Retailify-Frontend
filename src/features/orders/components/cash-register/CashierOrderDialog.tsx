@@ -14,7 +14,7 @@ import CreateRefundDialog from '../../../refunds/components/actions/create/Creat
 type Props = {
     trigger: ReactNode
     id: string
-    shiftId: string
+    shiftId?: string
 }
 
 export default function CashierOrderDialog({ id, trigger, shiftId }: Props) {
