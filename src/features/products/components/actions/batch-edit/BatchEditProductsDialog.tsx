@@ -24,7 +24,7 @@ const BatchEditProductsDialog = ({ ids }: BatchEditProductsDialogProps) => {
                     <Edit className='h-4 w-4' />
                 </Button>
             </DialogTrigger>
-            <DialogContent className='max-h-[90%] overflow-auto'>
+            <DialogContent className='max-h-[90%] overflow-auto max-w-screen-xl'>
                 <DialogHeader>
                     <DialogTitle>
                         Массовое редактирование моделей товара

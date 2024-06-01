@@ -8,7 +8,7 @@ import TableRow from '@tiptap/extension-table-row'
 import Toolbar from './Toolbar'
 
 type Props = {
-  content: string
+  content?: string
   setContent: (newValue: string) => void
 }
 

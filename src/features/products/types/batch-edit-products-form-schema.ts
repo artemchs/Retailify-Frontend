@@ -1,7 +1,35 @@
 import { requiredField } from '@/utils/zodErrorMessages'
 import { z } from 'zod'
 
+const mediaSchema = z
+    .array(
+        z.object({
+            id: z.string(),
+            index: z.number(),
+        })
+    )
+    .optional()
+
+const characteristicsSchema = z.array(
+    z.object({
+        id: z.string(),
+        name: z.string(),
+        values: z.array(
+            z.object({
+                id: z.string(),
+                value: z.string(),
+            })
+        ),
+    })
+)
+
+const tagsSchema = z.array(z.object({ id: z.string() })).optional()
+
 export const batchEditProductsFormSchema = z.object({
+    description: z.string().optional(),
+    tags: tagsSchema,
+    media: mediaSchema,
+    characteristics: characteristicsSchema,
     brandId: z.string().optional(),
     categoryId: z.string().optional(),
     supplierSku: z.string().optional(),

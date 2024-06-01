@@ -41,31 +41,46 @@ export const columns: ColumnDef<ProductFindAll>[] = [
         },
     },
     {
-        id: 'Артикул',
+        id: 'Артикул магазин',
         header: () => (
             <SortableDataTableHeader
-                label='Артикул'
+                label='Артикул магазин'
                 orderByProperty='sku'
                 routeId='/layout/products'
             />
         ),
-        cell: ({ row }) => {
-            return (
-                <span className='text-muted-foreground'>
-                    {row.original.sku}
-                </span>
-            )
-        },
+        cell: ({ row }) => (
+            <span className='text-muted-foreground'>{row.original.sku}</span>
+        ),
+    },
+    {
+        id: 'Артикул родной',
+        header: () => (
+            <SortableDataTableHeader
+                label='Артикул родной'
+                orderByProperty='supplierSku'
+                routeId='/layout/products'
+            />
+        ),
+        cell: ({ row }) => (
+            <span className='text-muted-foreground'>
+                {row.original.supplierSku}
+            </span>
+        ),
     },
     {
         id: 'Теги',
         header: 'Теги',
         cell: ({ row }) => {
-            return row.original.tags && row.original.tags?.length >= 1 ? (
-                <Badge variant='secondary'>
-                    {row.original.tags.map(({ name }) => name).join(', ')}
-                </Badge>
-            ) : null
+            return (
+                <div className='flex gap-1 items-center'>
+                    {row.original.tags?.map(({ name, id }) => (
+                        <Badge key={id} variant='secondary'>
+                            <span className='text-nowrap'>{name}</span>
+                        </Badge>
+                    ))}
+                </div>
+            )
         },
     },
     {

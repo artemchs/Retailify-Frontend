@@ -21,6 +21,10 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import SelectGender from '../../shared/form/SelectGender'
 import SelectSeason from '../../shared/form/SelectSeason'
+import TextEditor from '../../shared/form/text-editor/TextEditor'
+import ProductTagsCombobox from '@/features/product-tags/components/shared/ProductTagsCombobox'
+import UploadMediaInput from '../../shared/form/media/UploadMediaInput'
+import CharacteristicsInput from '../../shared/form/characteristics/CharacteristicsInput'
 
 type Props = {
     ids: string[]
@@ -33,6 +37,9 @@ const BatchEditProductsForm = ({ ids, setIsOpened }: Props) => {
         defaultValues: {
             colors: [],
             productIds: ids,
+            tags: [],
+            media: [],
+            characteristics: [],
         },
     })
 
@@ -70,6 +77,63 @@ const BatchEditProductsForm = ({ ids, setIsOpened }: Props) => {
                     className='flex flex-col gap-4'
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
+                    <FormField
+                        control={form.control}
+                        name='media'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel htmlFor='mediaInput'>
+                                    Медиа:
+                                </FormLabel>
+                                <FormControl>
+                                    <UploadMediaInput
+                                        field={field}
+                                        form={form}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='description'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Описание:</FormLabel>
+                                <FormControl>
+                                    <TextEditor
+                                        content={field.value}
+                                        setContent={(newValue) =>
+                                            form.setValue(
+                                                'description',
+                                                newValue
+                                            )
+                                        }
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='tags'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    Дополнительные теги для модели товара:
+                                </FormLabel>
+                                <FormControl>
+                                    <ProductTagsCombobox
+                                        field={field}
+                                        form={form}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <FormField
                         control={form.control}
                         name='brandId'
@@ -143,6 +207,26 @@ const BatchEditProductsForm = ({ ids, setIsOpened }: Props) => {
                             <FormItem>
                                 <FormLabel>Сезон:</FormLabel>
                                 <SelectSeason field={field} />
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='characteristics'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    Характеристики модели товара:
+                                </FormLabel>
+                                <FormControl>
+                                    <CharacteristicsInput
+                                        control={form.control}
+                                        field={field}
+                                        form={form}
+                                        withCategory={false}
+                                    />
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
