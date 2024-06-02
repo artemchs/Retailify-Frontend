@@ -14,6 +14,7 @@ import { VariantsSearchParamsSchema } from '@/features/products/variants/types/f
 import { CreateVariantFormSchema } from '@/features/products/variants/types/create-variant-form-schema'
 import { EditVariantFormSchema } from '@/features/products/variants/types/edit-variant-form-schema'
 import { BatchEditProductsFormSchema } from '@/features/products/types/batch-edit-products-form-schema'
+import { BatchEditVariantsFormSchema } from '@/features/products/variants/types/batch-edit-variants-form-schema'
 
 export type ProductsFindAll = {
     items: ProductFindAll[]
@@ -377,6 +378,47 @@ export default {
                 })
                 queryClient.invalidateQueries({
                     queryKey: ['product-variants-infinite-list', { productId }],
+                })
+                queryClient.invalidateQueries({
+                    queryKey: ['products-infinite-list'],
+                })
+                onSuccess()
+            },
+            onError: (error: AxiosError) =>
+                onErrorHandler({ error, setErrorMessage }),
+        }),
+
+    useBatchEditVariants: ({
+        setErrorMessage,
+        onSuccess,
+    }: {
+        setErrorMessage: SetErrorMessage
+        onSuccess: OnSuccess
+    }) =>
+        useMutation({
+            mutationKey: ['edit-product-variant'],
+            mutationFn: async ({
+                body,
+            }: {
+                body: BatchEditVariantsFormSchema
+            }) => {
+                return await client.put(`/products/_/variants`, body)
+            },
+            onSuccess: () => {
+                queryClient.invalidateQueries({
+                    queryKey: ['products'],
+                })
+                queryClient.invalidateQueries({
+                    queryKey: ['product'],
+                })
+                queryClient.invalidateQueries({
+                    queryKey: ['product-variant'],
+                })
+                queryClient.invalidateQueries({
+                    queryKey: ['product-variants'],
+                })
+                queryClient.invalidateQueries({
+                    queryKey: ['product-variants-infinite-list'],
                 })
                 queryClient.invalidateQueries({
                     queryKey: ['products-infinite-list'],
