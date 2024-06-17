@@ -5,7 +5,7 @@ import axios from 'axios'
 const client = axios.create()
 
 client.defaults.baseURL =
-    import.meta.env.API_BASE_URL ?? 'http://localhost:8080/api  /system'
+    import.meta.env.API_BASE_URL ?? 'http://localhost:8080/api/system'
 
 client.defaults.timeout = 2000
 
