@@ -21,4 +21,6 @@ export default {
     '/financial-transactions': 'Финансовые операции',
     '/orders': 'Заказы и продажи',
     '/refunds': 'Возвраты',
+    '/import': 'Импорт',
+    '/export': 'Экспорт',
 }

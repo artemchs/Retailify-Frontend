@@ -3,8 +3,10 @@ import {
     BookText,
     DollarSign,
     Factory,
+    FileOutputIcon,
     GitCompareArrows,
     Home,
+    ImportIcon,
     Landmark,
     LayoutList,
     List,
@@ -46,6 +48,22 @@ export default function SidebarLinks() {
                     cashier={false}
                     ecommerceManager={false}
                     text='Возвраты'
+                />
+            </Section>
+            <Section>
+                <SidebarLink
+                    Icon={ImportIcon}
+                    to='/import'
+                    cashier={false}
+                    ecommerceManager={false}
+                    text='Импорт'
+                />
+                <SidebarLink
+                    Icon={FileOutputIcon}
+                    to='/export'
+                    cashier={false}
+                    ecommerceManager={false}
+                    text='Экспорт'
                 />
             </Section>
             <Section>
