@@ -1,4 +1,4 @@
-import Brands from '@/api/services/Brands'
+import ImportSource from '@/api/services/ImportSource'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import AlertDialogFooter from '@/components/dialogs/AlertDialogFooter'
 import {
@@ -13,7 +13,7 @@ import { Loader2, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export default function RemoveBrandAlertDialog({
+export default function RemoveImportSourceAlertDialog({
     id,
     setSelectedValue,
     selectedValue,
@@ -26,7 +26,7 @@ export default function RemoveBrandAlertDialog({
 
     function defaultOnSuccess() {
         setIsOpened(false)
-        toast('Бренд был успешно удален.', {
+        toast('Источник импорта был удален', {
             cancel: {
                 label: 'Ок',
                 onClick() {
@@ -40,7 +40,7 @@ export default function RemoveBrandAlertDialog({
     }
 
     const [errorMessage, setErrorMessage] = useState('')
-    const { mutate, isPending } = Brands.useRemove({
+    const { mutate, isPending } = ImportSource.useRemove({
         setErrorMessage,
         onSuccess: defaultOnSuccess,
         id,
@@ -55,11 +55,13 @@ export default function RemoveBrandAlertDialog({
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Удалить бренд</AlertDialogTitle>
+                    <AlertDialogTitle>
+                        Удалить источник импорта
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
-                        Подтверждая это действие, информация о бренде будет
-                        полностью удалена и вы больше не сможете ее
-                        восстановить.
+                        Подтверждая это действие, информация об источнике
+                        импорта будет полностью удалена и вы больше не сможете
+                        ее восстановить.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 {errorMessage && errorMessage.length >= 1 && (
@@ -75,7 +77,7 @@ export default function RemoveBrandAlertDialog({
                             ) : (
                                 <Trash2 className='h-4 w-4 mr-2' />
                             )}
-                            Удалить бренд
+                            Удалить источник импорта
                         </>
                     }
                     isPending={isPending}
