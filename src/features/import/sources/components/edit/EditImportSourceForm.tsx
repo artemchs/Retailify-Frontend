@@ -33,7 +33,7 @@ export default function EditImportSourceForm({
         resolver: zodResolver(editImportSourceSchema),
         defaultValues: {
             name: data?.name,
-            schema: data?.schema ? JSON.parse(data.schema) : [],
+            schema: data?.schema ?? [],
         },
     })
 

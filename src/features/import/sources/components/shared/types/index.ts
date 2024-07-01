@@ -1,4 +1,4 @@
-import { ProductFields } from '@/features/import/types'
+import { ProductFields } from '@/features/import/types/product-fields'
 import { UseFormReturn } from 'react-hook-form'
 
 export type Form = UseFormReturn<

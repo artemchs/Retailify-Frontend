@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 import { Form } from '../types'
-import { ProductFields } from '@/features/import/types'
-import { useFieldArray } from 'react-hook-form'
+import { useWatch } from 'react-hook-form'
 import AsyncInput from '@/components/forms/AsyncInput'
+import { ProductFields } from '@/features/import/types/product-fields'
 
 export default function AddFieldButton({
     form,
@@ -14,9 +14,9 @@ export default function AddFieldButton({
     isDataLoading?: boolean
     isDataError?: boolean
 }) {
-    const { fields } = useFieldArray({
-        name: 'schema',
+    const schema = useWatch({
         control: form.control,
+        name: 'schema',
     })
 
     return (
@@ -25,16 +25,16 @@ export default function AddFieldButton({
                 <Button
                     type='button'
                     variant='outline'
-                    onClick={() => {
+                    onClick={() =>
                         form.setValue('schema', [
-                            ...fields,
+                            ...schema,
                             {
                                 field: ProductFields.PRODUCT_ID,
                                 incomingFileField: '',
                                 isAdditionalField: false,
                             },
                         ])
-                    }}
+                    }
                 >
                     <PlusIcon className='h-4 w-4 mr-2 shrink-0' />
                     Добавить поле

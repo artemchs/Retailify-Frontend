@@ -19,30 +19,9 @@ import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Trash2Icon } from 'lucide-react'
-import { ProductFields } from '@/features/import/types'
 import AsyncInput from '@/components/forms/AsyncInput'
-
-const PRODUCT_FIELDS = [
-    { key: 'Идентификатор товара', value: 'product_id' },
-    { key: 'Название товара', value: 'product_title' },
-    { key: 'Артикул товара', value: 'product_sku' },
-    { key: 'Артикул поставщика', value: 'product_supplierSku' },
-    { key: 'ID товара в TorgSoft', value: 'product_torgsoftId' },
-    { key: 'ID товара в Prom', value: 'product_promId' },
-    { key: 'ID товара в Rozetka', value: 'product_rozetkaId' },
-    { key: 'Пол', value: 'product_gender' },
-    { key: 'Сезон', value: 'product_season' },
-    { key: 'Медиафайлы товара', value: 'product_media' },
-    { key: 'ID варианта', value: 'variant_id' },
-    { key: 'ID варианта в TorgSoft', value: 'variant_torgsoftId' },
-    { key: 'ID варианта в Prom', value: 'variant_promId' },
-    { key: 'ID варианта в Rozetka', value: 'variant_rozetkaId' },
-    { key: 'Размер', value: 'variant_size' },
-    { key: 'Цена', value: 'variant_price' },
-    { key: 'Скидка', value: 'variant_sale' },
-    { key: 'Количество', value: 'variant_quantity' },
-    { key: 'Штрих-код', value: 'variant_barcode' },
-]
+import { ProductFields } from '@/features/import/types/product-fields'
+import { PRODUCT_FIELDS } from '../product-fields-translation'
 
 type Props = {
     form: Form
@@ -109,8 +88,11 @@ function SelectSchemaField({ form, index }: { form: Form; index: number }) {
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            {PRODUCT_FIELDS.map(({ key, value }) => (
-                                <SelectItem value={value}>{key}</SelectItem>
+                            {Object.keys(PRODUCT_FIELDS).map((key) => (
+                                <SelectItem value={key}>
+                                    {/* @ts-expect-error it works though */}
+                                    {PRODUCT_FIELDS[key]}
+                                </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>

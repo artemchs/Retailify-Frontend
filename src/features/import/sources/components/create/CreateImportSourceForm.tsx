@@ -2,7 +2,13 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Form } from '@/components/ui/form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from '@/components/ui/form'
 import { AlertDestructive } from '@/components/AlertDestructive'
 import { zodResolver } from '@hookform/resolvers/zod'
 import FormLabelForRequiredFields from '@/components/forms/FormLabelForRequiredFields'
@@ -70,8 +76,19 @@ export default function CreateImportSourceForm({
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
                     <ImportSourceNameField form={form} />
-                    <FormLabelForRequiredFields text='Схема импорта' />
-                    <ImportSourceSchemaFields form={form} />
+                    <FormField
+                        control={form.control}
+                        name='schema'
+                        render={({ fieldState }) => (
+                            <FormItem>
+                                <FormLabelForRequiredFields text='Схема импорта' />
+                                <FormControl>
+                                    <ImportSourceSchemaFields form={form} />
+                                </FormControl>
+                                {fieldState.error?.message && <FormMessage />}
+                            </FormItem>
+                        )}
+                    />
                     <AddFieldButton form={form} />
                     <SaveButton
                         isPending={isPending}

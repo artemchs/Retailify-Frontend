@@ -1,6 +1,7 @@
 import { requiredField } from '@/utils/zodErrorMessages'
 import { z } from 'zod'
-import { ProductFields } from '../../types'
+import { ProductFields } from '../../types/product-fields'
+import { PRODUCT_FIELDS } from '../components/shared/product-fields-translation'
 
 const requiredFields = [
     ProductFields.PRODUCT_ID,
@@ -12,22 +13,24 @@ const requiredFields = [
     ProductFields.VARIANT_QUANTITY,
 ]
 
+const importSourceSchema = z.array(
+    z.object({
+        incomingFileField: z.string().trim().min(1, requiredField),
+        field: z.nativeEnum(ProductFields, {
+            required_error: requiredField,
+        }),
+        isAdditionalField: z.boolean().default(false),
+    })
+)
+
+export type ImportSourceSchema = z.infer<typeof importSourceSchema>
+
 export const createImportSourceSchema = z
     .object({
         name: z.string({
             required_error: requiredField,
         }),
-        schema: z.array(
-            z.object({
-                incomingFileField: z.string({
-                    required_error: requiredField,
-                }),
-                field: z.nativeEnum(ProductFields, {
-                    required_error: requiredField,
-                }),
-                isAdditionalField: z.boolean().default(false),
-            })
-        ),
+        schema: importSourceSchema,
     })
     .refine(
         (data) => {
@@ -36,25 +39,12 @@ export const createImportSourceSchema = z
                 definedFields.includes(field)
             )
 
-            const allRequiredFieldsHaveIncomingValue = requiredFields.every(
-                (field) => {
-                    const schemaItem = data.schema.find(
-                        (item) => item.field === field
-                    )
-                    return (
-                        schemaItem && schemaItem.incomingFileField.trim() !== ''
-                    )
-                }
-            )
-
-            return (
-                allRequiredFieldsDefined && allRequiredFieldsHaveIncomingValue
-            )
+            return allRequiredFieldsDefined
         },
         {
-            message: `Отсутствуют обязательные поля или значения полей входящих файлов. Пожалуйста, включите поля схемы с непустыми значениями полей входящих файлов: ${requiredFields.join(
-                ', '
-            )}`,
+            message: `Отсутствуют обязательные поля, включите их в схему. Список обязательных полей: ${requiredFields
+                .map((key) => PRODUCT_FIELDS[key])
+                .join(', ')}`,
             path: ['schema'],
         }
     )
